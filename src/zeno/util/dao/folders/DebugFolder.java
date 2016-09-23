@@ -36,7 +36,7 @@ public class DebugFolder extends Folder implements Iterable<TextHandler>
 	 */
 	public DebugFolder(String url)
 	{
-		super(url); files = new TextHandler[0];
+		super(url);
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class DebugFolder extends Folder implements Iterable<TextHandler>
 	 */
 	public DebugFolder(Path path)
 	{
-		super(path); files = new TextHandler[0];
+		super(path);
 	}
 	
 	
@@ -123,6 +123,7 @@ public class DebugFolder extends Folder implements Iterable<TextHandler>
 	@Override
 	public boolean load()
 	{
+		files = new TextHandler[0];
 		if(!super.load())
 		{
 			return false;

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class File implements Loadable, Saveable
 		 */
 		public Handler(String url)
 		{
-			super(url); objects = new ArrayList<>();
+			super(url);
 		}
 
 		/**
@@ -57,7 +56,7 @@ public class File implements Loadable, Saveable
 		 */
 		public Handler(Path path)
 		{
-			super(path); objects = new ArrayList<>();
+			super(path);
 		}
 		
 		
@@ -179,6 +178,7 @@ public class File implements Loadable, Saveable
 	public File(Path path)
 	{
 		fpath = path;
+		load();
 	}
 	
 	

@@ -35,7 +35,6 @@ public class Image extends File
 	public Image(String url)
 	{
 		super(Paths.get(url));
-		load();
 	}
 
 	/**
@@ -47,7 +46,6 @@ public class Image extends File
 	public Image(Path path)
 	{
 		super(path);
-		load();
 	}
 	
 
