@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 import zeno.util.dao.Folder;
 import zeno.util.dao.handlers.TextHandler;
-import zeno.util.lang.time.Date;
+import zeno.util.lang._deprecated.Date;
 import zeno.util.tools.iterators.ArrayIterator;
 import zeno.util.tools.primitives.Integers;
 
