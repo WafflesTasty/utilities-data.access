@@ -1,13 +1,13 @@
 package zeno.util.dao.folders;
 
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.function.Consumer;
 
 import zeno.util.dao.Folder;
 import zeno.util.dao.handlers.TextHandler;
-import zeno.util.lang._deprecated.Date;
+import zeno.util.lang._deprecated.time1.Date;
+import zeno.util.tools.Array;
 import zeno.util.tools.iterators.ArrayIterator;
 import zeno.util.tools.primitives.Integers;
 
@@ -107,7 +107,7 @@ public class DebugFolder extends Folder implements Iterable<TextHandler>
 	{
 		if(files.length <= i)
 		{
-			files = Arrays.copyOf(files, i + 1);
+			files = Array.copy.of(files, i + 1);
 		}
 		
 		files[i] = new TextHandler(Path().resolve(i + "_" + name));
