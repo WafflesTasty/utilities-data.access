@@ -129,7 +129,7 @@ public class INIHandler extends File.Handler<INIObject>
 	@Override
 	protected boolean write(List<INIObject> objects)
 	{
-		try(BufferedWriter writer = Files.newBufferedWriter(Path()))
+		try(BufferedWriter writer = Files.newBufferedWriter(Path(), File.CHAR_SET))
 		{
 			for(INIObject object : objects)
 			{
@@ -153,8 +153,8 @@ public class INIHandler extends File.Handler<INIObject>
 	protected List<INIObject> read()
 	{
 		List<INIObject> objects = new ArrayList<>();
-		try(BufferedReader reader = Files.newBufferedReader(Path()))
-		{
+		try(BufferedReader reader = Files.newBufferedReader(Path(), File.CHAR_SET))
+		{			
 			String line = "";
 			INIObject object = new Start();
 			while(line != null)

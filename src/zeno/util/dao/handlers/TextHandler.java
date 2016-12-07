@@ -47,7 +47,7 @@ public class TextHandler extends File.Handler<String>
 	@Override
 	protected boolean write(List<String> objects)
 	{
-		try(BufferedWriter writer = Files.newBufferedWriter(Path()))
+		try(BufferedWriter writer = Files.newBufferedWriter(Path(), File.CHAR_SET))
 		{
 			for(String line : objects)
 			{
@@ -66,7 +66,7 @@ public class TextHandler extends File.Handler<String>
 	protected List<String> read()
 	{
 		List<String> lines = new ArrayList<>();
-		try(BufferedReader reader = Files.newBufferedReader(Path()))
+		try(BufferedReader reader = Files.newBufferedReader(Path(), File.CHAR_SET))
 		{
 			int i = -1;
 			String line = "";

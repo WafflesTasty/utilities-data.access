@@ -1,6 +1,8 @@
 package zeno.util.dao;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,6 +24,11 @@ import zeno.util.tools.generic.manipulators.Saveable;
  */
 public class File implements Loadable, Saveable
 {
+	/**
+	 * Defines the default character set used in text files.
+	 */
+	public static final Charset CHAR_SET = StandardCharsets.ISO_8859_1;
+	
 	/**
 	 * The {@code File.Handler} class defines a file containing specific objects.
 	 * 
