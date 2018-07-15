@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -121,6 +122,14 @@ public class File implements Loadable, Saveable
 			return objects;
 		}
 		
+		/**
+		 * Clears the objects from the {@code File.Handler}.
+		 */
+		public void clear()
+		{
+			objects.clear();
+		}
+		
 		
 		@Override
 		public Iterator<O> iterator()
@@ -139,6 +148,7 @@ public class File implements Loadable, Saveable
 			objects = read();
 			if(objects == null)
 			{
+				objects = new ArrayList<>();
 				return false;
 			}
 			
