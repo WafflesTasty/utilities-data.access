@@ -11,8 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import zeno.util.tools.Iterables;
-import zeno.util.tools.generic.manipulators.Loadable;
-import zeno.util.tools.generic.manipulators.Saveable;
+import zeno.util.tools.patterns.manipulators.Loadable;
+import zeno.util.tools.patterns.manipulators.Saveable;
 
 /**
  * The {@code File} class defines a generic file stored on the hard disk.
