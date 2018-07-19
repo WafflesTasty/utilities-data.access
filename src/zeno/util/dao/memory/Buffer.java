@@ -7,12 +7,12 @@ import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 import java.nio.ShortBuffer;
 
-import zeno.util.tools.primitives.Bytes;
-import zeno.util.tools.primitives.Doubles;
-import zeno.util.tools.primitives.Floats;
-import zeno.util.tools.primitives.Integers;
-import zeno.util.tools.primitives.Longs;
-import zeno.util.tools.primitives.Shorts;
+import zeno.util.tools.Bytes;
+import zeno.util.tools.Doubles;
+import zeno.util.tools.Floats;
+import zeno.util.tools.Integers;
+import zeno.util.tools.Longs;
+import zeno.util.tools.Shorts;
 
 /**
  * The {@code Buffer} interface defines a wrapper for a {@link ByteBuffer} object.

@@ -7,9 +7,9 @@ import java.util.function.Consumer;
 import zeno.util.dao.Folder;
 import zeno.util.dao.handlers.TextHandler;
 import zeno.util.lang._deprecated.time1.Date;
-import zeno.util.tools.Array;
-import zeno.util.tools.iterators.ArrayIterator;
-import zeno.util.tools.primitives.Integers;
+import zeno.util.tools.Integers;
+import zeno.util.tools.helper.Array;
+import zeno.util.tools.helper.iterators.ArrayIterator;
 
 /**
  * The {@code DebugFolder} class defines a folder containing debug files.
