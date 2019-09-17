@@ -239,6 +239,7 @@ public final class FileSystem
 		return java.lang.System.getProperty("os.name");
 	}
 	
+	
 	private FileSystem()
 	{
 		// NOT APPLICABLE
