@@ -1,9 +1,12 @@
 package zeno.util.data;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import zeno.util.data.files.File;
 import zeno.util.data.files.Folder;
 import zeno.util.tools.patterns.properties.IRelatable;
 
@@ -17,6 +20,74 @@ import zeno.util.tools.patterns.properties.IRelatable;
 public final class FileSystem
 {
 	/**
+	 * Defines the default character set used in reading files.
+	 * 
+	 * 
+	 * @see Charset
+	 */
+	public static final Charset CHAR_SET = StandardCharsets.ISO_8859_1;
+		
+	/**
+	 * The {@code FileNotFoundError} class defines an error thrown when a file does not exist.
+	 *
+	 * @author Zeno
+	 * @since Sep 17, 2019
+	 * @version 1.0
+	 * 
+	 * 
+	 * @see RuntimeException
+	 */
+	public static class FileNotFoundError extends RuntimeException
+	{
+		private static final long serialVersionUID = -3255871204648574328L;
+
+		
+		/**
+		 * Creates a new {@code FileNotFoundError}.
+		 * 
+		 * @param f  a target file
+		 * 
+		 * 
+		 * @see File
+		 */
+		public FileNotFoundError(File f)
+		{
+			super("Could not find file " + f.toString());
+		}
+	}
+
+	/**
+	 * The {@code MalformedFileError} class defines an error thrown when a file cannot be parsed.
+	 *
+	 * @author Zeno
+	 * @since Sep 17, 2019
+	 * @version 1.0
+	 * 
+	 * 
+	 * @see RuntimeException
+	 */
+	public static class MalformedFileError extends RuntimeException
+	{
+		private static final long serialVersionUID = -8920449152648231475L;
+		
+
+		/**
+		 * Creates a new {@code MalformedFileError}.
+		 * 
+		 * @param file  a target file
+		 * @param line  a target line
+		 * 
+		 * 
+		 * @see String
+		 * @see File
+		 */
+		public MalformedFileError(File file, String line)
+		{
+			super("Could not parse file " + file.Path() + ". The following line is malformed: \r\n" + line);
+		}
+	}
+	
+	/**
 	 * The {@code AccessError} class defines an error thrown when a path can't be accessed.
 	 *
 	 * @author Zeno
@@ -29,7 +100,20 @@ public final class FileSystem
 	public static class AccessError extends RuntimeException
 	{
 		private static final long serialVersionUID = -5817136207785192255L;
+
 		
+		/**
+		 * Creates a new {@code AccessError}.
+		 * 
+		 * @param f  a target file
+		 * 
+		 * 
+		 * @see File
+		 */
+		public AccessError(File f)
+		{
+			this(f.Path());
+		}
 
 		/**
 		 * Creates a new {@code AccessError}.
@@ -41,10 +125,10 @@ public final class FileSystem
 		 */
 		public AccessError(Path p)
 		{
-			super("Could not access " + p.toString() + ".");
+			super("Could not access path " + p.toString() + ".");
 		}
 	}
-
+	
 	/**
 	 * The {@code Item} class defines a single item in the {@code FileSystem}.
 	 *
@@ -58,6 +142,29 @@ public final class FileSystem
 	 */
 	public static abstract class Item implements IRelatable
 	{		
+		/**
+		 * Renames the {@code Item} to a new file name.
+		 * 
+		 * @param name  a file name
+		 * @return  the created item
+		 * 
+		 * 
+		 * @see String
+		 */
+		public abstract Item renameTo(String name);
+		
+		/**
+		 * Copies the {@code Item} to a new folder in the file system.
+		 * 
+		 * @param p  a parent folder
+		 * @return  the created item
+		 * 
+		 * 
+		 * @see Folder
+		 */
+		public abstract Item copyTo(Folder p);
+		
+		
 		/**
 		 * Returns the path of the {@code Item}.
 		 * 
@@ -77,82 +184,77 @@ public final class FileSystem
 		 * Deletes the {@code Item} from the file system.
 		 */
 		public abstract void delete();
-		
-		/**
-		 * Copies the {@code Item} to a new folder in the file system.
-		 * 
-		 * @param p  a parent folder
-		 * 
-		 * 
-		 * @see Folder
-		 */
-		public abstract void copyTo(Folder p);
-		
 
+		
 		/**
 		 * Moves the {@code Item} to a new folder in the file system.
 		 * 
 		 * @param p  a parent folder
+		 * @return  the created item
 		 * 
 		 * 
 		 * @see Folder
 		 */
-		public void moveTo(Folder p)
+		public Item moveTo(Folder p)
 		{
-			copyTo(p);
-			delete();
+			Item move = copyTo(p);
+			delete(); return move;
 		}
-		
+				
 		/**
 		 * Copies the {@code Item} to a new folder in the file system.
 		 * 
 		 * @param url  a folder url
+		 * @return  the created item
 		 * 
 		 * 
 		 * @see String
 		 */
-		public void copyTo(String url)
+		public Item copyTo(String url)
 		{
-			copyTo(Paths.get(url));
+			return copyTo(Paths.get(url));
 		}
 		
 		/**
 		 * Moves the {@code Item} to a new folder in the file system.
 		 * 
 		 * @param url  a folder url
+		 * @return  the created item
 		 * 
 		 * 
 		 * @see Path
 		 */
-		public void moveTo(String url)
+		public Item moveTo(String url)
 		{
-			moveTo(Paths.get(url));
+			return moveTo(Paths.get(url));
 		}
 		
 		/**
 		 * Copies the {@code Item} to a new folder in the file system.
 		 * 
 		 * @param p  a folder path
+		 * @return  the created item
 		 * 
 		 * 
 		 * @see Path
 		 */
-		public void copyTo(Path p)
+		public Item copyTo(Path p)
 		{
-			copyTo(new Folder(p));
+			return copyTo(new Folder(p));
 		}
 		
 		/**
 		 * Moves the {@code Item} to a new folder in the file system.
 		 * 
 		 * @param p  a folder path
+		 * @return  the created item
 		 * 
 		 * 
 		 * @see Path
 		 */
-		public void moveTo(Path p)
+		public Item moveTo(Path p)
 		{
-			moveTo(new Folder(p));
+			return moveTo(new Folder(p));
 		}
 		
 		

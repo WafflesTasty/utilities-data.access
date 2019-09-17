@@ -1,5 +1,7 @@
 package zeno.util.data.files;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,6 +22,96 @@ import zeno.util.data.FileSystem;
  */
 public class File extends FileSystem.Item
 {
+	/**
+	 * Creates a {@code BufferedReader} for a {@code File}.
+	 * 
+	 * @param file  a file to open
+	 * @return  a buffered file reader
+	 * @throws IOException  if the file cannot be accessed
+	 * 
+	 * 
+	 * @see BufferedReader
+	 * @see IOException
+	 */
+	public static BufferedReader Reader(File file) throws IOException
+	{
+		return Files.newBufferedReader(file.Path(), FileSystem.CHAR_SET);
+	}
+	
+	/**
+	 * Creates a {@code BufferedWriter} for a {@code File}.
+	 * 
+	 * @param file  a file to open
+	 * @return  a buffered file writer
+	 * @throws IOException  if the file cannot be accessed
+	 * 
+	 * 
+	 * @see BufferedWriter
+	 * @see IOException
+	 */
+	public static BufferedWriter Writer(File file) throws IOException
+	{
+		return Files.newBufferedWriter(file.Path(), FileSystem.CHAR_SET);
+	}
+	
+	/**
+	 * The {@code Handler} interface defines an object capable of
+	 * reading and writing its contents to {@code Files}.
+	 *
+	 * @author Zeno
+	 * @since Sep 17, 2019
+	 * @version 1.0
+	 */
+	public static interface Handler
+	{
+		/**
+		 * Reads a file's contents into the {@code Handler}.
+		 * 
+		 * @param file  a file to read from
+		 * 
+		 * 
+		 * @see File
+		 */
+		public abstract void read(File file);
+		
+		/**
+		 * Writes a file with the contents of the {@code Handler}.
+		 * 
+		 * @param file  a file to write to
+		 * 
+		 * 
+		 * @see File
+		 */
+		public abstract void write(File file);
+			
+		/**
+		 * Writes a file with the contents of the {@code Handler}.
+		 * 
+		 * @param url  a file url to write to
+		 * 
+		 * 
+		 * @see String
+		 */
+		public default void write(String url)
+		{
+			write(new File(url));
+		}
+		
+		/**
+		 * Reads a file's contents into the {@code Handler}.
+		 * 
+		 * @param url  a file url to read from
+		 * 
+		 * 
+		 * @see String
+		 */
+		public default void read(String url)
+		{
+			read(new File(url));
+		}
+	}
+	
+	
 	private Path path;
 
 	/**
@@ -71,9 +163,10 @@ public class File extends FileSystem.Item
 	}
 	
 	@Override
-	public void copyTo(Folder p)
+	public File copyTo(Folder p)
 	{
 		File copy = new File(p, Name());
+		
 		try
 		{
 			Files.copy(path, copy.Path(),
@@ -81,9 +174,29 @@ public class File extends FileSystem.Item
 		}
 		catch (IOException e)
 		{
-			throw new FileSystem.AccessError(copy.Path());
+			throw new FileSystem.AccessError(copy);
 		}
+		
+		return copy;
 	}
+	
+	@Override
+	public File renameTo(String name)
+	{
+		Path tgt = path.getParent().resolve(name);
+		
+		try
+		{	
+			Files.move(path, tgt);
+		}
+		catch(IOException e)
+		{
+			throw new FileSystem.AccessError(path);
+		}
+		
+		return new File(tgt);
+	}
+	
 	
 	@Override
 	public void create()

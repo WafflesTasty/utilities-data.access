@@ -6,9 +6,9 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Zeno/AppData/Local/Jade/libraries/external/iotools/java png/javapng-2.0.jar" sourcepath="C:/Users/Zeno/AppData/Local/Jade/libraries/external/iotools/java png/javapng-2.0.jar">
+	<classpathentry kind="lib" path="C:/Users/Zeno/Documents/Jade/libraries/external/iotools/java png/javapng-2.0.jar" sourcepath="C:/Users/Zeno/Documents/Jade/libraries/external/iotools/java png/javapng-2.0.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/Users/Zeno/AppData/Local/Jade/libraries/external/iotools/java%20png/javapng-2.0.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/D:/Users/Zeno/Documents/Jade/libraries/external/iotools/java%20png/javapng-2.0.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Language"/>

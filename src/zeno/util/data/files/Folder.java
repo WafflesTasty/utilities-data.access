@@ -153,20 +153,9 @@ public class Folder extends FileSystem.Item
 	{
 		return Files.isDirectory(path);
 	}
-		
-	@Override
-	public boolean equals(Object o)
-	{
-		if(o instanceof Folder)
-		{
-			return path.equals(((Folder) o).Path());
-		}
-
-		return false;
-	}
 	
 	@Override
-	public void copyTo(Folder p)
+	public Folder copyTo(Folder p)
 	{
 		p.create();
 		Folder copy = new Folder(p, Name());
@@ -193,7 +182,41 @@ public class Folder extends FileSystem.Item
 		{
 			throw new FileSystem.AccessError(path);
 		}
+		
+		return copy;
 	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o instanceof Folder)
+		{
+			return path.equals(((Folder) o).Path());
+		}
+
+		return false;
+	}
+	
+	@Override
+	public Folder renameTo(String name)
+	{
+		Folder tgt = new Folder(path.getParent().resolve(name));
+		try(StreamIterable<Folder> folders = Folders())
+		{
+			for(Folder f : folders)
+			{
+				f.copyTo(tgt);
+			}
+		}
+		catch(IOException e)
+		{
+			throw new FileSystem.AccessError(path);
+		}
+		
+		delete();
+		return tgt;
+	}
+	
 	
 	@Override
 	public void create()
