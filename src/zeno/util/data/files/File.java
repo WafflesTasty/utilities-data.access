@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 
 import zeno.util.data.FileSystem;
 
@@ -21,7 +22,7 @@ import zeno.util.data.FileSystem;
  * @see FileSystem
  */
 public class File extends FileSystem.Item
-{
+{	
 	/**
 	 * Creates a {@code BufferedReader} for a {@code File}.
 	 * 
@@ -36,6 +37,23 @@ public class File extends FileSystem.Item
 	public static BufferedReader Reader(File file) throws IOException
 	{
 		return Files.newBufferedReader(file.Path(), FileSystem.CHAR_SET);
+	}
+	
+	/**
+	 * Creates a {@code BufferedWriter} for a {@code File}.
+	 * This writer appends additional data to the end of the file.
+	 * 
+	 * @param file  a file to open
+	 * @return  a buffered file writer
+	 * @throws IOException  if the file cannot be accessed
+	 * 
+	 * 
+	 * @see BufferedWriter
+	 * @see IOException
+	 */
+	public static BufferedWriter Appender(File file) throws IOException
+	{
+		return Files.newBufferedWriter(file.Path(), FileSystem.CHAR_SET, StandardOpenOption.APPEND);
 	}
 	
 	/**

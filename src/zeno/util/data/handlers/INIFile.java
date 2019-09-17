@@ -1,4 +1,4 @@
-package zeno.util.data.handler;
+package zeno.util.data.handlers;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -200,6 +200,8 @@ public class INIFile implements File.Handler
 		{
 			throw new FileSystem.AccessError(file);
 		}
+		
+		tmp.delete();
 	}
 	
 	@Override
@@ -210,9 +212,9 @@ public class INIFile implements File.Handler
 			throw new FileSystem.FileNotFoundError(file);
 		}
 		
-		Group g = null;
+		Group g = null; groups.clear();
 		try(BufferedReader reader = File.Reader(file))
-		{
+		{			
 			String line = "";
 			while(line != null)
 			{
