@@ -143,9 +143,26 @@ public class Folder extends FileSystem.Item
 
 	
 	@Override
+	public int hashCode()
+	{
+		return path.hashCode();
+	}
+	
+	@Override
 	public boolean exists()
 	{
 		return Files.isDirectory(path);
+	}
+		
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o instanceof Folder)
+		{
+			return path.equals(((Folder) o).Path());
+		}
+
+		return false;
 	}
 	
 	@Override
@@ -183,7 +200,7 @@ public class Folder extends FileSystem.Item
 	{
 		if(!exists())
 		{
-			try{Files.createDirectory(path);}
+			try{Files.createDirectories(path);}
 			catch(IOException e)
 			{
 				throw new FileSystem.AccessError(path);

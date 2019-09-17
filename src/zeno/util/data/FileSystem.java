@@ -226,6 +226,18 @@ public final class FileSystem
 		return new Folder(java.lang.System.getProperty("user.home"));
 	}
 	
+	/**
+	 * Returns the OS of the current machine.
+	 * 
+	 * @return  a machine os
+	 * 
+	 * 
+	 * @see String
+	 */
+	public static String OS()
+	{
+		return java.lang.System.getProperty("os.name");
+	}
 	
 	private FileSystem()
 	{
