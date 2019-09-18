@@ -8,8 +8,8 @@ import java.sql.Statement;
 import zeno.util.data.files.File;
 
 /**
- * The {@code Database} class defines a file handled as an SQL database.
- * <br> The database driver used for the files is the {@code H2 database engine}.
+ * The {@code Database} class allows access to an SQL database.
+ * <br> The database driver used is the {@code H2 database engine}.
  * 
  * @author Zeno
  * @since Nov 13, 2014
