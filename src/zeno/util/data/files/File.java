@@ -175,6 +175,12 @@ public class File extends FileSystem.Item
 	
 	
 	@Override
+	public int hashCode()
+	{
+		return path.hashCode();
+	}
+	
+	@Override
 	public boolean exists()
 	{
 		return Files.isReadable(path);
@@ -196,6 +202,17 @@ public class File extends FileSystem.Item
 		}
 		
 		return copy;
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o instanceof File)
+		{
+			return path.equals(((File) o).Path());
+		}
+
+		return false;
 	}
 	
 	@Override
@@ -223,6 +240,7 @@ public class File extends FileSystem.Item
 		{
 			try
 			{
+				Parent().create();
 				Files.createFile(path);
 			}
 			catch (IOException e)
