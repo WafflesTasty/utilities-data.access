@@ -118,37 +118,10 @@ public class Logger implements Loadable, Saveable
 			}
 		}
 	}
-
-	
-	/**
-	 * Returns the error log of the {@code Logger}.
-	 * 
-	 * @return  an error file
-	 * 
-	 *  
-	 * @see File
-	 */
-	public File Error()
-	{
-		return new File(folder, "ERROR.TXT");
-	}
-	
-	/**
-	 * Returns the base folder of the {@code Logger}.
-	 * 
-	 * @return  a log folder
-	 * 
-	 * 
-	 * @see Folder
-	 */
-	public Folder Folder()
-	{
-		return folder;
-	}
 	
 	
 	/**
-	 * Returns a subgroup of the {@code Logger}.
+	 * Returns a log subgroup of the {@code Logger}.
 	 * 
 	 * @param name  a group name
 	 * @return  a log group
@@ -176,7 +149,7 @@ public class Logger implements Loadable, Saveable
 	}
 	
 	/**
-	 * Changes the priority of the {@code Logger}.
+	 * Changes priority of the {@code Logger}.
 	 * Highest priority is denoted by zero.
 	 * 
 	 * @param p  a new priority
@@ -185,7 +158,34 @@ public class Logger implements Loadable, Saveable
 	{
 		priority = p;
 	}
+
 		
+	/**
+	 * Returns the error log of the {@code Logger}.
+	 * 
+	 * @return  an error file
+	 * 
+	 *  
+	 * @see File
+	 */
+	public File Error()
+	{
+		return new File(folder, "ERROR.TXT");
+	}
+	
+	/**
+	 * Returns the base folder of the {@code Logger}.
+	 * 
+	 * @return  a log folder
+	 * 
+	 * 
+	 * @see Folder
+	 */
+	public Folder Folder()
+	{
+		return folder;
+	}
+	
 	/**
 	 * Returns the priority of the {@code Logger}.
 	 * 
