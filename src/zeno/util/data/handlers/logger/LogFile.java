@@ -1,8 +1,8 @@
-package zeno.util.data.folders.logger;
+package zeno.util.data.handlers.logger;
 
 import zeno.util.data.FileSystem;
-import zeno.util.data.files.File;
 import zeno.util.data.handlers.TextFile;
+import zeno.util.data.system.File;
 import zeno.util.tools.patterns.manipulators.Loadable;
 import zeno.util.tools.patterns.manipulators.Saveable;
 

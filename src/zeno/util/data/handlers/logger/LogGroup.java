@@ -1,10 +1,10 @@
-package zeno.util.data.folders.logger;
+package zeno.util.data.handlers.logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import zeno.util.data.files.Folder;
-import zeno.util.data.folders.Logger;
+import zeno.util.data.handlers.Logger;
+import zeno.util.data.system.Folder;
 import zeno.util.tools.patterns.manipulators.Loadable;
 import zeno.util.tools.patterns.manipulators.Saveable;
 

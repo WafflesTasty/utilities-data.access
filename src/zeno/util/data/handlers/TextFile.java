@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zeno.util.data.FileSystem;
-import zeno.util.data.files.File;
+import zeno.util.data.system.File;
 
 /**
  * The {@code TextFile} class defines a {@code File Handler} for plain text.

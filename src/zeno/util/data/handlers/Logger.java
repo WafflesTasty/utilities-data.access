@@ -1,13 +1,12 @@
-package zeno.util.data.folders;
+package zeno.util.data.handlers;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import zeno.util.data.files.File;
-import zeno.util.data.files.Folder;
-import zeno.util.data.folders.logger.LogGroup;
-import zeno.util.data.handlers.TextFile;
+import zeno.util.data.handlers.logger.LogGroup;
+import zeno.util.data.system.File;
+import zeno.util.data.system.Folder;
 import zeno.util.lang._deprecated.time1.Date;
 import zeno.util.tools.patterns.manipulators.Loadable;
 import zeno.util.tools.patterns.manipulators.Saveable;

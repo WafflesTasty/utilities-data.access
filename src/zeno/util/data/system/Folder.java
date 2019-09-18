@@ -1,4 +1,4 @@
-package zeno.util.data.files;
+package zeno.util.data.system;
 
 import java.io.IOException;
 import java.nio.file.Files;

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import zeno.util.data.FileSystem;
-import zeno.util.data.files.File;
+import zeno.util.data.system.File;
 
 /**
  * The {@code INIFile} class defines a {@code File Handler} for ini files.

@@ -8,7 +8,7 @@ import java.nio.file.Path;
 import com.sixlegs.png.PngImage;
 
 import zeno.util.data.FileSystem;
-import zeno.util.data.files.File;
+import zeno.util.data.system.File;
 
 /**
  * The {@code Image} class defines an image loaded from the hard disk.

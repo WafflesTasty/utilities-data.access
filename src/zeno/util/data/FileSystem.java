@@ -6,8 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import zeno.util.data.files.File;
-import zeno.util.data.files.Folder;
+import zeno.util.data.system.File;
+import zeno.util.data.system.Folder;
 import zeno.util.tools.patterns.properties.IRelatable;
 
 /**
