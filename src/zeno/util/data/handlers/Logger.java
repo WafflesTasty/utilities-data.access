@@ -224,5 +224,4 @@ public class Logger implements Loadable, Saveable
 		
 		return true;
 	}
-
 }
