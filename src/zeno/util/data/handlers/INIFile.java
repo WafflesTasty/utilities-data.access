@@ -36,7 +36,8 @@ public class INIFile implements File.Handler
 			
 	private static boolean isComment(String line)
 	{
-		return line.trim().startsWith(COMMENT);
+		return line.trim().startsWith(COMMENT)
+			|| line.trim().equals("");
 	}
 	
 	private static boolean isSetting(String line)
