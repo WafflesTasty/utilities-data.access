@@ -75,7 +75,7 @@ public class Logger implements Loadable, Saveable
 			err.add(emt.toString());
 		}
 		
-		File errfile = new File(folder, "ERROR.TXT");
+		File errfile = Error();
 		err.write(errfile);
 		if(handler != null)
 		{
@@ -119,10 +119,23 @@ public class Logger implements Loadable, Saveable
 			}
 		}
 	}
-	
+
 	
 	/**
-	 * Returns the folder of the {@code Logger}.
+	 * Returns the error log of the {@code Logger}.
+	 * 
+	 * @return  an error file
+	 * 
+	 *  
+	 * @see File
+	 */
+	public File Error()
+	{
+		return new File(folder, "ERROR.TXT");
+	}
+	
+	/**
+	 * Returns the base folder of the {@code Logger}.
 	 * 
 	 * @return  a log folder
 	 * 
@@ -133,6 +146,7 @@ public class Logger implements Loadable, Saveable
 	{
 		return folder;
 	}
+	
 	
 	/**
 	 * Returns a subgroup of the {@code Logger}.
@@ -211,4 +225,5 @@ public class Logger implements Loadable, Saveable
 		
 		return true;
 	}
+
 }
