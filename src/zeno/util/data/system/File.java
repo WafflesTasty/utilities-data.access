@@ -240,7 +240,7 @@ public class File extends FileSystem.Item
 		{
 			try
 			{
-				Parent().create();
+				Relations().Parent().create();
 				Files.createFile(path);
 			}
 			catch (IOException e)

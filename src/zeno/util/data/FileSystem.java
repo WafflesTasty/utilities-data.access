@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import zeno.util.data.system.File;
 import zeno.util.data.system.Folder;
 import zeno.util.tools.patterns.properties.IRelatable;
+import zeno.util.tools.patterns.properties.IRelations;
 
 /**
  * The {@code FileSystem} class defines static access methods to manipulate the file system.
@@ -128,6 +129,7 @@ public final class FileSystem
 			super("Could not access path " + p.toString() + ".");
 		}
 	}
+	
 	
 	/**
 	 * The {@code Item} class defines a single item in the {@code FileSystem}.
@@ -283,15 +285,58 @@ public final class FileSystem
 		
 		
 		@Override
+		public Relations Relations()
+		{
+			return new Relations(this);
+		}
+		
+		@Override
 		public String toString()
 		{
 			return Path().toString();
 		}
+	}
+	
+	/**
+	 * The {@code Relations} class defines parent-child relations between
+	 * file system items.
+	 *
+	 * @author Zeno
+	 * @since Sep 22, 2019
+	 * @version 1.0
+	 * 
+	 * 
+	 * @see IRelations
+	 * @see Item
+	 */
+	public static class Relations implements IRelations
+	{
+		private Item target;
+		
+		/**
+		 * Creates a new {@code Relations}.
+		 * 
+		 * @param tgt  a target item
+		 * 
+		 * 
+		 * @see Item
+		 */
+		public Relations(Item tgt)
+		{
+			target = tgt;
+		}
+		
 		
 		@Override
-		public Folder Parent()
+		public Item Delegate()
 		{
-			Path p = Path().getParent();
+			return target;
+		}
+
+		@Override
+		public Item Parent()
+		{
+			Path p = target.Path().getParent();
 			if(p != null)
 			{
 				return new Folder(p);
