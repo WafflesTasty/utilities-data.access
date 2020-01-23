@@ -8,8 +8,8 @@ import java.nio.file.Paths;
 
 import zeno.util.data.system.File;
 import zeno.util.data.system.Folder;
-import zeno.util.tools.patterns.properties.IRelatable;
-import zeno.util.tools.patterns.properties.IRelations;
+import zeno.util.tools.patterns.IRelatable;
+import zeno.util.tools.patterns.IRelations;
 
 /**
  * The {@code FileSystem} class defines static access methods to manipulate the file system.
