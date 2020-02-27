@@ -11,7 +11,8 @@
 			<attribute name="javadoc_location" value="jar:file:/D:/Users/Zeno/Documents/Jade/libraries/external/iotools/java%20png/javapng-2.0.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Language"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Tools"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Language"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Collections"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

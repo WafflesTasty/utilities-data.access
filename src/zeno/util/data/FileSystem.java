@@ -6,10 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import zeno.util.coll.utilities.relations.IRelatable;
+import zeno.util.coll.utilities.relations.IRelations;
 import zeno.util.data.system.File;
 import zeno.util.data.system.Folder;
-import zeno.util.tools.patterns.IRelatable;
-import zeno.util.tools.patterns.IRelations;
 
 /**
  * The {@code FileSystem} class defines static access methods to manipulate the file system.
