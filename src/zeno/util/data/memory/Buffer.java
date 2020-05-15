@@ -63,9 +63,7 @@ public interface Buffer
 		 */
 		public double[] read(double... data)
 		{
-			view.get(data);
-			advance(data.length);
-			return data;
+			return read(data, 0, data.length);
 		}
 
 		/**
@@ -80,8 +78,7 @@ public interface Buffer
 		public double[] read(double[] data, int start, int count)
 		{
 			view.get(data, start, count);
-			advance(count);
-			return data;
+			advance(count); return data;
 		}
 
 		
@@ -107,8 +104,7 @@ public interface Buffer
 		 */
 		public void write(double... data)
 		{
-			view.put(data);
-			advance(data.length);
+			write(data, 0, data.length);
 		}				
 
 		
@@ -157,9 +153,7 @@ public interface Buffer
 		 */
 		public float[] read(float... data)
 		{
-			view.get(data);
-			advance(data.length);
-			return data;
+			return read(data, 0, data.length);
 		}
 
 		/**
@@ -174,8 +168,7 @@ public interface Buffer
 		public float[] read(float[] data, int start, int count)
 		{
 			view.get(data, start, count);
-			advance(count);
-			return data;
+			advance(count); return data;
 		}
 
 		
@@ -201,8 +194,7 @@ public interface Buffer
 		 */
 		public void write(float... data)
 		{
-			view.put(data);
-			advance(data.length);
+			write(data, 0, data.length);
 		}				
 
 		
@@ -251,9 +243,7 @@ public interface Buffer
 		 */
 		public short[] read(short... data)
 		{
-			view.get(data);
-			advance(data.length);
-			return data;
+			return read(data, 0, data.length);
 		}
 
 		/**
@@ -268,8 +258,7 @@ public interface Buffer
 		public short[] read(short[] data, int start, int count)
 		{
 			view.get(data, start, count);
-			advance(count);
-			return data;
+			advance(count);	return data;
 		}
 
 		
@@ -295,8 +284,7 @@ public interface Buffer
 		 */
 		public void write(short... data)
 		{
-			view.put(data);
-			advance(data.length);
+			write(data, 0, data.length);
 		}
 		
 		
@@ -345,9 +333,7 @@ public interface Buffer
 		 */
 		public byte[] read(byte... data)
 		{
-			view.get(data);
-			advance(data.length);
-			return data;
+			return read(data, 0, data.length);
 		}
 
 		/**
@@ -362,8 +348,7 @@ public interface Buffer
 		public byte[] read(byte[] data, int start, int count)
 		{
 			view.get(data, start, count);
-			advance(count);
-			return data;
+			advance(count); return data;
 		}
 
 		
@@ -389,8 +374,7 @@ public interface Buffer
 		 */
 		public void write(byte... data)
 		{
-			view.put(data);
-			advance(data.length);
+			write(data, 0, data.length);
 		}				
 	
 		
@@ -439,9 +423,7 @@ public interface Buffer
 		 */
 		public long[] read(long... data)
 		{
-			view.get(data);
-			advance(data.length);
-			return data;
+			return read(data, 0, data.length);
 		}
 
 		/**
@@ -456,8 +438,7 @@ public interface Buffer
 		public long[] read(long[] data, int start, int count)
 		{
 			view.get(data, start, count);
-			advance(count);
-			return data;
+			advance(count);	return data;
 		}
 
 		
@@ -483,8 +464,7 @@ public interface Buffer
 		 */
 		public void write(long... data)
 		{
-			view.put(data);
-			advance(data.length);
+			write(data, 0, data.length);
 		}				
 	
 		
@@ -533,9 +513,7 @@ public interface Buffer
 		 */
 		public int[] read(int... data)
 		{
-			view.get(data);
-			advance(data.length);
-			return data;
+			return read(data, 0, data.length);
 		}
 
 		/**
@@ -550,8 +528,7 @@ public interface Buffer
 		public int[] read(int[] data, int start, int count)
 		{
 			view.get(data, start, count);
-			advance(count);
-			return data;
+			advance(count); return data;
 		}
 
 		
@@ -577,8 +554,7 @@ public interface Buffer
 		 */
 		public void write(int... data)
 		{
-			view.put(data);
-			advance(data.length);
+			write(data, 0, data.length);
 		}				
 	
 		
