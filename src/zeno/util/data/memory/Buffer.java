@@ -16,7 +16,7 @@ import zeno.util.tools.Shorts;
 
 /**
  * The {@code Buffer} interface defines a wrapper for a {@link ByteBuffer} object.
- * <br> This interface homogenizes method names across all primitive types.
+ * </br> This interface homogenizes method names across all primitive types.
  * 
  * @author Zeno
  * @since Sep 21, 2016
@@ -56,7 +56,7 @@ public interface Buffer
 		
 		/**
 		 * Reads an array of double data from the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} doubles.
+		 * </br> This advances the current index with {@code data.length} doubles.
 		 * 
 		 * @param data  an array to store the data
 		 * @return  an array of doubles
@@ -68,7 +68,7 @@ public interface Buffer
 
 		/**
 		 * Reads an array of double data from the buffer's current index.
-		 * <br> This advances the current index with {@code count} doubles.
+		 * </br> This advances the current index with {@code count} doubles.
 		 * 
 		 * @param data  an array to store the data
 		 * @param start  the start index in the array
@@ -77,6 +77,8 @@ public interface Buffer
 		 */
 		public double[] read(double[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.get(data, start, count);
 			advance(count); return data;
 		}
@@ -84,7 +86,7 @@ public interface Buffer
 		
 		/**
 		 * Writes an array of double data to the buffer's current index.
-		 * <br> This advances the current index with {@code count} doubles.
+		 * </br> This advances the current index with {@code count} doubles.
 		 * 
 		 * @param data  an array of doubles to write
 		 * @param start  the start index in the array
@@ -92,13 +94,15 @@ public interface Buffer
 		 */
 		public void write(double[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.put(data, start, count);
 			advance(count);
 		}
 		
 		/**
 		 * Writes an array of double data to the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} doubles.
+		 * </br> This advances the current index with {@code data.length} doubles.
 		 * 
 		 * @param data  an array of doubles to write
 		 */
@@ -146,7 +150,7 @@ public interface Buffer
 		
 		/**
 		 * Reads an array of float data from the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} floats.
+		 * </br> This advances the current index with {@code data.length} floats.
 		 * 
 		 * @param data  an array to store the data
 		 * @return  an array of floats
@@ -158,7 +162,7 @@ public interface Buffer
 
 		/**
 		 * Reads an array of float data from the buffer's current index.
-		 * <br> This advances the current index with {@code count} floats.
+		 * </br> This advances the current index with {@code count} floats.
 		 * 
 		 * @param data  an array to store the data
 		 * @param start  the start index in the array
@@ -167,6 +171,8 @@ public interface Buffer
 		 */
 		public float[] read(float[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.get(data, start, count);
 			advance(count); return data;
 		}
@@ -174,7 +180,7 @@ public interface Buffer
 		
 		/**
 		 * Writes an array of float data to the buffer's current index.
-		 * <br> This advances the current index with {@code count} floats.
+		 * </br> This advances the current index with {@code count} floats.
 		 * 
 		 * @param data  an array of floats to write
 		 * @param start  the start index in the array
@@ -182,13 +188,15 @@ public interface Buffer
 		 */
 		public void write(float[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.put(data, start, count);
 			advance(count);
 		}
 		
 		/**
 		 * Writes an array of float data to the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} floats.
+		 * </br> This advances the current index with {@code data.length} floats.
 		 * 
 		 * @param data  an array of floats to write
 		 */
@@ -236,7 +244,7 @@ public interface Buffer
 		
 		/**
 		 * Reads an array of short data from the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} shorts.
+		 * </br> This advances the current index with {@code data.length} shorts.
 		 * 
 		 * @param data  an array to store the data
 		 * @return  an array of shorts
@@ -248,7 +256,7 @@ public interface Buffer
 
 		/**
 		 * Reads an array of short data from the buffer's current index.
-		 * <br> This advances the current index with {@code count} shorts.
+		 * </br> This advances the current index with {@code count} shorts.
 		 * 
 		 * @param data  an array to store the data
 		 * @param start  the start index in the array
@@ -257,6 +265,8 @@ public interface Buffer
 		 */
 		public short[] read(short[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.get(data, start, count);
 			advance(count);	return data;
 		}
@@ -264,7 +274,7 @@ public interface Buffer
 		
 		/**
 		 * Writes an array of short data to the buffer's current index.
-		 * <br> This advances the current index with {@code count} shorts.
+		 * </br> This advances the current index with {@code count} shorts.
 		 * 
 		 * @param data  an array of shorts to write
 		 * @param start  the start index in the array
@@ -272,13 +282,15 @@ public interface Buffer
 		 */
 		public void write(short[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.put(data, start, count);
 			advance(count);
 		}
 		
 		/**
 		 * Writes an array of short data to the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} shorts.
+		 * </br> This advances the current index with {@code data.length} shorts.
 		 * 
 		 * @param data  an array of shorts to write
 		 */
@@ -326,7 +338,7 @@ public interface Buffer
 		
 		/**
 		 * Reads an array of byte data from the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} bytes.
+		 * </br> This advances the current index with {@code data.length} bytes.
 		 * 
 		 * @param data  an array to store the data
 		 * @return  an array of bytes
@@ -338,7 +350,7 @@ public interface Buffer
 
 		/**
 		 * Reads an array of byte data from the buffer's current index.
-		 * <br> This advances the current index with {@code count} bytes.
+		 * </br> This advances the current index with {@code count} bytes.
 		 * 
 		 * @param data  an array to store the data
 		 * @param start  the start index in the array
@@ -347,6 +359,8 @@ public interface Buffer
 		 */
 		public byte[] read(byte[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.get(data, start, count);
 			advance(count); return data;
 		}
@@ -354,7 +368,7 @@ public interface Buffer
 		
 		/**
 		 * Writes an array of byte data to the buffer's current index.
-		 * <br> This advances the current index with {@code count} bytes.
+		 * </br> This advances the current index with {@code count} bytes.
 		 * 
 		 * @param data  an array of bytes to write
 		 * @param start  the start index in the array
@@ -362,13 +376,15 @@ public interface Buffer
 		 */
 		public void write(byte[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.put(data, start, count);
 			advance(count);
 		}
 		
 		/**
 		 * Writes an array of byte data to the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} bytes.
+		 * </br> This advances the current index with {@code data.length} bytes.
 		 * 
 		 * @param data  an array of bytes to write
 		 */
@@ -416,7 +432,7 @@ public interface Buffer
 		
 		/**
 		 * Reads an array of long data from the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} longs.
+		 * </br> This advances the current index with {@code data.length} longs.
 		 * 
 		 * @param data  an array to store the data
 		 * @return  an array of longs
@@ -428,7 +444,7 @@ public interface Buffer
 
 		/**
 		 * Reads an array of long data from the buffer's current index.
-		 * <br> This advances the current index with {@code count} longs.
+		 * </br> This advances the current index with {@code count} longs.
 		 * 
 		 * @param data  an array to store the data
 		 * @param start  the start index in the array
@@ -437,6 +453,8 @@ public interface Buffer
 		 */
 		public long[] read(long[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.get(data, start, count);
 			advance(count);	return data;
 		}
@@ -444,7 +462,7 @@ public interface Buffer
 		
 		/**
 		 * Writes an array of long data to the buffer's current index.
-		 * <br> This advances the current index with {@code count} longs.
+		 * </br> This advances the current index with {@code count} longs.
 		 * 
 		 * @param data  an array of longs to write
 		 * @param start  the start index in the array
@@ -452,13 +470,15 @@ public interface Buffer
 		 */
 		public void write(long[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.put(data, start, count);
 			advance(count);
 		}
 		
 		/**
 		 * Writes an array of long data to the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} longs.
+		 * </br> This advances the current index with {@code data.length} longs.
 		 * 
 		 * @param data  an array of longs to write
 		 */
@@ -506,7 +526,7 @@ public interface Buffer
 		
 		/**
 		 * Reads an array of integer data from the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} integers.
+		 * </br> This advances the current index with {@code data.length} integers.
 		 * 
 		 * @param data  an array to store the data
 		 * @return  an array of integers
@@ -518,7 +538,7 @@ public interface Buffer
 
 		/**
 		 * Reads an array of integer data from the buffer's current index.
-		 * <br> This advances the current index with {@code count} integers.
+		 * </br> This advances the current index with {@code count} integers.
 		 * 
 		 * @param data  an array to store the data
 		 * @param start  the start index in the array
@@ -527,6 +547,8 @@ public interface Buffer
 		 */
 		public int[] read(int[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.get(data, start, count);
 			advance(count); return data;
 		}
@@ -534,7 +556,7 @@ public interface Buffer
 		
 		/**
 		 * Writes an array of integer data to the buffer's current index.
-		 * <br> This advances the current index with {@code count} integers.
+		 * </br> This advances the current index with {@code count} integers.
 		 * 
 		 * @param data  an array of integers to write
 		 * @param start  the start index in the array
@@ -542,13 +564,15 @@ public interface Buffer
 		 */
 		public void write(int[] data, int start, int count)
 		{
+			// The position must be advanced manually, because
+			// buffer and view use separate positions.
 			view.put(data, start, count);
 			advance(count);
 		}
 		
 		/**
 		 * Writes an array of integer data to the buffer's current index.
-		 * <br> This advances the current index with {@code data.length} integers.
+		 * </br> This advances the current index with {@code data.length} integers.
 		 * 
 		 * @param data  an array of integers to write
 		 */
