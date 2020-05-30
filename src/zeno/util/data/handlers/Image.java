@@ -80,6 +80,7 @@ public class Image implements File.Handler
 	{
 		return src.getRaster();
 	}
+
 	
 	/**
 	 * Returns the height of the {@code Image}.
