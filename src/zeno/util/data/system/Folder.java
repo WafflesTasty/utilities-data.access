@@ -105,8 +105,37 @@ public class Folder extends FileSystem.Item
 			return new File(p);
 		}));
 	}
-			
 	
+	
+	/**
+	 * Returns a file inside of this {@code Folder}.
+	 * 
+	 * @param n  a relative path
+	 * @return  a subfile
+	 * 
+	 * 
+	 * @see String
+	 * @see File
+	 */
+	public File subFile(String n)
+	{
+		return new File(this, n);
+	}
+	
+	/**
+	 * Returns a folder inside of this {@code Folder}.
+	 * 
+	 * @param n  a relative path
+	 * @return  a subfolder
+	 * 
+	 * 
+	 * @see String
+	 */
+	public Folder subFolder(String n)
+	{
+		return new Folder(this, n);
+	}
+		
 	/**
 	 * Checks if the {@code Folder} contains subfolders.
 	 * 
