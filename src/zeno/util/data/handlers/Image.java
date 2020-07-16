@@ -1,6 +1,7 @@
 package zeno.util.data.handlers;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -16,7 +17,7 @@ import zeno.util.data.system.File;
  * 
  * @author Zeno
  * @since Sep 23, 2016
- * @version 1.0
+ * @version 1.1
  * 
  * 
  * @see File
@@ -66,7 +67,7 @@ public class Image implements File.Handler
 	{
 		read(file);
 	}
-
+	
 	
 	/**
 	 * Returns the raster of the {@code Image}.
@@ -80,7 +81,17 @@ public class Image implements File.Handler
 	{
 		return src.getRaster();
 	}
-
+	
+	/**
+	 * Returns the data of the {@code Image}.
+	 * 
+	 * @return  a data array
+	 */
+	public byte[] Data()
+	{
+		return ((DataBufferByte) src.getRaster().getDataBuffer()).getData();
+	}
+	
 	
 	/**
 	 * Returns the height of the {@code Image}.
