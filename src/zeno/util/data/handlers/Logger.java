@@ -67,6 +67,8 @@ public class Logger implements Loadable, Saveable
 	 */
 	public void logException(Exception e)
 	{
+		int i;
+		// Fix this with the correct date/time formatting.
 		TextFile err = new TextFile();
 		err.add(e + " at " + ISODate.now() + ":");
 		for(StackTraceElement emt : e.getStackTrace())
