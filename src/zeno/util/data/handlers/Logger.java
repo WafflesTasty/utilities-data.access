@@ -8,6 +8,8 @@ import zeno.util.data.handlers.logger.LogGroup;
 import zeno.util.data.system.File;
 import zeno.util.data.system.Folder;
 import zeno.util.lang.time.iso.ISODate;
+import zeno.util.lang.time.iso.ISOTime;
+import zeno.util.lang.util.ISO;
 import zeno.util.tools.patterns.manipulators.Loadable;
 import zeno.util.tools.patterns.manipulators.Saveable;
 
@@ -67,10 +69,12 @@ public class Logger implements Loadable, Saveable
 	 */
 	public void logException(Exception e)
 	{
-		int i;
-		// Fix this with the correct date/time formatting.
+		String date = ISODate.now().toString(ISO.Format.LONG);
+		String time = ISOTime.now().toString(ISO.Format.LONG);
+		
+
 		TextFile err = new TextFile();
-		err.add(e + " at " + ISODate.now() + ":");
+		err.add(e + " at " + time + ", " + date + ":");
 		for(StackTraceElement emt : e.getStackTrace())
 		{
 			err.add(emt.toString());
