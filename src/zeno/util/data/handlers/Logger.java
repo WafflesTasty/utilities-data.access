@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import zeno.util.data.handlers.logger.LogGroup;
 import zeno.util.data.system.File;
 import zeno.util.data.system.Folder;
-import zeno.util.lang._deprecated.time1.Date;
+import zeno.util.lang.time.iso.ISODate;
 import zeno.util.tools.patterns.manipulators.Loadable;
 import zeno.util.tools.patterns.manipulators.Saveable;
 
@@ -68,7 +68,7 @@ public class Logger implements Loadable, Saveable
 	public void logException(Exception e)
 	{
 		TextFile err = new TextFile();
-		err.add(e + " at " + Date.now() + ":");
+		err.add(e + " at " + ISODate.now() + ":");
 		for(StackTraceElement emt : e.getStackTrace())
 		{
 			err.add(emt.toString());
