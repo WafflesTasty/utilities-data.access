@@ -127,6 +127,7 @@ public class TextFile implements File.Handler
 		}
 		catch (IOException e)
 		{
+			e.printStackTrace();
 			throw new FileSystem.AccessError(file);
 		}
 	}
