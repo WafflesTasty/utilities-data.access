@@ -1,24 +1,24 @@
-package zeno.util.data.memory;
+package zeno.util.data.memory.sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 
+import zeno.util.data.memory.SQLHandler;
 import zeno.util.data.system.File;
 
 /**
- * The {@code Database} class allows access to an SQL database.
- * <br> The database driver used is the {@code H2 database engine}.
+ * The {@code H2Handler} class accesses an H2 SQL database.
  * 
- * @author Zeno
+ * @author Waffles
  * @since Nov 13, 2014
  * @version 1.0
  * 
  * 
- * @see <a href="http://www.h2database.com/html/main.html">H2 Database Engine</a>
+ * @see <a href="http://www.h2database.com/html/main.html">H2 SQLH2 Engine</a>
+ * @see SQLHandler
  */
-public class Database
+public class H2Handler implements SQLHandler
 {
 	static
 	{
@@ -38,7 +38,7 @@ public class Database
 	private String user, pass;
 	
 	/**
-	 * Creates a new {@code Database}.
+	 * Creates a new {@code H2Handler}.
 	 * 
 	 * @param url  a file url
 	 * @param usr  a database username
@@ -47,7 +47,7 @@ public class Database
 	 * 
 	 * @see String
 	 */
-	public Database(String url, String usr, String pwd)
+	public H2Handler(String url, String usr, String pwd)
 	{
 		this(url);
 		user = usr;
@@ -55,44 +55,26 @@ public class Database
 	}
 	
 	/**
-	 * Creates a new {@code Database}.
+	 * Creates a new {@code H2Handler}.
 	 * 
 	 * @param url  a file url
 	 * 
 	 * 
 	 * @see String
 	 */
-	public Database(String url)
+	public H2Handler(String url)
 	{
 		file = new File(url);
 	}
 	
-	
-	/**
-	 * Creates a new {@code Statement}.
-	 * 
-	 * @return  a new statement
-	 * 
-	 * 
-	 * @see Statement
-	 */
-	public Statement statement()
-	{			
-		try
-		{
-			return conn.createStatement();
-		}
-		catch(SQLException e)
-		{
-			return null;
-		}
+
+	@Override
+	public Connection Connection()
+	{
+		return conn;
 	}
 	
-	/**
-	 * Disconnects from the {@code Database}.
-	 * 
-	 * @return  {@code true} if successful
-	 */
+	@Override
 	public boolean disconnect()
 	{
 		try
@@ -112,11 +94,7 @@ public class Database
 		return true;
 	}
 	
-	/**
-	 * Connects to the {@code Database}.
-	 * 
-	 * @return  {@code true} if successful
-	 */
+	@Override
 	public boolean connect()
 	{
 		try
