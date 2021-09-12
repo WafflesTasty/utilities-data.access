@@ -142,4 +142,12 @@ public class JSONFile implements File.Handler
 		
 		json = new JSONObject(text);
 	}
+	
+	@Override
+	public String toString()
+	{
+		if(json != null)
+			return json.toString();
+		return "";
+	}
 }
