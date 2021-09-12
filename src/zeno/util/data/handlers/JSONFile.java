@@ -3,9 +3,10 @@ package zeno.util.data.handlers;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import zeno.util.coll.indices.List;
 import zeno.util.data.FileSystem;
 import zeno.util.data.system.File;
 
@@ -21,115 +22,94 @@ import zeno.util.data.system.File;
  */
 public class JSONFile implements File.Handler
 {
-	JsonReader r;
-	
-	private List<String> lines;
+	private JSONObject json;
 	
 	/**
-	 * Creates a new {@code TextFile}.
+	 * Creates a new {@code JSONFile}.
 	 */
 	public JSONFile()
 	{
-		lines = new ArrayList<>();
-	}
-	
-	
-	/**
-	 * Returns the text in the {@code TextFile}.
-	 * 
-	 * @return  a list of strings
-	 * 
-	 * 
-	 * @see String
-	 * @see List
-	 */
-	public List<String> Lines()
-	{
-		return lines;
+		json = new JSONObject();
 	}
 	
 	/**
-	 * Returns a string from the {@code TextFile}.
+	 * Creates a new {@code JSONFile}.
 	 * 
-	 * @param index  a line index
-	 * @return  a text string
+	 * @param json  an json object
 	 * 
 	 * 
-	 * @see String
+	 * @see JSONObject
 	 */
-	public String Line(int index)
+	public JSONFile(JSONObject json)
 	{
-		return lines.get(index);
+		this.json = json;
 	}
 		
 	/**
-	 * Removes a string from the {@code TextFile}.
+	 * Changes a value in the {@code JSONFile}.
 	 * 
-	 * @param index  a line index
-	 */
-	public void remove(int index)
-	{
-		lines.remove(index);
-	}
-	
-	/**
-	 * Adds a string to the {@code TextFile}.
-	 * 
-	 * @param line  a new string line
+	 * @param <O>  a value type
+	 * @param key  a value key
+	 * @param value  a json value
 	 * 
 	 * 
 	 * @see String
 	 */
-	public void add(String line)
+	public <O> void put(String key, O value)
 	{
-		lines.add(line);
+		json.put(key, value);
 	}
 	
 	/**
-	 * Clears the {@code TextFile}.
+	 * Returns a value in the {@code JSONFile}.
+	 * </br> A value can have one of following possible types:
+	 * <ul>
+	 * <li>Boolean</li>
+	 * <li>JSONFile</li>
+	 * <li>List</li>
+	 * <li>Null</li>
+	 * <li>Number</li>
+	 * <li>String</li>
+	 * </ul>
+	 * 
+	 * @param <O>  a value type
+	 * @param key  a value key
+	 * @return  a json value
+	 * 
+	 * 
+	 * @see String
 	 */
-	public void clear()
+	public <O> O get(String key)
 	{
-		lines.clear();
-	}
-	
-	
-	/**
-	 * Appends data to a {@code TextFile}.
-	 * 
-	 * @param file  a file to append
-	 * 
-	 * 
-	 * @see File
-	 */
-	public void append(File file)
-	{
-		try(BufferedWriter writer = File.Appender(file))
+		Object obj = json.opt(key);
+		if(obj instanceof JSONObject)
 		{
-			for(String line : lines)
+			obj = new JSONFile((JSONObject) obj);
+		}
+		if(obj instanceof JSONArray)
+		{
+			List<Object> list = new List<>();
+			for(int i = 0; i < ((JSONArray) obj).length(); i++)
 			{
-				writer.write(line + "\r\n");
+				list.put(((JSONArray) obj).get(i), i);
 			}
+
+			obj = list;
 		}
-		catch (IOException e)
-		{
-			throw new FileSystem.AccessError(file);
-		}
+		
+		return (O) obj;
 	}
+	
 	
 	@Override
 	public void write(File file)
 	{
 		try(BufferedWriter writer = File.Writer(file))
 		{
-			for(String line : lines)
-			{
-				writer.write(line + "\r\n");
-			}
+			writer.write(json.toString());
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
 			throw new FileSystem.AccessError(file);
 		}
 	}
@@ -142,7 +122,7 @@ public class JSONFile implements File.Handler
 			throw new FileSystem.FileNotFoundError(file);
 		}
 		
-		lines.clear();
+		String text = "";
 		try(BufferedReader reader = File.Reader(file))
 		{
 			String line = "";
@@ -151,7 +131,7 @@ public class JSONFile implements File.Handler
 				line = reader.readLine();
 				if(line != null)
 				{
-					lines.add(line);
+					text += line;
 				}
 			}
 		}
@@ -159,5 +139,7 @@ public class JSONFile implements File.Handler
 		{
 			throw new FileSystem.AccessError(file);
 		}
+		
+		json = new JSONObject(text);
 	}
 }
