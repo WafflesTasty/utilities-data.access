@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import zeno.util.data.memory.SQLHandler;
-import zeno.util.data.system.File;
 
 /**
  * The {@code MariaDBHandler} class accesses a MariaDB SQL database.
@@ -33,14 +32,14 @@ public class MariaDBHandler implements SQLHandler
 	}
 	
 	
-	private File file;
+	private String host;
 	private Connection conn;
 	private String user, pass;
 	
 	/**
 	 * Creates a new {@code H2Handler}.
 	 * 
-	 * @param url  a file url
+	 * @param url  a host url
 	 * @param usr  a database username
 	 * @param pwd  a database password
 	 * 
@@ -49,22 +48,9 @@ public class MariaDBHandler implements SQLHandler
 	 */
 	public MariaDBHandler(String url, String usr, String pwd)
 	{
-		this(url);
+		host = url;
 		user = usr;
 		pass = pwd;
-	}
-	
-	/**
-	 * Creates a new {@code H2Handler}.
-	 * 
-	 * @param url  a file url
-	 * 
-	 * 
-	 * @see String
-	 */
-	public MariaDBHandler(String url)
-	{
-		file = new File(url);
 	}
 	
 
@@ -101,7 +87,7 @@ public class MariaDBHandler implements SQLHandler
 		{
 			if(conn == null || !conn.isValid(0))
 			{
-				conn = DriverManager.getConnection("jdbc:mariadb:" + file.Path(), user, pass);
+				conn = DriverManager.getConnection("jdbc:mariadb:" + host, user, pass);
 			}
 		}
 		catch(SQLException e)
