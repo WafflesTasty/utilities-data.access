@@ -87,7 +87,7 @@ public class MariaDBHandler implements SQLHandler
 		{
 			if(conn == null || !conn.isValid(0))
 			{
-				conn = DriverManager.getConnection("jdbc:mariadb:" + host, user, pass);
+				conn = DriverManager.getConnection("jdbc:mariadb://" + host, user, pass);
 			}
 		}
 		catch(SQLException e)
