@@ -58,27 +58,27 @@ public interface FileLink extends Immutable
 		/**
 		 * Copies the {@code FileLink} to a {@code Folder}.
 		 * 
-		 * @param p  a parent folder
-		 * @return   a file link
+		 * @param fld  a parent folder
+		 * @return     a file link
 		 * 
 		 * 
 		 * @see Folder
 		 */
-		public abstract FileLink copyTo(Folder p);
+		public abstract FileLink copyTo(Folder fld);
 		
 		
 		/**
 		 * Moves the {@code FileLink} to a {@code Folder}.
 		 * 
-		 * @param p  a parent folder
-		 * @return   a file link
+		 * @param fld  a parent folder
+		 * @return     a file link
 		 * 
 		 * 
 		 * @see Folder
 		 */
-		public default FileLink moveTo(Folder p)
+		public default FileLink moveTo(Folder fld)
 		{
-			FileLink move = copyTo(p);
+			FileLink move = copyTo(fld);
 			delete(); return move;
 		}
 				
