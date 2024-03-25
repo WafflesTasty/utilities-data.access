@@ -17,10 +17,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Zeno/Documents/Jade/libraries/external/iotools/sql/mariadb/mariadb-java-client-2.7.4.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Geometry"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Tools"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Language"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Collections"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Algebra"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Collections"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Language"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Tools"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Geometry"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

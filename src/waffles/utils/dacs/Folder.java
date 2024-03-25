@@ -61,13 +61,13 @@ public class Folder extends FileSystem.Item
 	
 		
 	/**
-	 * Returns an iterable of the subfolders in this {@code Folder}.
-	 * </br> This stream is empty if the folder does not exist in the file system.
+	 * Returns a streamer of the subfolders in this {@code Folder}.
 	 * 
-	 * @return  a stream of folders
-	 * @throws IOException  if the stream could not be accessed
+	 * @return  a folder stream
+	 * @throws IOException  if access was denied
 	 * 
 	 * 
+	 * @see IOException
 	 * @see Streamer
 	 */
 	public Streamer<Folder> Folders() throws IOException
@@ -82,13 +82,13 @@ public class Folder extends FileSystem.Item
 	}
 	
 	/**
-	 * Returns an iterable of the files in this {@code Folder}.
-	 * </br> This stream is empty if the folder does not exist in the file system.
+	 * Returns a streamer of the files in this {@code Folder}.
 	 * 
-	 * @return  a stream of files
-	 * @throws IOException  if the stream could not be accessed
+	 * @return  a file stream
+	 * @throws IOException  if access was denied
 	 * 
 	 * 
+	 * @see IOException
 	 * @see Streamer
 	 */
 	public Streamer<File> Files() throws IOException
@@ -140,7 +140,12 @@ public class Folder extends FileSystem.Item
 	{
 		try(Streamer<Folder> stream = Folders())
 		{
-			return Folders().iterator().hasNext();
+			for(Folder f : stream)
+			{
+				return true;
+			}
+			
+			return false;
 		}
 		catch (IOException e)
 		{
@@ -157,7 +162,12 @@ public class Folder extends FileSystem.Item
 	{
 		try(Streamer<File> stream = Files())
 		{
-			return Files().iterator().hasNext();
+			for(File f : stream)
+			{
+				return true;
+			}
+			
+			return false;
 		}
 		catch (IOException e)
 		{

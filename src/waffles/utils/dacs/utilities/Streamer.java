@@ -19,7 +19,7 @@ import java.util.stream.Stream;
  * @see Closeable
  * @see Iterable
  */
-public class Streamer<O> implements Iterable<O>, Closeable
+public class Streamer<O> implements Closeable, Iterable<O>
 {
 	private Stream<O> stream;
 	
