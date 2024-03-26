@@ -16,7 +16,7 @@ import waffles.utils.dacs.transit.Transit;
 public interface DomainTransit<O> extends Transit.Queue<O>, Transit.Indexed<O>
 {	
 	/**
-	 * Returns the count of the {@code DomainTransit}.
+	 * Returns the object count of the {@code DomainTransit}.
 	 * 
 	 * @return  a domain count
 	 */
