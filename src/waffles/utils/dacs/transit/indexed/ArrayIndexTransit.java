@@ -1,11 +1,12 @@
-package waffles.utils.dacs.transit.queue;
+package waffles.utils.dacs.transit.indexed;
 
-import waffles.utils.dacs.transit.BasicIndex;
+import waffles.utils.dacs.transit.BasicIndexTransit;
 import waffles.utils.dacs.transit.Transit;
 import waffles.utils.sets.arrays.ArrayLike;
 
 /**
- * An {@code ArrayQueue} can upload primitive arrays through a {@code BasicIndex}.
+ * An {@code ArrayIndexTransit} provides a {@code Transit.Indexed} implementation which
+ * processes primitive arrays through a {@code Transit.Queue}.
  *
  * @author Waffles
  * @since 29 Nov 2023
@@ -13,29 +14,29 @@ import waffles.utils.sets.arrays.ArrayLike;
  *
  *
  * @param <A>  an array type
- * @see BasicIndex
+ * @see BasicIndexTransit
  * @see ArrayLike
  * @see Transit
  */
-public class ArrayQueue<A extends ArrayLike<?,?>> extends BasicIndex<A> implements Transit.Queue<A>
+public class ArrayIndexTransit<A extends ArrayLike<?,?>> extends BasicIndexTransit<A> implements Transit.Queue<A>
 {
 	private Transit<A> data;
 	
 	/**
-	 * Creates a new {@code ArrayQueue}.
+	 * Creates a new {@code ArrayIndexTransit}.
 	 * 
 	 * @param data  a data source
 	 * 
 	 * 
 	 * @see Transit
 	 */
-	public ArrayQueue(Transit<A> data)
+	public ArrayIndexTransit(Transit<A> data)
 	{
 		this.data = data;
 	}
 	
 	/**
-	 * Returns the source of the {@code ArrayQueue}.
+	 * Returns the source of the {@code ArrayIndexTransit}.
 	 * 
 	 * @return  a data source
 	 * 

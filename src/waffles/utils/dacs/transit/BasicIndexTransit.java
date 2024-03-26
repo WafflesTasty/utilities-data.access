@@ -1,7 +1,7 @@
 package waffles.utils.dacs.transit;
 
 /**
- * A {@code BasicIndex} is a basic {@code Transit.Indexed} superclass.
+ * A {@code BasicIndexTransit} provides a default {@code Transit.Indexed} implementation.
  * It defines a current and starting index, which govern the position
  * of the data objects being loaded and unloaded.
  *
@@ -13,12 +13,12 @@ package waffles.utils.dacs.transit;
  * @param <O>  an object type
  * @see Transit
  */
-public abstract class BasicIndex<O> implements Transit.Indexed<O>
+public abstract class BasicIndexTransit<O> implements Transit.Indexed<O>
 {
 	private int curr, start;
 
 	/**
-	 * Returns the size of the {@code BasicIndex}.
+	 * Returns the size of the {@code BasicIndexTransit}.
 	 * 
 	 * @return  an index size
 	 */
@@ -28,7 +28,7 @@ public abstract class BasicIndex<O> implements Transit.Indexed<O>
 	}
 	
 	/**
-	 * Changes the start of the {@code BasicIndex}.
+	 * Changes the start of the {@code BasicIndexTransit}.
 	 * 
 	 * @param s  an initial index
 	 */
@@ -38,7 +38,7 @@ public abstract class BasicIndex<O> implements Transit.Indexed<O>
 	}
 	
 	/**
-	 * Resets to a start of the {@code BasicIndex}.
+	 * Resets to a start of the {@code BasicIndexTransit}.
 	 * 
 	 * @param s  a start index
 	 */
@@ -49,7 +49,7 @@ public abstract class BasicIndex<O> implements Transit.Indexed<O>
 	}
 	
 	/**
-	 * Resets to the start of the {@code BasicIndex}.
+	 * Resets to the start of the {@code BasicIndexTransit}.
 	 */
 	public void reset()
 	{
