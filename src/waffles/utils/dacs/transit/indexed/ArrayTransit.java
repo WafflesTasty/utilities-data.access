@@ -5,7 +5,7 @@ import waffles.utils.dacs.transit.Transit;
 import waffles.utils.sets.arrays.ArrayLike;
 
 /**
- * An {@code ArrayIndexTransit} provides a {@code Transit.Indexed} implementation which
+ * An {@code ArrayTransit} provides a {@code BasicIndexTransit} implementation which
  * processes primitive arrays through a {@code Transit.Queue}.
  *
  * @author Waffles
@@ -18,25 +18,25 @@ import waffles.utils.sets.arrays.ArrayLike;
  * @see ArrayLike
  * @see Transit
  */
-public class ArrayIndexTransit<A extends ArrayLike<?,?>> extends BasicIndexTransit<A> implements Transit.Queue<A>
+public class ArrayTransit<A extends ArrayLike<?,?>> extends BasicIndexTransit<A> implements Transit.Queue<A>
 {
 	private Transit<A> data;
 	
 	/**
-	 * Creates a new {@code ArrayIndexTransit}.
+	 * Creates a new {@code ArrayTransit}.
 	 * 
 	 * @param data  a data source
 	 * 
 	 * 
 	 * @see Transit
 	 */
-	public ArrayIndexTransit(Transit<A> data)
+	public ArrayTransit(Transit<A> data)
 	{
 		this.data = data;
 	}
 	
 	/**
-	 * Returns the source of the {@code ArrayIndexTransit}.
+	 * Returns the source of the {@code ArrayTransit}.
 	 * 
 	 * @return  a data source
 	 * 
