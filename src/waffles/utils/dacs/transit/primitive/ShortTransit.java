@@ -14,8 +14,8 @@ import waffles.utils.sets.arrays.set.ShortSet;
  * @version 1.1
  * 
  * 
- * @see MultiTransit
  * @see ShortSet
+ * @see MultiTransit
  * @see Volatile
  */
 @FunctionalInterface
@@ -29,7 +29,7 @@ public interface ShortTransit extends MultiTransit<ShortSet>, Volatile
 	 */
 	public default short unload(int iTgt)
 	{
-		return Data().get(iTgt);
+		return Delegate().get(iTgt);
 	}
 	
 	/**
@@ -40,23 +40,23 @@ public interface ShortTransit extends MultiTransit<ShortSet>, Volatile
 	 */
 	public default void load(short val, int iTgt)
 	{
-		Data().put(iTgt, val);
+		Delegate().put(iTgt, val);
 	}
 	
 	
 	@Override
 	public default ShortSet unload(ShortSet dat, int iSrc, int iTgt, int count)
 	{
-		Data().get(iTgt, dat.Array(), iSrc, count);
+		Delegate().get(iTgt, dat.Array(), iSrc, count);
 		return dat;
 	}
 
 	@Override
 	public default void load(ShortSet dat, int iSrc, int iTgt, int count)
 	{
-		Data().put(iTgt, dat.Array(), iSrc, count);
+		Delegate().put(iTgt, dat.Array(), iSrc, count);
 	}
 	
 	@Override
-	public abstract ShortBuffer Data();
+	public abstract ShortBuffer Delegate();
 }

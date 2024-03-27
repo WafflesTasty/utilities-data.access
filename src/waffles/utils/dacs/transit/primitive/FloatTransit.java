@@ -14,8 +14,8 @@ import waffles.utils.sets.arrays.like.FloatArray;
  * @version 1.1
  * 
  * 
- * @see MultiTransit
  * @see FloatArray
+ * @see MultiTransit
  * @see Volatile
  */
 @FunctionalInterface
@@ -29,7 +29,7 @@ public interface FloatTransit extends MultiTransit<FloatArray>, Volatile
 	 */
 	public default float unload(int iTgt)
 	{
-		return Data().get(iTgt);
+		return Delegate().get(iTgt);
 	}
 	
 	/**
@@ -40,36 +40,36 @@ public interface FloatTransit extends MultiTransit<FloatArray>, Volatile
 	 */
 	public default void load(float val, int iTgt)
 	{
-		Data().put(iTgt, val);
+		Delegate().put(iTgt, val);
 	}
 	
 	
 	@Override
 	public default FloatArray unload(FloatArray dat, int iTgt)
 	{
-		Data().get(iTgt, dat.Array());
+		Delegate().get(iTgt, dat.Array());
 		return dat;
 	}
 	
 	@Override
 	public default FloatArray unload(FloatArray dat, int iSrc, int iTgt, int count)
 	{
-		Data().get(iTgt, dat.Array(), iSrc, count);
+		Delegate().get(iTgt, dat.Array(), iSrc, count);
 		return dat;
 	}
 
 	@Override
 	public default void load(FloatArray dat, int iSrc, int iTgt, int count)
 	{
-		Data().put(iTgt, dat.Array(), iSrc, count);
+		Delegate().put(iTgt, dat.Array(), iSrc, count);
 	}
 
 	@Override
 	public default void load(FloatArray dat, int iTgt)
 	{
-		Data().put(iTgt, dat.Array());
+		Delegate().put(iTgt, dat.Array());
 	}
 	
 	@Override
-	public abstract FloatBuffer Data();
+	public abstract FloatBuffer Delegate();
 }

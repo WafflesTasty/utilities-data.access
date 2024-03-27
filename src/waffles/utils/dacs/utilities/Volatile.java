@@ -2,6 +2,7 @@ package waffles.utils.dacs.utilities;
 
 import java.nio.Buffer;
 import waffles.utils.sets.CountableSet;
+import waffles.utils.tools.patterns.semantics.Decorator;
 
 /**
  * A {@code Volatile} object maintains data in a {@code ByteBuffer}.
@@ -12,22 +13,16 @@ import waffles.utils.sets.CountableSet;
  * 
  * 
  * @see CountableSet
+ * @see Decorator
  */
-public interface Volatile extends CountableSet
+public interface Volatile extends CountableSet, Decorator
 {
-	/**
-	 * Returns the buffer of the {@code Volatile}.
-	 * 
-	 * @return  a data buffer
-	 * 
-	 * 
-	 * @see Buffer
-	 */
-	public abstract Buffer Data();
+	@Override
+	public abstract Buffer Delegate();
 	
 	@Override
 	public default int Count()
 	{
-		return Data().capacity();
+		return Delegate().capacity();
 	}
 }

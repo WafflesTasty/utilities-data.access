@@ -26,7 +26,7 @@ public interface Transit<O>
 	public static interface Queue<O> extends Transit<O>
 	{		
 		/**
-		 * Loads data into the {@code Transit Queue}.
+		 * Loads data into the {@code Transit.Queue}.
 		 * This operation advances the queue pointer.
 		 * 
 		 * @param obj  an object to load
@@ -34,7 +34,7 @@ public interface Transit<O>
 		public abstract void load(O obj);
 		
 		/**
-		 * Unloads data from the {@code Transit Queue}.
+		 * Unloads data from the {@code Transit.Queue}.
 		 * This operation advances the queue pointer.
 		 * 
 		 * @param obj  an object to load

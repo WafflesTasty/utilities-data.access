@@ -14,8 +14,8 @@ import waffles.utils.sets.arrays.set.IntegerSet;
  * @version 1.1
  * 
  * 
- * @see MultiTransit
  * @see IntegerSet
+ * @see MultiTransit
  * @see Volatile
  */
 @FunctionalInterface
@@ -29,7 +29,7 @@ public interface IntegerTransit extends MultiTransit<IntegerSet>, Volatile
 	 */
 	public default int unload(int iTgt)
 	{
-		return Data().get(iTgt);
+		return Delegate().get(iTgt);
 	}
 	
 	/**
@@ -40,23 +40,23 @@ public interface IntegerTransit extends MultiTransit<IntegerSet>, Volatile
 	 */
 	public default void load(int val, int iTgt)
 	{
-		Data().put(iTgt, val);
+		Delegate().put(iTgt, val);
 	}
 	
 	
 	@Override
 	public default IntegerSet unload(IntegerSet dat, int iSrc, int iTgt, int count)
 	{
-		Data().get(iTgt, dat.Array(), iSrc, count);
+		Delegate().get(iTgt, dat.Array(), iSrc, count);
 		return dat;
 	}
 
 	@Override
 	public default void load(IntegerSet dat, int iSrc, int iTgt, int count)
 	{
-		Data().put(iTgt, dat.Array(), iSrc, count);
+		Delegate().put(iTgt, dat.Array(), iSrc, count);
 	}
 	
 	@Override
-	public abstract IntBuffer Data();
+	public abstract IntBuffer Delegate();
 }

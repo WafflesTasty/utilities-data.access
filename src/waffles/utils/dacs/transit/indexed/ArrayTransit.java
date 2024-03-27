@@ -36,14 +36,14 @@ public class ArrayTransit<A extends ArrayLike<?,?>> extends BasicIndexTransit<A>
 	}
 	
 	/**
-	 * Returns the source of the {@code ArrayTransit}.
+	 * Returns the {@code ArrayTransit} data source.
 	 * 
 	 * @return  a data source
 	 * 
 	 * 
 	 * @see Transit
 	 */
-	public Transit<A> Source()
+	public Transit<A> Data()
 	{
 		return data;
 	}

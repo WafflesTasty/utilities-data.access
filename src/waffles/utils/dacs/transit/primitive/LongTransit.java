@@ -14,8 +14,8 @@ import waffles.utils.sets.arrays.set.LongSet;
  * @version 1.1
  * 
  * 
- * @see MultiTransit
  * @see LongSet
+ * @see MultiTransit
  * @see Volatile
  */
 @FunctionalInterface
@@ -29,7 +29,7 @@ public interface LongTransit extends MultiTransit<LongSet>, Volatile
 	 */
 	public default long unload(int iTgt)
 	{
-		return Data().get(iTgt);
+		return Delegate().get(iTgt);
 	}
 	
 	/**
@@ -40,23 +40,23 @@ public interface LongTransit extends MultiTransit<LongSet>, Volatile
 	 */
 	public default void load(long val, int iTgt)
 	{
-		Data().put(iTgt, val);
+		Delegate().put(iTgt, val);
 	}
 	
 	
 	@Override
 	public default LongSet unload(LongSet dat, int iSrc, int iTgt, int count)
 	{
-		Data().get(iTgt, dat.Array(), iSrc, count);
+		Delegate().get(iTgt, dat.Array(), iSrc, count);
 		return dat;
 	}
 
 	@Override
 	public default void load(LongSet dat, int iSrc, int iTgt, int count)
 	{
-		Data().put(iTgt, dat.Array(), iSrc, count);
+		Delegate().put(iTgt, dat.Array(), iSrc, count);
 	}
 	
 	@Override
-	public abstract LongBuffer Data();
+	public abstract LongBuffer Delegate();
 }

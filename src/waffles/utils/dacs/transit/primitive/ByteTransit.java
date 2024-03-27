@@ -14,8 +14,8 @@ import waffles.utils.sets.arrays.set.ByteSet;
  * @version 1.1
  * 
  * 
- * @see MultiTransit
  * @see ByteSet
+ * @see MultiTransit
  * @see Volatile
  */
 @FunctionalInterface
@@ -29,7 +29,7 @@ public interface ByteTransit extends MultiTransit<ByteSet>, Volatile
 	 */
 	public default byte unload(int iTgt)
 	{
-		return Data().get(iTgt);
+		return Delegate().get(iTgt);
 	}
 	
 	/**
@@ -40,23 +40,23 @@ public interface ByteTransit extends MultiTransit<ByteSet>, Volatile
 	 */
 	public default void load(byte val, int iTgt)
 	{
-		Data().put(iTgt, val);
+		Delegate().put(iTgt, val);
 	}
 	
 	
 	@Override
 	public default ByteSet unload(ByteSet dat, int iSrc, int iTgt, int count)
 	{
-		Data().get(iTgt, dat.Array(), iSrc, count);
+		Delegate().get(iTgt, dat.Array(), iSrc, count);
 		return dat;
 	}
 
 	@Override
 	public default void load(ByteSet dat, int iSrc, int iTgt, int count)
 	{
-		Data().put(iTgt, dat.Array(), iSrc, count);
+		Delegate().put(iTgt, dat.Array(), iSrc, count);
 	}
 	
 	@Override
-	public abstract ByteBuffer Data();
+	public abstract ByteBuffer Delegate();
 }
