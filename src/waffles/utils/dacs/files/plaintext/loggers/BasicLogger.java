@@ -3,8 +3,8 @@ package waffles.utils.dacs.files.plaintext.loggers;
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.plaintext.BasicText;
 import waffles.utils.dacs.files.plaintext.Logger;
-import waffles.utils.dacs.files.plaintext.strings.StringWriter;
-import waffles.utils.tools.patterns.semantics.Saveable;
+import waffles.utils.dacs.files.plaintext.strings.StringReader;
+import waffles.utils.tools.collections.Iterables;
 
 /**
  * A {@code BasicLogger} implements a {@code Logger} in one simple file.
@@ -14,13 +14,23 @@ import waffles.utils.tools.patterns.semantics.Saveable;
  * @version 1.1
  * 
  * 
- * @see Saveable
+ * @see BasicText
  * @see Logger
  */
-public class BasicLogger implements Logger, Saveable
+public class BasicLogger extends BasicText implements Logger
 {
-	private File file;
-	private BasicText log;
+	/**
+	 * Creates a new {@code BasicLogger}.
+	 * 
+	 * @param dat  string data
+	 * 
+	 * 
+	 * @see Iterable
+	 */
+	public BasicLogger(Iterable<String> dat)
+	{
+		super(dat);
+	}
 	
 	/**
 	 * Creates a new {@code BasicLogger}.
@@ -38,36 +48,28 @@ public class BasicLogger implements Logger, Saveable
 	/**
 	 * Creates a new {@code BasicLogger}.
 	 * 
-	 * @param f  a logger file
+	 * @param file  a file
 	 * 
 	 * 
 	 * @see File
 	 */
-	public BasicLogger(File f)
+	public BasicLogger(File file)
 	{
-		log = new BasicText();
-		file = f;
+		this(new StringReader().read(file));
 	}
-
+	
+	/**
+	 * Creates a new {@code BasicLogger}.
+	 */
+	public BasicLogger()
+	{
+		this(Iterables.empty());
+	}
+	
 	
 	@Override
 	public void logMessage(String msg)
 	{
-		log.add(msg);
-	}
-
-	@Override
-	public boolean load()
-	{
-		log = new BasicText(file);
-		return true;
-	}
-
-	@Override
-	public boolean save()
-	{
-		StringWriter writer = new StringWriter();
-		writer.write(log, file);
-		return true;
+		add(msg);
 	}
 }
