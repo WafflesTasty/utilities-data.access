@@ -20,6 +20,13 @@ public interface Volatile extends CountableSet, Decorator
 	@Override
 	public abstract Buffer Delegate();
 	
+	
+	@Override
+	public default void clear()
+	{
+		Delegate().clear();
+	}
+	
 	@Override
 	public default int Count()
 	{
