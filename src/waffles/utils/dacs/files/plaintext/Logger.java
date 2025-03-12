@@ -27,9 +27,9 @@ public interface Logger
 	 * @param e  an exception
 	 * 
 	 * 
-	 * @see Exception
+	 * @see Throwable
 	 */
-	public default void logException(Exception e)
+	public default void logException(Throwable e)
 	{
 		String date = ISODate.now().parse(ISO.Format.LONG);
 		String time = ISOTime.now().parse(ISO.Format.LONG);
