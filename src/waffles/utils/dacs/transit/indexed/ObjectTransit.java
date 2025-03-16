@@ -1,7 +1,6 @@
 package waffles.utils.dacs.transit.indexed;
 
 import waffles.utils.dacs.transit.BasicIndexTransit;
-import waffles.utils.dacs.transit.domain.Domain;
 import waffles.utils.dacs.transit.domain.DomainTransit;
 
 /**
@@ -18,27 +17,7 @@ import waffles.utils.dacs.transit.domain.DomainTransit;
  * @see BasicIndexTransit
  * @see DomainTransit
  */
-public class ObjectTransit<O> extends BasicIndexTransit<O> implements DomainTransit<O>
+public abstract class ObjectTransit<O> extends BasicIndexTransit<O> implements DomainTransit<O>
 {
-	private Domain<O> domain;
-	
-	/**
-	 * Changes the domain of the {@code ObjectTransit}.
-	 * 
-	 * @param dom  a transit domain
-	 * 
-	 * 
-	 * @see Domain
-	 */
-	public void setDomain(Domain<O> dom)
-	{
-		domain = dom;
-	}
-	
-	
-	@Override
-	public Domain<O> Domain()
-	{
-		return domain;
-	}
+	// NOT APPLICABLE
 }
