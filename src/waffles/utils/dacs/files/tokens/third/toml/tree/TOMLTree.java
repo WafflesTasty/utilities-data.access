@@ -3,7 +3,6 @@ package waffles.utils.dacs.files.tokens.third.toml.tree;
 import waffles.utils.dacs.files.tokens.third.toml.tree.nodes.TOMLNode;
 import waffles.utils.lang.Formattable;
 import waffles.utils.sets.trees.Tree;
-import waffles.utils.tools.primitives.Array;
 
 /**
  * A {@code TOMLTree} defines the data structure of a simple {@code TOML} document.
@@ -31,12 +30,9 @@ public class TOMLTree extends Tree implements Formattable
 	public TOMLNode Child(String... keys)
 	{
 		TOMLNode node = Root();
-		
-		String[] set = Array.copy.of(keys);
-		while(set.length > 0)
+		for(int i = 0; i < keys.length; i++)
 		{
-			node = node.Child(set[0]);
-			set = Array.remove.from(set, 0);
+			node = node.Child(keys[i]);
 			if(node == null)
 			{
 				break;
