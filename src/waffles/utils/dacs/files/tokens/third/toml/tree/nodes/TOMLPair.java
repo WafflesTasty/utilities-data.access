@@ -67,7 +67,7 @@ public class TOMLPair extends TOMLNode implements TokenPair<StringToken, StringT
 		{
 			parser = new DemiParser();
 			state = State.INITIAL;
-			depth = 1;
+			depth = 0;
 		}
 
 
@@ -124,7 +124,7 @@ public class TOMLPair extends TOMLNode implements TokenPair<StringToken, StringT
 		{
 			state = State.INITIAL;
 			parser.reset();
-			depth = 1;
+			depth = 0;
 		}
 	}
 	
@@ -302,5 +302,4 @@ public class TOMLPair extends TOMLNode implements TokenPair<StringToken, StringT
 	{
 		return Type.VALUE;
 	}
-
 }

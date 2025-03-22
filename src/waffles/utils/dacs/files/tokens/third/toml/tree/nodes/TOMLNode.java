@@ -144,7 +144,7 @@ public class TOMLNode extends Node implements Formattable
 		{
 			super.reset();
 			state = State.INITIAL;
-			depth = 1;
+			depth = 0;
 		}
 	}
 	

@@ -102,7 +102,7 @@ public class TOMLReader implements Reader<TOMLHeader>
 			case KEY:
 			case VALUE:
 			{
-				while(depth <= value.Depth() + 1)
+				while(depth < value.Depth() + 1)
 				{
 					value = value.Parent();
 				}
