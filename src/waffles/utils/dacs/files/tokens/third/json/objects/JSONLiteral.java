@@ -2,7 +2,6 @@ package waffles.utils.dacs.files.tokens.third.json.objects;
 
 import waffles.utils.dacs.files.tokens.literals.StringToken;
 import waffles.utils.dacs.files.tokens.third.json.JSONObject;
-import waffles.utils.dacs.utilities.parsers.primitive.LiteralParser;
 import waffles.utils.dacs.utilities.parsers.tokens.StringTokenParser;
 import waffles.utils.lang.Format;
 
@@ -40,7 +39,7 @@ public class JSONLiteral extends StringToken implements JSONObject
 	 * @version 1.1
 	 *
 	 * 
-	 * @see LiteralParser
+	 * @see StringTokenParser
 	 * @see JSONLiteral
 	 */
 	public static class Parser extends StringTokenParser<JSONLiteral>
