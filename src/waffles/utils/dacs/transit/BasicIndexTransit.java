@@ -1,5 +1,7 @@
 package waffles.utils.dacs.transit;
 
+import waffles.utils.tools.patterns.semantics.Clearable;
+
 /**
  * A {@code BasicIndexTransit} provides a default {@code Transit.Indexed} implementation.
  * It defines a current and starting index, which govern the position
@@ -11,9 +13,10 @@ package waffles.utils.dacs.transit;
  *
  *
  * @param <O>  an object type
+ * @see Clearable
  * @see Transit
  */
-public abstract class BasicIndexTransit<O> implements Transit.Indexed<O>
+public abstract class BasicIndexTransit<O> implements Transit.Indexed<O>, Clearable
 {
 	private int curr, start;
 
@@ -38,25 +41,26 @@ public abstract class BasicIndexTransit<O> implements Transit.Indexed<O>
 	}
 	
 	/**
-	 * Resets to a start of the {@code BasicIndexTransit}.
+	 * Clears to the start of the {@code BasicIndexTransit}.
 	 * 
 	 * @param s  a start index
 	 */
-	public void reset(int s)
+	public void clear(int s)
 	{
 		setStart(s);
-		reset();
+		clear();
 	}
 	
 	/**
-	 * Resets to the start of the {@code BasicIndexTransit}.
+	 * Clears to the start of the {@code BasicIndexTransit}.
 	 */
-	public void reset()
+	@Override
+	public void clear()
 	{
 		setIndex(start);
 	}
 	
-	
+
 	@Override
 	public void setIndex(int iTgt)
 	{
