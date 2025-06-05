@@ -30,7 +30,7 @@ public abstract class LiteralTokenParser<O> extends PrimitiveTokenParser<O>
 	 * @see LiteralTokenParser
 	 * @see LiteralToken
 	 */
-	public static class Base extends StringTokenParser<LiteralToken>
+	public static class Base extends LiteralTokenParser<LiteralToken>
 	{
 		@Override
 		public LiteralToken generate(Object obj)

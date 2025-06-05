@@ -91,7 +91,7 @@ public class PrimitiveToken implements Token
 				return val.toString();
 			}
 			
-			return null;
+			return "";
 		};
 	}
 }

@@ -22,7 +22,7 @@ import waffles.utils.tools.primitives.Integers;
  * @see Parser
  * @see List
  */
-public class CyclicParser<O> extends List<Parser<O>> implements Parser<List<O>>, Producable<Parser<O>>
+public abstract class CyclicParser<O> extends List<Parser<O>> implements Parser<List<O>>, Producable<Parser<O>>
 {
 	static enum State
 	{
@@ -38,43 +38,6 @@ public class CyclicParser<O> extends List<Parser<O>> implements Parser<List<O>>,
 	private Parser<O> pars;
 	private State state;
 	
-	private Producable<Parser<O>> source;
-	
-	/**
-	 * Creates a new {@code CyclicParser}.
-	 * 
-	 * @param d     an object delimiter
-	 * @param oMax  an object maximum
-	 * @param src   a parser source
-	 * 
-	 * 
-	 * @see Producable
-	 * @see Parser
-	 */
-	public CyclicParser(char d, int oMax, Producable<Parser<O>> src)
-	{
-		state = State.INITIAL;
-		
-		source = src;
-		max = oMax;
-		delim = d;
-	}
-	
-	/**
-	 * Creates a new {@code CyclicParser}.
-	 * 
-	 * @param d  an object delimiter
-	 * @param src   a parser source
-	 * 
-	 * 
-	 * @see Producable
-	 * @see Parser
-	 */
-	public CyclicParser(char d, Producable<Parser<O>> src)
-	{
-		this(d, Integers.MAX_VALUE, src);
-	}
-	
 	/**
 	 * Creates a new {@code CyclicParser}.
 	 * 
@@ -83,7 +46,10 @@ public class CyclicParser<O> extends List<Parser<O>> implements Parser<List<O>>,
 	 */
 	public CyclicParser(char d, int oMax)
 	{
-		this(d, oMax, null);
+		state = State.INITIAL;
+		
+		max = oMax;
+		delim = d;
 	}
 	
 	/**
@@ -95,6 +61,8 @@ public class CyclicParser<O> extends List<Parser<O>> implements Parser<List<O>>,
 	{
 		this(d, Integers.MAX_VALUE);
 	}
+	
+	
 	
 		
 	@Override
@@ -158,17 +126,6 @@ public class CyclicParser<O> extends List<Parser<O>> implements Parser<List<O>>,
 	}
 
 	@Override
-	public Parser<O> produce()
-	{
-		if(source != null)
-		{
-			return source.produce();
-		}
-		
-		return null;
-	}
-	
-	@Override
 	public List<O> generate()
 	{
 		List<O> list = new List<>();
@@ -179,11 +136,14 @@ public class CyclicParser<O> extends List<Parser<O>> implements Parser<List<O>>,
 		
 		return list;
 	}
+	
 
 	@Override
 	public void reset()
 	{
-		state = State.INITIAL;
 		curr = 0;
+		state = State.INITIAL;
+		pars = null;
+		clear();
 	}
 }

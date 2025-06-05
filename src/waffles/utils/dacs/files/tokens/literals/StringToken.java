@@ -89,7 +89,7 @@ public class StringToken extends LiteralToken
 		{
 			Object val = obj.Value();
 			if(val == null)
-				return "null";
+				return "";
 			if(val instanceof Boolean
 			|| val instanceof Number)
 			{

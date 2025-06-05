@@ -16,7 +16,7 @@ import waffles.utils.dacs.utilities.parsers.strings.FixedSetParser;
 public class NullParser<O> extends FixedSetParser<O>
 {
 	/**
-	 * Creates a new {@code BooleanParser}.
+	 * Creates a new {@code NullParser}.
 	 */
 	public NullParser()
 	{

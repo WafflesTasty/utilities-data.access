@@ -28,4 +28,20 @@ public interface Reader<O>
 	 * @see File
 	 */
 	public abstract O read(File file) throws AccessError;
+	
+	/**
+	 * Reads data from a {@code File}.
+	 * 
+	 * @param path  a file path
+	 * @return  an object read from the file
+	 * @throws AccessError  if the file could not be accessed
+	 * 
+	 * 
+	 * @see AccessError
+	 * @see File
+	 */
+	public default O read(String path) throws AccessError
+	{
+		return read(new File(path));
+	}
 }

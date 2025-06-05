@@ -46,11 +46,14 @@ public class JSONMap extends JHashMap<JSONLiteral, JSONObject> implements JSONOb
 		 */
 		public Parser()
 		{
-			list = new ListParser<>
-			(
-				'{', ',', '}',
-				() -> new JSONPair.Parser()
-			);
+			list = new ListParser<>('{', ',', '}')
+			{
+				@Override
+				public JSONPair.Parser produce()
+				{
+					return new JSONPair.Parser();
+				}
+			};
 		}
 
 		

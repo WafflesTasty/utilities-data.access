@@ -17,6 +17,20 @@ import waffles.utils.lang.Formattable;
 public interface ListFormattable<O extends Formattable> extends Formattable
 {
 	/**
+	 * Defines a default separator for a {@code ListFormattable}.
+	 */
+	public static final char SEPARATOR = ',';
+	/**
+	 * Defines a default lower delimiter for a {@code ListFormattable}.
+	 */
+	public static final char LOWER = '[';
+	/**
+	 * Defines a default upper delimiter for a {@code ListFormattable}.
+	 */
+	public static final char UPPER = ']';
+	
+	
+	/**
 	 * Returns a list of formattable objects.
 	 * 
 	 * @return  a format list
@@ -71,13 +85,13 @@ public interface ListFormattable<O extends Formattable> extends Formattable
 	 */
 	public default ListFormat<O> Formatter(char upper, char lower)
 	{
-		return Formatter(upper, ',', lower);
+		return Formatter(upper, SEPARATOR, lower);
 	}
 	
 	
 	@Override
 	public default ListFormat<O> Formatter()
 	{
-		return Formatter('[', ']');
+		return Formatter(LOWER, UPPER);
 	}
 }

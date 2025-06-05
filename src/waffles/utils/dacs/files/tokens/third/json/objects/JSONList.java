@@ -44,11 +44,14 @@ public class JSONList extends List<JSONObject> implements JSONObject, ListFormat
 		 */
 		public Parser()
 		{
-			list = new ListParser<>
-			(
-				'[', ',', ']',
-				() -> new JSONObject.Parser()
-			);
+			list = new ListParser<>('[', ',', ']')
+			{
+				@Override
+				public JSONObject.Parser produce()
+				{
+					return new JSONObject.Parser();
+				}	
+			};
 		}
 
 		

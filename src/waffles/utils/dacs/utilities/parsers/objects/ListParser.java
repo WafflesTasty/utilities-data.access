@@ -3,7 +3,7 @@ package waffles.utils.dacs.utilities.parsers.objects;
 import waffles.utils.dacs.files.tokens.Token.Parser;
 import waffles.utils.dacs.utilities.parsers.CyclicParser;
 import waffles.utils.sets.indexed.delegate.List;
-import waffles.utils.tools.patterns.semantics.Producable;
+import waffles.utils.tools.primitives.Integers;
 
 /**
  * 
@@ -20,7 +20,7 @@ import waffles.utils.tools.patterns.semantics.Producable;
  * @param <O>  an output type
  * @see CyclicParser
  */
-public class ListParser<O> extends CyclicParser<O>
+public abstract class ListParser<O> extends CyclicParser<O>
 {
 	static enum State
 	{
@@ -39,15 +39,11 @@ public class ListParser<O> extends CyclicParser<O>
 	 * @param u    an upper symbol
 	 * @param d    a list delimiter
 	 * @param l    a lower symbol
-	 * @param src  a parser source
-	 * 
-	 * 
-	 * @see Producable
-	 * @see Parser
+	 * @param oMax a list maximum
 	 */
-	public ListParser(char u, char d, char l, Producable<Parser<O>> src)
+	public ListParser(char u, char d, char l, int oMax)
 	{
-		super(d, src);
+		super(d, oMax);
 		state = State.INITIAL;
 		upper = u; lower = l;
 	}
@@ -61,7 +57,7 @@ public class ListParser<O> extends CyclicParser<O>
 	 */
 	public ListParser(char u, char d, char l)
 	{
-		this(u, d, l, null);
+		this(u, d, l, Integers.MAX_VALUE);
 	}
 	
 	

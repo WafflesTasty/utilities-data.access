@@ -32,6 +32,7 @@ public class TOMLNode extends Node implements Formattable
 	 */
 	public static final char SEPARATOR = ':';
 	
+	
 	/**
 	 * A {@code TOMLNode.Parser} parses a key node.
 	 * A key is any literal or string followed by a colon,

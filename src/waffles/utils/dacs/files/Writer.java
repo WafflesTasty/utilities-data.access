@@ -24,6 +24,7 @@ public interface Writer<O>
 	 * @throws AccessError  if the file could not be accessed
 	 * 
 	 * 
+	 * @see AccessError
 	 * @see File
 	 */
 	public abstract void write(O obj, File file) throws AccessError;
@@ -33,8 +34,12 @@ public interface Writer<O>
 	 * 
 	 * @param obj   a data object
 	 * @param url  a target url
+	 * @throws AccessError  if the file could not be accessed
+	 * 
+	 * 
+	 * @see AccessError
 	 */
-	public default void write(O obj, String url)
+	public default void write(O obj, String url) throws AccessError
 	{
 		write(obj, new File(url));
 	}

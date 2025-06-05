@@ -3,6 +3,7 @@ package waffles.utils.dacs.files.tokens.third.toml;
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.tokens.third.toml.tree.TOMLData;
 import waffles.utils.dacs.files.tokens.third.toml.tree.TOMLTree;
+import waffles.utils.dacs.files.tokens.third.toml.tree.nodes.TOMLComment;
 import waffles.utils.dacs.files.tokens.third.toml.tree.nodes.TOMLHeader;
 
 /**
@@ -51,7 +52,7 @@ public class TOMLFile extends TOMLTree
 		setRoot(new TOMLHeader(""));
 	}
 
-	
+		
 	/**
 	 * Changes a header node in the {@code TOMLFile}.
 	 * 
@@ -100,6 +101,16 @@ public class TOMLFile extends TOMLTree
 		}
 		
 		return node.Data();
+	}
+	
+	/**
+	 * Adds a comment to the {@code TOMLFile}.
+	 * 
+	 * @param cmt  a comment line
+	 */
+	public void comment(String cmt)
+	{
+		Root().addChild(new TOMLComment(cmt));
 	}
 	
 	

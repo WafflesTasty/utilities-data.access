@@ -1,7 +1,8 @@
 package waffles.utils.dacs.files.tokens.third.toml.tree.nodes;
 
 import waffles.utils.dacs.files.tokens.third.toml.TOMLParser;
-import waffles.utils.dacs.utilities.parsers.strings.AnyParser;
+import waffles.utils.dacs.utilities.parsers.strings.StringGateParser;
+import waffles.utils.lang.Format;
 
 /**
  * A {@code TOMLComment} defines a {@code TOMLNode} representing a comment line.
@@ -31,70 +32,46 @@ public class TOMLComment extends TOMLNode
 	 * @version 1.1
 	 *
 	 * 
+	 * @see StringGateParser
 	 * @see TOMLParser
 	 */
-	public static class Parser implements TOMLParser
+	public static class Parser extends StringGateParser<TOMLParser.Data> implements TOMLParser
 	{
-		private static enum State
-		{
-			INITIAL,
-			FINAL,
-			FAIL;
-		}
-		
-		
-		private State state;
-		private AnyParser any;
-
 		/**
 		 * Creates a new {@code Parser}.
 		 */
 		public Parser()
 		{
-			state = State.INITIAL;
-			any = new AnyParser();
-		}
-		
-		
-		@Override
-		public boolean consume(Character s)
-		{
-			switch(state)
-			{
-			case INITIAL:
-			{
-				if(Character.isWhitespace(s))
-					return true;
-				if(s == DELIMITER)
-				{
-					state = State.FINAL;
-					return true;
-				}
-				
-				state = State.FAIL;
-				return false;
-			}
-			case FINAL:
-				return any.consume(s);
-			case FAIL:
-			default:
-				return false;
-			}
+			super(DELIMITER);
 		}
 
+
 		@Override
-		public TOMLParser.Data generate()
+		public Data generate(String cmt)
 		{
-			String cmt = any.generate();
-			TOMLNode node = new TOMLComment(cmt);
-			return new Data(node, 1);
+			return new Data(new TOMLComment(cmt), 1);
 		}
-		
+	}
+	
+	/**
+	 * A {@code TOMLComment.Formatter} performs basic parsing for a {@code TOMLComment}.
+	 *
+	 * @author Waffles
+	 * @since 21 Mar 2024
+	 * @version 1.1
+	 * 
+	 * 
+	 * @see TOMLComment
+	 * @see Format
+	 */
+	public static class Formatter extends TOMLNode.Formatter<TOMLComment>
+	{
 		@Override
-		public void reset()
+		public String parse(TOMLComment c)
 		{
-			state = State.INITIAL;
-			any = new AnyParser();
+			String cmt = c.Key().parse();
+			cmt = cmt.substring(1, cmt.length()-1);
+			return DELIMITER + " " + cmt;
 		}
 	}
 	
@@ -109,6 +86,13 @@ public class TOMLComment extends TOMLNode
 		super(cmt);
 	}
 
+	
+	@Override
+	public Formatter Formatter()
+	{
+		return new Formatter();
+	}
+	
 	@Override
 	public Type Type()
 	{

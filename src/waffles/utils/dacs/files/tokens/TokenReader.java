@@ -4,7 +4,6 @@ import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.Reader;
 import waffles.utils.dacs.files.plaintext.chars.CharReader;
 import waffles.utils.dacs.files.tokens.Token.Parser;
-import waffles.utils.lang.Strings;
 
 /**
  * A {@code TokenReader} reads {@code Tokens} from a {@code File}.
@@ -48,17 +47,6 @@ public class TokenReader<T extends Token> implements Reader<T>
 		return parser;
 	}
 	
-	
-	/**
-	 * Reads a token from a {@code String}.
-	 * 
-	 * @param src  a source string
-	 * @return  a token
-	 */
-	public T read(String src)
-	{
-		return read(Strings.iterate(src));
-	}
 	
 	/**
 	 * Reads a token from an {@code Iterable}.

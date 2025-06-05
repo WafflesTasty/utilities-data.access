@@ -3,6 +3,7 @@ package waffles.utils.dacs.utilities.parsers.choice;
 import waffles.utils.dacs.files.tokens.Token.Parser;
 import waffles.utils.dacs.utilities.parsers.DemiParser;
 import waffles.utils.sets.indexed.delegate.List;
+import waffles.utils.sets.keymaps.KeyMap;
 import waffles.utils.sets.keymaps.delegate.JHashMap;
 
 /**
@@ -24,7 +25,7 @@ import waffles.utils.sets.keymaps.delegate.JHashMap;
 public abstract class DemiChoiceParser<I, O> extends List<Parser<? extends I>> implements DemiParser<I, O>
 {
 	private Parser<? extends I> curr;
-	private JHashMap<Parser<? extends I>, Boolean> map;
+	private KeyMap<Parser<? extends I>, Boolean> map;
 
 	/**
 	 * Creates a new {@code DemiChoiceParser}.
