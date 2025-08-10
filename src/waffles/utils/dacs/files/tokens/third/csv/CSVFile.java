@@ -1,19 +1,13 @@
 package waffles.utils.dacs.files.tokens.third.csv;
 
-import java.util.Iterator;
-
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.Storage;
 import waffles.utils.dacs.files.tokens.literals.StringToken;
-import waffles.utils.dacs.files.tokens.third.csv.handlers.CSVReader;
-import waffles.utils.dacs.files.tokens.third.csv.handlers.CSVWriter;
 import waffles.utils.dacs.files.tokens.third.csv.rows.CSVComment;
 import waffles.utils.dacs.files.tokens.third.csv.rows.CSVData;
-import waffles.utils.dacs.utilities.errors.AccessError;
 import waffles.utils.dacs.utilities.errors.FormatError;
-import waffles.utils.dacs.utilities.errors.ParserError;
 import waffles.utils.sets.indexed.delegate.List;
-import waffles.utils.sets.queues.ordered.BSQueue;
+import waffles.utils.tools.patterns.operator.Operable;
 
 /**
  * A {@code CSVFile} defines a data structure for the {@code CSV} file format.
@@ -27,7 +21,7 @@ import waffles.utils.sets.queues.ordered.BSQueue;
  * @see Storage
  * @see List
  */
-public class CSVFile extends List<CSVData> implements Storage
+public class CSVFile extends List<CSVData> implements Operable<CSVFile>, Storage
 {
 	/**
 	 * The {@code Hints} interface defines settings for a {@code CSVFile}.
@@ -66,86 +60,11 @@ public class CSVFile extends List<CSVData> implements Storage
 		}
 	}
 	
-	/**
-	 * The {@code Rows} class iterates over all rows in a {@code CSVFile}.
-	 *
-	 * @author Waffles
-	 * @since 05 Jun 2025
-	 * @version 1.1
-	 *
-	 * 
-	 * @see Iterator
-	 * @see CSVRow
-	 */
-	public class Rows implements Iterator<CSVRow>
-	{
-		private CSVComment cNext;
-		private Iterator<CSVComment> cmts;
-		private int dNext, iNext;
-		
-		/**
-		 * Creates a new {@code Rows}.
-		 */
-		public Rows()
-		{
-			dNext = iNext = 0;
-			cmts = comms.iterator();
-			if(cmts.hasNext())
-			{
-				cNext = cmts.next();
-			}
-		}
-
-
-		@Override
-		public boolean hasNext()
-		{
-			return dNext < Count() || cNext != null;
-		}
-
-		@Override
-		public CSVRow next()
-		{
-			if(cNext != null)
-			{
-				if(iNext == cNext.Line())
-				{
-					CSVRow next = cNext;
-					if(cmts.hasNext())
-						cNext = cmts.next();
-					else
-						cNext = null;
-					
-					iNext++;
-					return next;
-				}
-			}
-			
-			if(dNext < Count())
-			{
-				iNext++;
-				return get(dNext++);
-			}
-
-			return new CSVComment("");
-		}
-	}
-
 
 	private Hints hints;
-	private BSQueue<CSVComment> comms;
 	private CSVData header;
-	
-	/**
-	 * Creates a new {@code CSVFile}.
-	 * 
-	 * @param cols  a column count
-	 */
-	public CSVFile(int cols)
-	{
-		this(() -> cols);
-	}
-	
+	private CSVKernel kernel;
+		
 	/**
 	 * Creates a new {@code CSVFile}.
 	 * 
@@ -157,69 +76,156 @@ public class CSVFile extends List<CSVData> implements Storage
 	public CSVFile(Hints h)
 	{
 		hints = h;
-		
-		comms = new BSQueue<>();
+		kernel = new CSVKernel(this);
 		if(h.hasHeader())
 		{
 			header = new CSVData();
 		}
 	}
 	
+	/**
+	 * Creates a new {@code CSVFile}.
+	 * 
+	 * @param cols  a column count
+	 */
+	public CSVFile(int cols)
+	{
+		this(() -> cols);
+	}
 
 	
 	/**
-	 * Returns a row count of the {@code CSVFile}.
+	 * Adds a row to the {@code CSVFile}.
 	 * 
-	 * @return  a row count
+	 * @param set  an object set
 	 */
-	public int RowCount()
+	public void add(Object... set)
 	{
-		if(Hints().hasHeader())
-			return comms.Count() + Count() + 1;
-		return comms.Count() + Count();
+		put(Count(), set);
 	}
 
 	/**
-	 * Adds a comment line to the {@code CSVFile}.
+	 * Changes a row in the {@code CSVFile}.
+	 * 
+	 * @param r  a row index
+	 * @param set  an object set
+	 */
+	public void put(int r, Object... set)
+	{
+		CSVData d;
+		if(!contains(r))
+			d = new CSVData();
+		else
+			d = get(r);
+
+		for(Object o : set)
+		{
+			d.add(new StringToken(o));
+		}
+		
+		put(d, r);
+	}
+	
+	/**
+	 * Changes a value in the {@code CSVFile}.
+	 * 
+	 * @param r  a row index
+	 * @param c  a column index
+	 * @param val  an object value
+	 */
+	public void put(int r, int c, Object val)
+	{
+		get(r).put(new StringToken(val), c);
+	}
+	
+	
+	/**
+	 * Adds a comment to the {@code CSVFile}.
 	 * 
 	 * @param s  a comment line
 	 */
-	public void comment(String s)
+	public void addComment(String s)
 	{
-		CSVComment cmt = new CSVComment(s);
-		cmt.setLine(RowCount());
-		comms.push(cmt);
-	}
-
-	/**
-	 * Adds an object row to the {@code CSVFile}.
-	 * 
-	 * @param row  an object row
-	 * @throws FormatError  if the row is of wrong length
-	 * 
-	 * 
-	 * @see FormatError
-	 */
-	public void add(Object... row) throws FormatError
-	{
-		int count = Hints().Columns();
-		if(row.length != count)
-		{
-			throw new FormatError("The csv file expects " + count + " values but received " + row.length + ".");
-		}
-		
-		
-		CSVData data = new CSVData();
-		for(int i = 0; i < count; i++)
-		{
-			data.add(new StringToken(row[i]));
-		}
-		
-		add(data);
+		addComment(s, LineCount());
 	}
 	
 	/**
-	 * Returns the header of the {@code CSVFile}.
+	 * Adds a comment to the {@code CSVFile}.
+	 * 
+	 * @param c  a csv comment
+	 * 
+	 * 
+	 * @see CSVComment
+	 */
+	public void addComment(CSVComment c)
+	{
+		addComment(c, LineCount());
+	}
+	
+	/**
+	 * Adds a comment to the {@code CSVFile}.
+	 * 
+	 * @param s  a comment line
+	 * @param r  a row index
+	 */
+	public void addComment(String s, int r)
+	{
+		addComment(new CSVComment(s), r);
+	}
+	
+	/**
+	 * Adds a comment to the {@code CSVFile}.
+	 * 
+	 * @param c  a csv comment
+	 * @param r  a row index
+	 * 
+	 * 
+	 * @see CSVComment
+	 */
+	public void addComment(CSVComment c, int r)
+	{
+		c.setIndex(r);
+		Operator().add(c);
+	}
+	
+	/**
+	 * Changes the {@code CSVFile} header.
+	 * 
+	 * @param n  a column name
+	 * @param c  a column index
+	 */
+	public void setHeader(String n, int c)
+	{
+		header.put(new StringToken(n), c);
+	}
+
+	/**
+	 * Changes the {@code CSVFile} header.
+	 * 
+	 * @param h  a header line
+	 * 
+	 * 
+	 * @see CSVData
+	 */
+	public void setHeader(CSVData h)
+	{
+		header = h;
+	}
+	
+	
+	/**
+	 * Returns the {@code CSVFile} line count.
+	 * This includes comment lines and header.
+	 * 
+	 * @return  a line count
+	 */
+	public int LineCount()
+	{
+		return Operator().LineCount();
+	}
+	
+	/**
+	 * Returns the {@code CSVFile} header.
 	 * 
 	 * @return  a data header
 	 * 
@@ -232,7 +238,7 @@ public class CSVFile extends List<CSVData> implements Storage
 	}
 	
 	/**
-	 * Returns the hints of the {@code CSVFile}.
+	 * Returns {@code CSVFile} hints.
 	 * 
 	 * @return  file hints
 	 * 
@@ -243,77 +249,43 @@ public class CSVFile extends List<CSVData> implements Storage
 	{
 		return hints;
 	}
-
 	
-	boolean validate(int line, CSVData row)
-	{
-		int curr = row.Count();
-		int cols = Hints().Columns();
-		if(curr != cols)
-		{
-			throw new ParserError("Line " + line + " has " + curr + " values instead of " + cols + ".");
-		}
-		
-		return true;
-	}
-
+	
 	@Override
-	public void write(File file) throws AccessError
+	public CSVKernel Operator()
 	{
-		CSVWriter writer = new CSVWriter();
-		writer.write(() -> new Rows(), file);
+		return kernel;
 	}
 	
 	@Override
-	public void read(File file) throws AccessError, ParserError
+	public void add(CSVData data)
 	{
-		clear();
+		int c1 = data.Count();
+		int c2 = Hints().Columns();
 		
-		int line = 0;
-		CSVReader reader = new CSVReader(hints);
-		for(CSVRow row : reader.read(file))
+		if(data.Count() != Hints().Columns())
 		{
-			switch(row.Type())
-			{
-			case COMMENT:
-			{
-				CSVComment cmt = (CSVComment) row;
-				
-				cmt.setLine(line);
-				comms.push(cmt);
-				
-				break;
-			}
-			case DATA:
-			{
-				CSVData data = (CSVData) row;
-				if(isEmpty())
-				{
-					
-					if(Hints().hasHeader())
-					{
-						header = (CSVData) row;
-						validate(line, header);
-						break;
-					}
-				}
-				
-				validate(line, data);
-				add(data);
-				break;
-			}
-			default:
-				break;
-			}
-			
-			line++;
+			throw new FormatError("The csv file expects " + c1 + " values but received " + c2 + ".");
 		}
+
+		super.add(data);
+	}
+	
+	@Override
+	public void write(File file)
+	{
+		Operator().write(file);
+	}
+	
+	@Override
+	public void read(File file)
+	{
+		Operator().read(file);
 	}
 	
 	@Override
 	public void clear()
 	{
-		super.clear();
-		comms.clear();
+		super.clear(); Operator().clear();
 	}
 }

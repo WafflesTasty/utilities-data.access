@@ -1,43 +1,129 @@
 package waffles.utils.dacs.files.tokens.third.json.objects;
 
-import waffles.utils.dacs.files.tokens.Token;
+import waffles.utils.dacs.files.tokens.parsers.cyclic.ListParser;
 import waffles.utils.dacs.files.tokens.third.json.JSONObject;
-import waffles.utils.dacs.utilities.formats.ListFormat;
-import waffles.utils.dacs.utilities.formats.MapFormattable;
-import waffles.utils.dacs.utilities.parsers.objects.ListParser;
+import waffles.utils.lang.tokens.MapToken;
+import waffles.utils.lang.tokens.format.ListFormat;
+import waffles.utils.lang.tokens.parsers.Parsable;
 import waffles.utils.sets.indexed.delegate.List;
 import waffles.utils.sets.keymaps.delegate.JHashMap;
 
 /**
- * A {@code JSONMap} defines a formattable key-value map between {@code JSONLiterals} and {@code JSONObjects}.
+ * A {@code JSONMap} defines a mappings with a {@code JSONLiteral} key
+ * and a {@code JSONObject} value. This mapping is enclosed by parentheses,
+ * i.e. {k1:v1, k2:v2} with each pair separated by a colon.
  *
  * @author Waffles
  * @since 15 Mar 2024
  * @version 1.1
  * 
  * 
- * @see MapFormattable
+ * @see JHashMap
  * @see JSONLiteral
  * @see JSONObject
- * @see JHashMap
+ * @see MapToken
  */
-public class JSONMap extends JHashMap<JSONLiteral, JSONObject> implements JSONObject, MapFormattable<JSONPair>
+public class JSONMap extends JHashMap<JSONLiteral, JSONObject> implements JSONObject, MapToken<JSONPair>
 {
 	/**
-	 * A {@code JSONMap.Parser} parses a string to a {@code JSONMap}.
-	 * As a subclass of {@code ListParser} it looks for the appropriate
-	 * delimiters '{ , }' and parses arbitrary {@code JSONValues}
-	 * in between.
+	 * Defines a default lower bound for a {@code JSONMap}.
+	 */
+	public static final char LOWER_BOUND = '{';
+	/**
+	 * Defines a default upper bound for a {@code JSONMap}.
+	 */
+	public static final char UPPER_BOUND = '}';
+	/**
+	 * Defines a default separator for a {@code JSONMap}.
+	 */
+	public static final char SEPARATOR = ',';
+	
+	
+	/**
+	 * The {@code FormatHints} define format hints for a {@code JSONMap}.
+	 *
+	 * @author Waffles
+	 * @since 10 Aug 2025
+	 * @version 1.1
+	 *
+	 * 
+	 * @see ListFormat
+	 */
+	public static class FormatHints implements ListFormat.Hints
+	{
+		@Override
+		public Character LowerBound()
+		{
+			return LOWER_BOUND;
+		}
+
+		@Override
+		public Character UpperBound()
+		{
+			return UPPER_BOUND;
+		}
+		
+		@Override
+		public char Separator()
+		{
+			return SEPARATOR;
+		}
+	}
+		
+	/**
+	 * The {@code ParserHints} define parser hints for a {@code JSONMap}.
+	 *
+	 * @author Waffles
+	 * @since 09 Aug 2025
+	 * @version 1.1
+	 *
+	 * 
+	 * @see ListParser
+	 * @see JSONPair
+	 */
+	public static class ParserHints implements ListParser.Hints<JSONPair>
+	{
+		@Override
+		public JSONPair.Parser Parser()
+		{
+			return new JSONPair.Parser();
+		}
+		
+		
+		@Override
+		public char LowerBound()
+		{
+			return LOWER_BOUND;
+		}
+		
+		@Override
+		public char UpperBound()
+		{
+			return UPPER_BOUND;
+		}
+		
+		@Override
+		public char Separator()
+		{
+			return SEPARATOR;
+		}
+	}
+
+	/**
+	 * A {@code JSONMap.Parser} parses a {@code JSONMap}.
+	 * As a subclass of {@code ListParser} it looks for the
+	 * appropriate delimiters '{ , }' and parses any
+	 * {@code JSONPair} it finds in between.
 	 *
 	 * @author Waffles
 	 * @since 16 Mar 2024
 	 * @version 1.1
 	 * 
 	 * 
-	 * @see ListParser
-	 * @see JSONPair
+	 * @see Parsable
+	 * @see JSONMap
 	 */
-	public static class Parser implements Token.Parser<JSONMap>
+	public static class Parser implements Parsable<JSONMap>
 	{
 		private ListParser<JSONPair> list;
 		
@@ -46,22 +132,9 @@ public class JSONMap extends JHashMap<JSONLiteral, JSONObject> implements JSONOb
 		 */
 		public Parser()
 		{
-			list = new ListParser<>('{', ',', '}')
-			{
-				@Override
-				public JSONPair.Parser produce()
-				{
-					return new JSONPair.Parser();
-				}
-			};
+			list = new ListParser<>(new ParserHints());
 		}
 
-		
-		@Override
-		public boolean consume(Character s)
-		{
-			return list.consume(s);
-		}
 		
 		@Override
 		public JSONMap generate()
@@ -75,36 +148,36 @@ public class JSONMap extends JHashMap<JSONLiteral, JSONObject> implements JSONOb
 			
 			return tgt;
 		}
-
+		
+		@Override
+		public boolean consume(Character s)
+		{
+			return list.consume(s);
+		}
+		
 		@Override
 		public void reset()
 		{
 			list.reset();
 		}
 	}
-
 	
-	@Override
-	public Iterable<JSONPair> FormatList()
-	{
-		return Pairs();
-	}
-		
-	@Override
-	public JSONPair createPair(JSONLiteral key, JSONObject val)
-	{
-		return new JSONPair(key, val);
-	}
-	
-	@Override
-	public ListFormat<JSONPair> Formatter(boolean isCompact)
-	{
-		return new ListFormat<>(isCompact, '{', ',', '}');
-	}
 	
 	@Override
 	public ListFormat<JSONPair> Formatter()
 	{
-		return Formatter(true);
+		return new ListFormat<>(new FormatHints());
+	}
+			
+	@Override
+	public JSONPair createPair(JSONLiteral k, JSONObject v)
+	{
+		return new JSONPair(k, v);
+	}
+		
+	@Override
+	public Iterable<JSONPair> Tokens()
+	{
+		return Pairs();
 	}
 }

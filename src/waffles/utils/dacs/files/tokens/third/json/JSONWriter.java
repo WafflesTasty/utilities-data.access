@@ -3,7 +3,7 @@ package waffles.utils.dacs.files.tokens.third.json;
 import waffles.utils.dacs.files.tokens.TokenWriter;
 
 /**
- * A {@code JSONWriter} writes {@code JSONObjects} to a {@code File}.
+ * A {@code JSONWriter} writes a {@code JSONObject} to a {@code File}.
  *
  * @author Waffles
  * @since 15 Mar 2024
@@ -15,21 +15,13 @@ import waffles.utils.dacs.files.tokens.TokenWriter;
  */
 public class JSONWriter extends TokenWriter<JSONObject>
 {
-	private boolean isCompact;
-	
 	/**
 	 * Creates a new {@code JSONWriter}.
 	 * 
-	 * @param compact  single-line or multi-line parsing
+	 * @param cnd  a condense state
 	 */
-	public JSONWriter(boolean compact)
+	public JSONWriter(boolean cnd)
 	{
-		isCompact = compact;
-	}
-
-	@Override
-	public String onParse(JSONObject obj)
-	{
-		return obj.parse(isCompact);
+		super(cnd);
 	}
 }

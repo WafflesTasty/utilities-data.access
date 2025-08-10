@@ -1,14 +1,14 @@
 package waffles.utils.dacs.files.tokens.third.json;
 
-import waffles.utils.dacs.files.tokens.Token;
+import waffles.utils.dacs.files.tokens.parsers.ChoiceParser;
 import waffles.utils.dacs.files.tokens.third.json.objects.JSONList;
 import waffles.utils.dacs.files.tokens.third.json.objects.JSONLiteral;
 import waffles.utils.dacs.files.tokens.third.json.objects.JSONMap;
-import waffles.utils.dacs.utilities.parsers.choice.ChoiceParser;
-import waffles.utils.lang.Format;
+import waffles.utils.lang.tokens.Token;
 
 /**
- * A {@code JSONObject} can be parsed by a {@code JSONReader} or {@code JSONWriter}.
+ * A {@code JSONObject} defines a generic element in a {@code JSONFile}.
+ * It can be parsed by a {@code JSONReader} or {@code JSONWriter}.
  *
  * @author Waffles
  * @since 27 Feb 2024
@@ -20,9 +20,10 @@ import waffles.utils.lang.Format;
 public interface JSONObject extends Token
 {
 	/**
-	 * A {@code JSONObject.Parser} parses strings into a {@code JSONObject}.
-	 * As a subclass of {@code ChoiceParser} it chooses between the three
-	 * subtypes: {@code JSONMap}, {@code JSONList}, {@code JSONLiteral}.
+	 * A {@code JSONObject.Parser} parses a {@code JSONObject}.
+	 * As a subclass of {@code ChoiceParser} it chooses between three
+	 * possible subtypes: {@code JSONMap}, {@code JSONList}
+	 * and {@code JSONLiteral}.
 	 *
 	 * @author Waffles
 	 * @since 16 Mar 2024
@@ -32,7 +33,7 @@ public interface JSONObject extends Token
 	 * @see ChoiceParser
 	 * @see JSONObject
 	 */
-	public static class Parser extends ChoiceParser<JSONObject>
+	public static class Parser extends ChoiceParser<JSONObject, JSONObject>
 	{
 		/**
 		 * Creates a new {@code JSONObject.Parser}.
@@ -43,35 +44,5 @@ public interface JSONObject extends Token
 			add(new JSONList.Parser());
 			add(new JSONLiteral.Parser());
 		}
-	}
-	
-	
-	/**
-	 * Returns a formatter for the {@code JSONObject}.
-	 * 
-	 * @param isCompact  single line or multi-line
-	 * @return  a json formatter
-	 * 
-	 * 
-	 * @see Format
-	 */
-	public abstract Format<?> Formatter(boolean isCompact);
-	
-	/**
-	 * Parses the {@code JSONObject} into a string.
-	 * 
-	 * @param isCompact  single line or multi-line
-	 * @return  a json string
-	 */
-	public default String parse(boolean isCompact)
-	{
-		return Formatter(isCompact).castAndParse(this);
-	}
-	
-	
-	@Override
-	public default Format<?> Formatter()
-	{
-		return Formatter(true);
 	}
 }

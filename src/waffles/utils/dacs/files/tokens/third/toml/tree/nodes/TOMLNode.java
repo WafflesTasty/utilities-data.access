@@ -1,12 +1,12 @@
 package waffles.utils.dacs.files.tokens.third.toml.tree.nodes;
 
 import waffles.utils.dacs.files.tokens.literals.StringToken;
-import waffles.utils.dacs.files.tokens.third.toml.TOMLParser;
+import waffles.utils.dacs.files.tokens.parsers.primitive.choice.StringParser;
+import waffles.utils.dacs.files.tokens.third.toml.TOMLParser.Data;
 import waffles.utils.dacs.files.tokens.third.toml.tree.TOMLTree;
-import waffles.utils.dacs.utilities.parsers.tokens.StringTokenParser;
-import waffles.utils.lang.Format;
-import waffles.utils.lang.Formattable;
 import waffles.utils.lang.Strings;
+import waffles.utils.lang.tokens.Token;
+import waffles.utils.lang.tokens.format.Format;
 import waffles.utils.sets.trees.Nodal;
 import waffles.utils.sets.trees.Node;
 
@@ -18,10 +18,10 @@ import waffles.utils.sets.trees.Node;
  * @version 1.1
  *
  * 
- * @see Formattable
+ * @see Token
  * @see Node
  */
-public class TOMLNode extends Node implements Formattable
+public class TOMLNode extends Node implements Token
 {
 	/**
 	 * Defines a default delimiter for a {@code TOMLNode}.
@@ -32,12 +32,42 @@ public class TOMLNode extends Node implements Formattable
 	 */
 	public static final char SEPARATOR = ':';
 	
+		
+	/**
+	 * A {@code TOMLNode.Formatter} formats a {@code TOMLNode} into a string.
+	 *
+	 * @author Waffles
+	 * @since 21 Mar 2024
+	 * @version 1.1
+	 *
+	 *
+	 * @param <O>  a node type
+	 * @see TOMLNode
+	 * @see Format
+	 */
+	public static class Formatter<O extends TOMLNode> implements Format<O>
+	{
+		@Override
+		public String parse(O node)
+		{
+			String key = "";
+			if(node.Depth() > 1)
+			{
+				key = Strings.repeat(' ', 2 * node.Depth() - 2) + key;
+				key = Strings.replaceLast(key, " ", "" + DELIMITER);
+			}
+			
+			key += node.Key().condense();
+			key += " " + SEPARATOR + " ";
+			return key;
+		}
+	}
 	
 	/**
-	 * A {@code TOMLNode.Parser} parses a key node.
-	 * A key is any literal or string followed by a colon,
-	 * i.e. settings : . Any key needs to be preceded by
-	 * dots representing its depth, i.e. .sound would
+	 * A {@code TOMLNode.Parser} parses a {@code TOMLNode} to a string.
+	 * A key is any literal or string followed by a colon, i.e.
+	 * settings : . Any key needs to be preceded by dots
+	 * representing its depth, i.e. .sound would
 	 * be a subsetting underneath the
 	 * previous setting.
 	 *
@@ -46,10 +76,10 @@ public class TOMLNode extends Node implements Formattable
 	 * @version 1.1
 	 *
 	 * 
-	 * @see StringTokenParser
-	 * @see TOMLParser
+	 * @see StringParser
+	 * @see Data
 	 */
-	public static class Parser extends StringTokenParser<TOMLParser.Data> implements TOMLParser
+	public static class Parser extends StringParser<Data>
 	{
 		static enum State
 		{
@@ -128,7 +158,7 @@ public class TOMLNode extends Node implements Formattable
 		}
 
 		@Override
-		public Data generate(Object obj)
+		public Data compute(Object obj)
 		{
 			if(state == State.DONE)
 			{
@@ -150,37 +180,7 @@ public class TOMLNode extends Node implements Formattable
 	}
 	
 	/**
-	 * A {@code TOMLNode.Formatter} performs basic parsing for {@code TOMLNodes}.
-	 *
-	 * @author Waffles
-	 * @since 21 Mar 2024
-	 * @version 1.1
-	 *
-	 *
-	 * @param <O>  a node type
-	 * @see TOMLNode
-	 * @see Format
-	 */
-	public static class Formatter<O extends TOMLNode> implements Format<O>
-	{
-		@Override
-		public String parse(O node)
-		{
-			String key = "";
-			if(node.Depth() > 1)
-			{
-				key = Strings.repeat(' ', 2 * node.Depth() - 2) + key;
-				key = Strings.replaceLast(key, " ", "" + DELIMITER);
-			}
-			
-			key += node.Key().parse();
-			key += " " + SEPARATOR + " ";
-			return key;
-		}
-	}
-	
-	/**
-	 * The {@code Type} enum defines all types of {@code TOMLNodes}.
+	 * The {@code TOMLNode.Type} enum defines all four TOML types.
 	 * All keys and values in a {@code TOMLNode} can take any of the
 	 * types null, boolean, Number, or String. Strings can either be
 	 * literals containing no whitespace, or general strings with

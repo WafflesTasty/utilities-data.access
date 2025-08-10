@@ -3,10 +3,11 @@ package waffles.utils.dacs.files.tokens.third.toml.tree.nodes;
 import java.util.Iterator;
 
 import waffles.utils.dacs.files.tokens.third.toml.tree.TOMLTree;
-import waffles.utils.dacs.utilities.parsers.strings.StringParser;
-import waffles.utils.dacs.files.tokens.third.toml.TOMLParser;
+import waffles.utils.dacs.files.tokens.parsers.strings.DelimitParser;
+import waffles.utils.dacs.files.tokens.third.toml.TOMLParser.Data;
 import waffles.utils.dacs.files.tokens.third.toml.tree.TOMLData;
 import waffles.utils.lang.Strings;
+import waffles.utils.lang.tokens.parsers.Parsable;
 
 /**
  * A {@code TOMLHeader} defines a header node in a {@code TOMLFile}.
@@ -23,7 +24,7 @@ import waffles.utils.lang.Strings;
 public class TOMLHeader extends TOMLNode
 {		
 	/**
-	 * A {@code TOMLHeader.Parser} parses a header string.
+	 * A {@code TOMLHeader.Parser} parses a {@code TOMLHeader}.
 	 * A header is any string enclosed between two brackets,
 	 * i.e. [general]. Any subheader needs to be preceded
 	 * by dots representing its depth, i.e. [.sound]
@@ -35,18 +36,19 @@ public class TOMLHeader extends TOMLNode
 	 * @version 1.1
 	 *
 	 * 
-	 * @see TOMLParser
+	 * @see Parsable
+	 * @see Data
 	 */
-	public static class Parser implements TOMLParser
+	public static class Parser implements Parsable<Data>
 	{
-		private StringParser parser;
+		private DelimitParser parser;
 		
 		/**
 		 * Creates a new {@code Parser}.
 		 */
 		public Parser()
 		{
-			parser = new StringParser('[', ']');
+			parser = new DelimitParser('[', ']');
 		}
 
 
@@ -64,7 +66,7 @@ public class TOMLHeader extends TOMLNode
 		}
 
 		@Override
-		public TOMLParser.Data generate()
+		public Data generate()
 		{
 			String name = parser.generate().trim();
 			if(name != null)
@@ -91,7 +93,7 @@ public class TOMLHeader extends TOMLNode
 	}
 	
 	/**
-	 * A {@code TOMLHeader.Formatter} parses a {@code TOMLHeader}.
+	 * A {@code TOMLHeader.Formatter} formats a {@code TOMLHeader}.
 	 * Its token is written between brackets, and its data
 	 * tree is parsed before moving on to its children.
 	 *
@@ -105,18 +107,18 @@ public class TOMLHeader extends TOMLNode
 	public static class Formatter extends TOMLNode.Formatter<TOMLHeader>
 	{
 		@Override
-		public Iterator<String> verbose(TOMLHeader node)
+		public Iterable<String> describe(TOMLHeader h)
 		{
-			return new Verbose(node);
+			return () -> new Descriptor(h);
 		}
 		
 		@Override
-		public String parse(TOMLHeader node)
+		public String parse(TOMLHeader h)
 		{
-			String key = node.Key().parse();
-			if(node.Depth() > 0)
+			String key = h.Key().condense();
+			if(h.Depth() > 0)
 			{
-				key = Strings.repeat('.', node.Depth()-1) + key;
+				key = Strings.repeat('.', h.Depth()-1) + key;
 			}
 
 			return UPPER + key + LOWER;
@@ -124,8 +126,9 @@ public class TOMLHeader extends TOMLNode
 	}
 	
 	/**
-	 * A {@code TOMLHeader.Verbose} iterates over the strings
-	 * in a verbose {@code TOMLHeader}.
+	 * A {@code TOMLHeader.Descriptor} describes a {@code TOMLHeader}.
+	 * It contains its own format string followed by that of
+	 * all of its child nodes.
 	 *
 	 * @author Waffles
 	 * @since 21 Mar 2024
@@ -134,24 +137,24 @@ public class TOMLHeader extends TOMLNode
 	 * 
 	 * @see Iterator
 	 */
-	public static class Verbose implements Iterator<String>
+	public static class Descriptor implements Iterator<String>
 	{
 		private String next;
 		private Iterator<String> text;
 			
 		/**
-		 * Creates a new {@code Verbose}.
+		 * Creates a new {@code Descriptor}.
 		 * 
 		 * @param node  a toml header
 		 * 
 		 * 
 		 * @see TOMLHeader
 		 */
-		public Verbose(TOMLHeader node)
+		public Descriptor(TOMLHeader node)
 		{
 			TOMLTree data = node.Data();
-			text = data.verbose().iterator();
-			next = node.parse();
+			text = data.describe().iterator();
+			next = node.condense();
 		}
 		
 		

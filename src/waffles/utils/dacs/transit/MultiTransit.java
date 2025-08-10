@@ -1,7 +1,7 @@
 package waffles.utils.dacs.transit;
 
 import waffles.utils.sets.arrays.ArrayLike;
-import waffles.utils.tools.patterns.persistence.Persistible;
+import waffles.utils.tools.patterns.properties.counters.data.Persistible;
 
 /**
  * An {@code MultiTransit} loads and unloads data arrays into a {@code ByteBuffer}.

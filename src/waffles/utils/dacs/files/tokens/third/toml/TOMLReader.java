@@ -3,12 +3,7 @@ package waffles.utils.dacs.files.tokens.third.toml;
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.Reader;
 import waffles.utils.dacs.files.plaintext.strings.StringReader;
-import waffles.utils.dacs.files.tokens.third.toml.TOMLParser.Data;
-import waffles.utils.dacs.files.tokens.third.toml.tree.nodes.TOMLComment;
 import waffles.utils.dacs.files.tokens.third.toml.tree.nodes.TOMLHeader;
-import waffles.utils.dacs.files.tokens.third.toml.tree.nodes.TOMLNode;
-import waffles.utils.dacs.files.tokens.third.toml.tree.nodes.TOMLPair;
-import waffles.utils.dacs.utilities.parsers.choice.ChoiceParser;
 import waffles.utils.lang.Strings;
 
 /**
@@ -25,54 +20,55 @@ import waffles.utils.lang.Strings;
  */
 public class TOMLReader implements Reader<TOMLHeader>
 {
-	/**
-	 * A {@code TOMLReader.Parser} performs parsing for a {@code TOMLReader}.
-	 *
-	 * @author Waffles
-	 * @since 23 Mar 2024
-	 * @version 1.1
-	 * 
-	 * 
-	 * @see ChoiceParser
-	 * @see TOMLParser
-	 */
-	public static class Parser extends ChoiceParser<TOMLParser.Data>
-	{
-		/**
-		 * Creates a new {@code Parser}.
-		 */
-		public Parser()
-		{
-			add(new TOMLComment.Parser());
-			add(new TOMLHeader.Parser());
-			add(new TOMLNode.Parser());
-			add(new TOMLPair.Parser());
-		}
-		
-		@Override
-		public void reset()
-		{
-//			Parse an initial space to load
-//			TOMLComment as the initial
-//			parser target.			
-			super.reset();
-			consume(' ');
-		}
-	}
+//	/**
+//	 * A {@code TOMLReader.Parser} performs parsing for a {@code TOMLReader}.
+//	 *
+//	 * @author Waffles
+//	 * @since 23 Mar 2024
+//	 * @version 1.1
+//	 * 
+//	 * 
+//	 * @see ChoiceParser
+//	 * @see TOMLParser
+//	 */
+//	public static class Parser extends ChoiceParser<TOMLParser.Data>
+//	{
+//		/**
+//		 * Creates a new {@code Parser}.
+//		 */
+//		public Parser()
+//		{
+//			add(new TOMLComment.Parser());
+//			add(new TOMLHeader.Parser());
+//			add(new TOMLNode.Parser());
+//			add(new TOMLPair.Parser());
+//		}
+//		
+//		@Override
+//		public void reset()
+//		{
+////			Parse an initial space to load
+////			TOMLComment as the initial
+////			parser target.			
+//			super.reset();
+//			consume(' ');
+//		}
+//	}
 	
 	
-	private Parser parser;
+	private TOMLParser parser;
 	private StringReader reader;
 	
 	@Override
 	public TOMLHeader read(File file)
 	{
-		parser = new Parser();
+		parser = new TOMLParser();
 		reader = new StringReader();
 
-		TOMLHeader header = new TOMLHeader("");
-		TOMLNode value = header.Data().Root();
+//		TOMLHeader header = new TOMLHeader("");
+//		TOMLNode value = header.Data().Root();
 		
+		TOMLHeader root = null;
 		for(String s : reader.read(file))
 		{
 			parser.reset();
@@ -81,41 +77,43 @@ public class TOMLReader implements Reader<TOMLHeader>
 				parser.consume(c);
 			}
 			
-			Data data = parser.generate();
-			TOMLNode node = data.Node();
-			int depth = data.Depth();
-			
-			switch(node.Type())
-			{
-			case HEADER:
-			{
-				while(depth < header.Depth() + 1)
-				{
-					header = header.Parent();
-				}
-				
-				header.addChild(node);
-				header = (TOMLHeader) node;
-				value = header.Data().Root();
-				break;
-			}
-			case KEY:
-			case VALUE:
-			{
-				while(depth < value.Depth() + 1)
-				{
-					value = value.Parent();
-				}
-				
-				value.addChild(node);
-				value = node;
-			}
-			case COMMENT:
-			default:
-				break;
-			}
+			root = parser.generate();
+//			Data data = parser.generate();
+//			TOMLNode node = data.Node();
+//			int depth = data.Depth();
+//			
+//			switch(node.Type())
+//			{
+//			case HEADER:
+//			{
+//				while(depth < header.Depth() + 1)
+//				{
+//					header = header.Parent();
+//				}
+//				
+//				header.addChild(node);
+//				header = (TOMLHeader) node;
+//				value = header.Data().Root();
+//				break;
+//			}
+//			case KEY:
+//			case VALUE:
+//			{
+//				while(depth < value.Depth() + 1)
+//				{
+//					value = value.Parent();
+//				}
+//				
+//				value.addChild(node);
+//				value = node;
+//			}
+//			case COMMENT:
+//			default:
+//				break;
+//			}
 		}
 		
-		return header.Root();
+		return root;
+//		return header.Root();
 	}
 }

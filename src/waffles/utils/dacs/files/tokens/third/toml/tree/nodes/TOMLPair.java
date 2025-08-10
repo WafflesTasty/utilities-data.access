@@ -1,24 +1,23 @@
 package waffles.utils.dacs.files.tokens.third.toml.tree.nodes;
 
 import waffles.utils.dacs.files.tokens.literals.StringToken;
-import waffles.utils.dacs.files.tokens.objects.TokenPair;
-import waffles.utils.dacs.files.tokens.third.toml.TOMLParser;
-import waffles.utils.dacs.utilities.parsers.objects.PairParser;
-import waffles.utils.dacs.utilities.parsers.tokens.StringTokenParser;
+import waffles.utils.dacs.files.tokens.third.toml.TOMLParser.Data;
+import waffles.utils.lang.tokens.PairToken;
+import waffles.utils.lang.tokens.parsers.PairParser;
 
 /**
- * A {@code TOMLPair} defines a key-value pair in a {@code TOMLFile}.
+ * A {@code TOMLPair} defines a single key-value pair for a {@code TOMLFile}.
  *
  * @author Waffles
  * @since 21 Mar 2024
  * @version 1.1
  * 
  * 
+ * @see PairToken
  * @see StringToken
- * @see TokenPair
  * @see TOMLNode
  */
-public class TOMLPair extends TOMLNode implements TokenPair<StringToken, StringToken>
+public class TOMLPair extends TOMLNode implements PairToken<StringToken, StringToken>
 {
 	/**
 	 * Defines a default delimiter for a {@code TOMLPair}.
@@ -29,9 +28,31 @@ public class TOMLPair extends TOMLNode implements TokenPair<StringToken, StringT
 	 */
 	public static final char SEPARATOR = ':';
 	
+			
+	/**
+	 * A {@code TOMLPair.Formatter} formats a {@code TOMLPair}.
+	 * A {@code TOMLPair} has a key-value separated by a colon.
+	 *
+	 * @author Waffles
+	 * @since 21 Mar 2024
+	 * @version 1.1
+	 *
+	 * 
+	 * @see TOMLNode
+	 * @see TOMLPair
+	 */
+	public static class Formatter extends TOMLNode.Formatter<TOMLPair>
+	{
+		@Override
+		public String parse(TOMLPair node)
+		{
+			StringToken val = node.Value();
+			return super.parse(node) + val.condense();
+		}
+	}
 	
 	/**
-	 * A {@code TOMLPair.Parser} parses a key-value node.
+	 * A {@code TOMLPair.Parser} parses a {@code TOMLPair}.
 	 * These values can be any literal or string separated by
 	 * a colon, i.e. vsync : true. Any key needs to be preceded
 	 * by dots indicating its depth, i.e. .sound = 24 would
@@ -42,9 +63,10 @@ public class TOMLPair extends TOMLNode implements TokenPair<StringToken, StringT
 	 * @version 1.1
 	 *
 	 * 
-	 * @see TOMLParser
+	 * @see PairParser
+	 * @see Data
 	 */
-	public static class Parser implements TOMLParser
+	public static class Parser extends PairParser<Data>
 	{
 		static enum State
 		{
@@ -58,19 +80,51 @@ public class TOMLPair extends TOMLNode implements TokenPair<StringToken, StringT
 		
 		private int depth;
 		private State state;
-		private DemiParser parser;
+		private StringToken.Parser key;
+		private StringToken.Parser val;
 		
 		/**
 		 * Creates a new {@code Parser}.
 		 */
 		public Parser()
 		{
-			parser = new DemiParser();
+			super(SEPARATOR);
 			state = State.INITIAL;
-			depth = 0;
+			depth = 1;
 		}
 
-
+		
+		@Override
+		public Data generate()
+		{
+			StringToken k = key.generate();
+			StringToken v = val.generate();
+			
+			if(key != null && val != null)
+			{
+				TOMLPair p = new TOMLPair(k, v);
+				return new Data(p, depth);
+			}
+			
+			return null;
+		}
+		
+		@Override
+		public StringToken.Parser KeyParser()
+		{
+			if(key == null)
+				key = new StringToken.Parser();
+			return key;
+		}
+		
+		@Override
+		public StringToken.Parser ValueParser()
+		{
+			if(val == null)
+				val = new StringToken.Parser();
+			return val;
+		}
+		
 		@Override
 		public boolean consume(Character s)
 		{
@@ -95,7 +149,7 @@ public class TOMLPair extends TOMLNode implements TokenPair<StringToken, StringT
 			}
 			case PAIR:
 			{
-				if(parser.consume(s))
+				if(super.consume(s))
 					return true;
 				
 				state = State.DONE;
@@ -106,182 +160,103 @@ public class TOMLPair extends TOMLNode implements TokenPair<StringToken, StringT
 				return false;
 			}
 		}
-		
-		@Override
-		public Data generate()
-		{
-			TOMLPair pair = parser.generate();
-			if(pair != null)
-			{
-				return new Data(pair, depth);
-			}
-			
-			return null;
-		}
-		
+				
 		@Override
 		public void reset()
 		{
+			super.reset();
 			state = State.INITIAL;
-			parser.reset();
-			depth = 0;
-		}
-	}
-	
-	/**
-	 * A {@code TOMLPair.DemiParser} parses the intermediate
-	 * result for a {@code TOMLPair.Parser}. It otherwise
-	 * performs as a basic {@code PairParser}.
-	 *
-	 * @author Waffles
-	 * @since 23 Mar 2024
-	 * @version 1.1
-	 *
-	 * 
-	 * @see PairParser
-	 * @see TOMLPair
-	 */
-	public static class DemiParser extends PairParser<TOMLPair>
-	{
-		/**
-		 * Creates a new {@code DemiParser}.
-		 */
-		public DemiParser()
-		{
-			super(SEPARATOR);
-		}
-
-		
-		@Override
-		public StringTokenParser<?> KeyParser()
-		{
-			return new StringTokenParser.Base();
-		}
-		
-		@Override
-		public TOMLPair generate(Object k, Object v)
-		{
-			StringToken key = (StringToken) k;
-			StringToken val = (StringToken) v;
-			return new TOMLPair(key, val);
-		}
-		
-		@Override
-		public StringTokenParser<?> ValueParser()
-		{
-			return new StringTokenParser.Base();
-		}
-	}
-	
-	/**
-	 * A {@code TOMLPair.Formatter} parses a {@code TOMLPair}.
-	 * Its key-value pair is separated by a colon.
-	 *
-	 * @author Waffles
-	 * @since 21 Mar 2024
-	 * @version 1.1
-	 *
-	 * 
-	 * @see TOMLNode
-	 * @see TOMLPair
-	 */
-	public static class Formatter extends TOMLNode.Formatter<TOMLPair>
-	{
-		@Override
-		public String parse(TOMLPair node)
-		{
-			StringToken val = node.Value();
-			return super.parse(node) + val.parse();
+			depth = 1;
 		}
 	}
 	
 	
-	private StringToken value;
-	
+	private StringToken val;
+		
 	/**
 	 * Creates a new {@code TOMLPair}.
 	 * 
-	 * @param key  a key string
-	 * @param val  an object value
-	 */
-	public TOMLPair(String key, Object val)
-	{
-		this(key); setValue(val);
-	}
-	
-	/**
-	 * Creates a new {@code TOMLPair}.
-	 * 
-	 * @param key  a key token
-	 * @param val  a value token
+	 * @param k  a pair key
+	 * @param v  a pair val
 	 * 
 	 * 
 	 * @see StringToken
 	 */
-	public TOMLPair(StringToken key, StringToken val)
+	public TOMLPair(StringToken k, StringToken v)
 	{
-		super(key); value = val;
+		super(k); val = v;
 	}
-		
+	
 	/**
 	 * Creates a new {@code TOMLPair}.
 	 * 
-	 * @param key  a key string
+	 * @param k  a pair key
+	 * @param v  a pair val
 	 */
-	public TOMLPair(String key)
+	public TOMLPair(String k, Object v)
 	{
-		super(key);	
+		super(k); setValue(v);
+	}
+	
+	/**
+	 * Creates a new {@code TOMLPair}.
+	 * 
+	 * @param k  a pair key
+	 */
+	public TOMLPair(String k)
+	{
+		this(k, null);	
 	}
 	
 
 	/**
-	 * Changes the value of the {@code TOMLPair}.
+	 * Changes the val of the {@code TOMLPair}.
 	 * 
-	 * @param val  an object value
+	 * @param v  an object val
 	 */
-	public void setValue(Object val)
+	public void setValue(Object v)
 	{
-		value = new StringToken(val);
+		val = new StringToken(v);
 	}
 	
 	/**
-	 * Changes the value of the {@code TOMLPair}.
+	 * Changes the val of the {@code TOMLPair}.
 	 * 
-	 * @param val  a string value
+	 * @param v  a string val
 	 */
-	public void setValue(String val)
+	public void setValue(String v)
 	{
-		setValue((Object) val);
+		setValue((Object) v);
 	}
 	
 	/**
-	 * Changes the value of the {@code TOMLPair}.
+	 * Changes the val of the {@code TOMLPair}.
 	 * 
-	 * @param val  a boolean value
+	 * @param v  a boolean val
 	 */
-	public void setValue(boolean val)
+	public void setValue(boolean v)
 	{
-		setValue((Object) val);
+		setValue((Object) v);
 	}
 	
 	/**
-	 * Changes the value of the {@code TOMLPair}.
+	 * Changes the val of the {@code TOMLPair}.
 	 * 
-	 * @param val  a float value
+	 * @param v  a float val
 	 */
-	public void setValue(float val)
+	public void setValue(float v)
 	{
-		setValue((Object) val);
+		setValue((Object) v);
 	}
 	
 	/**
-	 * Changes the value of the {@code TOMLPair}.
+	 * Changes the val of the {@code TOMLPair}.
 	 * 
-	 * @param val  an int value
+	 * @param v  an int val
 	 */
-	public void setValue(int val)
+	public void setValue(int v)
 	{
-		setValue((Object) val);
+		setValue((Object) v);
 	}
 
 	
@@ -294,7 +269,7 @@ public class TOMLPair extends TOMLNode implements TokenPair<StringToken, StringT
 	@Override
 	public StringToken Value()
 	{
-		return value;
+		return val;
 	}
 	
 	@Override

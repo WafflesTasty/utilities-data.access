@@ -1,12 +1,12 @@
 package waffles.utils.dacs.files.tokens.third.json.objects;
 
-import waffles.utils.dacs.files.tokens.objects.TokenPair;
 import waffles.utils.dacs.files.tokens.third.json.JSONObject;
-import waffles.utils.dacs.utilities.parsers.objects.PairParser;
-import waffles.utils.lang.Format;
+import waffles.utils.lang.tokens.PairToken;
+import waffles.utils.lang.tokens.format.Format;
+import waffles.utils.lang.tokens.parsers.PairParser;
 
 /**
- * A {@code JSONPair} defines a single key-value pair in a {@code JSONMap}.
+ * A {@code JSONPair} defines a single key-value pair for a {@code JSONMap}.
  *
  * @author Waffles
  * @since 15 Mar 2024
@@ -15,17 +15,19 @@ import waffles.utils.lang.Format;
  * 
  * @see JSONLiteral
  * @see JSONObject
- * @see TokenPair
+ * @see PairToken
  */
-public class JSONPair implements TokenPair<JSONLiteral, JSONObject>
+public class JSONPair implements PairToken<JSONLiteral, JSONObject>
 {
 	/**
-	 * Defines a separator for a {@code JSONPair}.
+	 * Defines a default separator for a {@code JSONPair}.
 	 */
 	public static final char SEPARATOR = ':';
 	
 	/**
-	 * A {@code JSONPair.Parser} parses a key-value pair from a string.
+	 * A {@code JSONPair.Parser} parses a {@code JSONPair}.
+	 * These values can be any {@code JSONLiteral} key and
+	 * {@code JSONObject} value separated by a colon.
 	 *
 	 * @author Waffles
 	 * @since 19 Mar 2024
@@ -37,6 +39,9 @@ public class JSONPair implements TokenPair<JSONLiteral, JSONObject>
 	 */
 	public static class Parser extends PairParser<JSONPair>
 	{
+		private JSONLiteral.Parser key;
+		private JSONObject.Parser  val;
+		
 		/**
 		 * Creates a new {@code Parser}.
 		 */
@@ -47,29 +52,40 @@ public class JSONPair implements TokenPair<JSONLiteral, JSONObject>
 
 						
 		@Override
-		public JSONPair generate(Object k, Object v)
+		public JSONPair generate()
 		{
-			JSONLiteral key = (JSONLiteral) k;
-			JSONObject val = (JSONObject) v;
-			return new JSONPair(key, val);
+			JSONLiteral k = key.generate();
+			JSONObject  v = val.generate();
+			
+			return new JSONPair(k, v);
+		}
+
+		@Override
+		public JSONLiteral.Parser KeyParser()
+		{
+			if(key == null)
+			{
+				key = new JSONLiteral.Parser();
+			}
+			
+			return key;
 		}
 		
 		@Override
 		public JSONObject.Parser ValueParser()
 		{
-			return new JSONObject.Parser();
-		}
-		
-		@Override
-		public JSONLiteral.Parser KeyParser()
-		{
-			return new JSONLiteral.Parser();
+			if(val == null)
+			{
+				val = new JSONObject.Parser();
+			}
+			
+			return val;
 		}
 	}
 
 	
-	private JSONObject val;
 	private JSONLiteral key;
+	private JSONObject  val;
 	
 	/**
 	 * Creates a new {@code JSONPair}.
@@ -86,27 +102,22 @@ public class JSONPair implements TokenPair<JSONLiteral, JSONObject>
 		key = k; val = v;
 	}
 
-
-	@Override
-	public Format<TokenPair<JSONLiteral, JSONObject>> Formatter()
-	{
-		return Formatter(SEPARATOR);
-	}
-
-
 	
-	
-	@Override
-	public JSONObject Value()
-	{
-		return val;
-	}
-	
-
-
 	@Override
 	public JSONLiteral Key()
 	{
 		return key;
+	}
+
+	@Override
+	public Format<?> Formatter()
+	{
+		return Formatter(SEPARATOR);
+	}
+
+	@Override
+	public JSONObject Value()
+	{
+		return val;
 	}
 }

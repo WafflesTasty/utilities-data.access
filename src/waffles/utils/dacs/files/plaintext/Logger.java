@@ -2,7 +2,7 @@ package waffles.utils.dacs.files.plaintext;
 
 import waffles.utils.lang.time.iso.ISODate;
 import waffles.utils.lang.time.iso.ISOTime;
-import waffles.utils.lang.util.ISO;
+import waffles.utils.lang.utilities.ISO;
 
 /**
  * A {@code Logger} is designed to log messages for debugging.

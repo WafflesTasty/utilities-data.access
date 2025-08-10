@@ -1,6 +1,8 @@
 package waffles.utils.dacs.files.tokens.third.csv;
 
-import waffles.utils.lang.Formattable;
+import waffles.utils.lang.tokens.Token;
+import waffles.utils.tools.patterns.properties.counters.Indexable;
+import waffles.utils.tools.primitives.Longs;
 
 /**
  * A {@code CSVRow} defines a single row in a {@code CSVFile}.
@@ -10,9 +12,11 @@ import waffles.utils.lang.Formattable;
  * @version 1.1
  *
  * 
- * @see Formattable
+ * @see Comparable
+ * @see Indexable
+ * @see Token
  */
-public interface CSVRow extends Formattable
+public abstract class CSVRow extends Indexable.Base implements Comparable<CSVRow>, Token
 {
 	/**
 	 * The {@code Type} enum defines all types of a {@code CSVRow}.
@@ -35,7 +39,6 @@ public interface CSVRow extends Formattable
 		 */
 		DATA;
 	}
-	
 		
 	/**
  	 * Returns the type of the {@code CSVRow}.
@@ -43,4 +46,11 @@ public interface CSVRow extends Formattable
  	 * @return  a line type
  	 */
 	public abstract Type Type();
+	
+	
+	@Override
+	public int compareTo(CSVRow r)
+	{
+		return (int) Longs.sign(Index() - r.Index());
+	}
 }

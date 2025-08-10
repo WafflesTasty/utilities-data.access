@@ -1,14 +1,15 @@
 package waffles.utils.dacs.files.tokens.third.csv.rows;
 
 import waffles.utils.dacs.files.tokens.literals.StringToken;
-import waffles.utils.dacs.files.tokens.third.csv.CSVFile.Hints;
+import waffles.utils.dacs.files.tokens.parsers.CyclicParser;
+import waffles.utils.dacs.files.tokens.parsers.CyclicParser.Hints;
+import waffles.utils.dacs.files.tokens.third.csv.CSVFile;
 import waffles.utils.dacs.files.tokens.third.csv.CSVRow;
 import waffles.utils.dacs.utilities.errors.FormatError;
-import waffles.utils.dacs.utilities.formats.ListFormat;
-import waffles.utils.dacs.utilities.formats.ListFormattable;
-import waffles.utils.dacs.utilities.parsers.CyclicParser;
-import waffles.utils.dacs.utilities.parsers.DemiParser;
-import waffles.utils.dacs.utilities.parsers.tokens.StringTokenParser;
+import waffles.utils.lang.tokens.ListToken;
+import waffles.utils.lang.tokens.format.ListFormat;
+import waffles.utils.lang.tokens.parsers.Parsable;
+import waffles.utils.sets.indexed.IndexedSet;
 import waffles.utils.sets.indexed.delegate.List;
 
 /**
@@ -22,12 +23,11 @@ import waffles.utils.sets.indexed.delegate.List;
  * @version 1.1
  *
  * 
- * @see ListFormattable
  * @see StringToken
- * @see CSVRow
- * @see List
+ * @see IndexedSet
+ * @see ListToken
  */
-public class CSVData extends List<StringToken> implements CSVRow, ListFormattable<StringToken>
+public class CSVData extends CSVRow implements IndexedSet<StringToken>, ListToken<StringToken>
 {
 	/**
 	 * Defines a default delimiter for a {@code CSVData}.
@@ -38,6 +38,85 @@ public class CSVData extends List<StringToken> implements CSVRow, ListFormattabl
 	 */
 	public static final char SEPARATOR = ';';
 	
+		
+	/**
+	 * The {@code FormatHints} define format hints for {@code CSVData}.
+	 *
+	 * @author Waffles
+	 * @since 09 Aug 2025
+	 * @version 1.1
+	 *
+	 * 
+	 * @see ListFormat
+	 */
+	public static class FormatHints implements ListFormat.Hints
+	{
+		@Override
+		public char Separator()
+		{
+			return SEPARATOR;
+		}
+
+		@Override
+		public Character LowerBound()
+		{
+			return DELIMITER;
+		}
+
+		@Override
+		public Character UpperBound()
+		{
+			return DELIMITER;
+		}
+	}
+
+	/**
+	 * The {@code ParserHints} define parser hints for {@code CSVData}.
+	 *
+	 * @author Waffles
+	 * @since 09 Aug 2025
+	 * @version 1.1
+	 *
+	 * 
+	 * @see CyclicParser
+	 * @see StringToken
+	 */
+	public static class ParserHints implements CyclicParser.Hints<StringToken>
+	{
+		private CSVFile.Hints hints;
+		
+		/**
+		 * Creates a new {@code ParserHints}.
+		 * 
+		 * @param h  file hints
+		 * 
+		 * 
+		 * @see CSVFile
+		 */
+		public ParserHints(CSVFile.Hints h)
+		{
+			hints = h;
+		}
+		
+		
+		@Override
+		public char Separator()
+		{
+			return hints.Separator();
+		}
+		
+		@Override
+		public StringToken.Parser Parser()
+		{
+			return new StringToken.Parser();
+		}
+				
+		@Override
+		public int Maximum()
+		{
+			return hints.Columns();
+		}
+	}
 	
 	/**
 	 * A {@code CSVData.Parser} parses a row of csv data.
@@ -49,12 +128,12 @@ public class CSVData extends List<StringToken> implements CSVRow, ListFormattabl
 	 * @version 1.1
 	 *
 	 * 
-	 * @see DemiParser
-	 * @see StringToken
+	 * @see Parsable
+	 * @see CSVData
 	 */
-	public static class Parser implements DemiParser<List<StringToken>, CSVData>
+	public static class Parser implements Parsable<CSVData>
 	{
-		private Hints hints;
+		private CSVFile.Hints hints;
 		private CyclicParser<StringToken> token;
 		
 		/**
@@ -65,29 +144,17 @@ public class CSVData extends List<StringToken> implements CSVRow, ListFormattabl
 		 * 
 		 * @see Hints
 		 */
-		public Parser(Hints h)
+		public Parser(CSVFile.Hints h)
 		{
+			token = new CyclicParser<>(new ParserHints(h));
 			hints = h;
-			token = new CyclicParser<>(h.Separator())
-			{
-				@Override
-				public StringTokenParser<StringToken> produce()
-				{
-					return new StringTokenParser.Base();
-				}
-			};
 		}
 
 
 		@Override
-		public List<StringToken> Input()
+		public CSVData generate()
 		{
-			return token.generate();
-		}
-
-		@Override
-		public CSVData generate(List<StringToken> list)
-		{
+			List<StringToken> list = token.generate();
 			int count = hints.Columns();
 			if(list.Count() != count)
 			{
@@ -115,29 +182,70 @@ public class CSVData extends List<StringToken> implements CSVRow, ListFormattabl
 			token.reset();
 		}
 	}
-
-
-	@Override
-	public List<StringToken> FormatList()
+	
+	
+	private List<StringToken> data;
+	
+	/**
+	 * Creates a new {@code CSVData}.
+	 */
+	public CSVData()
 	{
-		return this;
+		data = new List<>();
 	}
-		
-	@Override
-	public ListFormat<StringToken> Formatter(char upper, char lower)
+	
+	/**
+	 * Adds a token to the {@code CSVData}.
+	 * 
+	 * @param tkn  a string token
+	 * 
+	 * 
+	 * @see StringToken
+	 */
+	public void add(StringToken tkn)
 	{
-		return Formatter(upper, SEPARATOR, lower);
+		data.add(tkn);
+	}
+	
+	/**
+	 * Puts a token into the {@code CSVData}.
+	 * 
+	 * @param tkn  a string token
+	 * @param col  a column index
+	 */
+	public void put(StringToken tkn, int col)
+	{
+		data.put(tkn, col);
+	}
+
+
+	@Override
+	public StringToken get(int... coords)
+	{
+		return data.get(coords);
 	}
 	
 	@Override
 	public ListFormat<StringToken> Formatter()
 	{
-		return Formatter(DELIMITER, DELIMITER);
+		return new ListFormat<>(new FormatHints());
 	}
-		
+	
 	@Override
-	public CSVRow.Type Type()
+	public Iterable<StringToken> Tokens()
 	{
-		return CSVRow.Type.DATA;
+		return data;
+	}
+	
+	@Override
+	public int[] Dimensions()
+	{
+		return data.Dimensions();
+	}
+	
+	@Override
+	public Type Type()
+	{
+		return Type.DATA;
 	}
 }

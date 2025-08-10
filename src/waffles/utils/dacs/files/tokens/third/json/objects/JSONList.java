@@ -1,31 +1,117 @@
 package waffles.utils.dacs.files.tokens.third.json.objects;
 
-import waffles.utils.dacs.files.tokens.Token;
+import waffles.utils.dacs.files.tokens.parsers.cyclic.ListParser;
 import waffles.utils.dacs.files.tokens.third.json.JSONObject;
-import waffles.utils.dacs.utilities.formats.ListFormat;
-import waffles.utils.dacs.utilities.formats.ListFormattable;
-import waffles.utils.dacs.utilities.parsers.objects.ListParser;
+import waffles.utils.lang.tokens.ListToken;
+import waffles.utils.lang.tokens.format.ListFormat;
+import waffles.utils.lang.tokens.parsers.Parsable;
 import waffles.utils.sets.indexed.delegate.List;
 
 /**
- * A {@code JSONList} defines a formattable list of {@code JSONObjects}.
+ * A {@code JSONList} defines a {@code JSONObject} list.
+ * A list is enclosed by between two brackets, i.e. [v1, v2]
+ * with its values separated by a comma.
  *
  * @author Waffles
  * @since 15 Mar 2024
  * @version 1.1
  * 
  * 
- * @see ListFormattable
  * @see JSONObject
+ * @see ListToken
  * @see List
  */
-public class JSONList extends List<JSONObject> implements JSONObject, ListFormattable<JSONObject>
+public class JSONList extends List<JSONObject> implements JSONObject, ListToken<JSONObject>
 {
 	/**
-	 * A {@code JSONList.Parser} parses a string to a {@code JSONList}.
-	 * As a subclass of {@code ListParser} it looks for the appropriate
-	 * delimiters '[ , ]' and parses arbitrary {@code JSONObjects}
-	 * in between.
+	 * Defines a default lower bound for a {@code JSONList}.
+	 */
+	public static final char LOWER_BOUND = '[';
+	/**
+	 * Defines a default upper bound for a {@code JSONList}.
+	 */
+	public static final char UPPER_BOUND = ']';
+	/**
+	 * Defines a default separator for a {@code JSONList}.
+	 */
+	public static final char SEPARATOR = ',';
+	
+	
+	/**
+	 * The {@code FormatHints} define format hints for a {@code JSONList}.
+	 *
+	 * @author Waffles
+	 * @since 10 Aug 2025
+	 * @version 1.1
+	 *
+	 * 
+	 * @see ListFormat
+	 */
+	public static class FormatHints implements ListFormat.Hints
+	{
+		@Override
+		public Character LowerBound()
+		{
+			return LOWER_BOUND;
+		}
+
+		@Override
+		public Character UpperBound()
+		{
+			return UPPER_BOUND;
+		}
+		
+		@Override
+		public char Separator()
+		{
+			return SEPARATOR;
+		}
+	}
+	
+	/**
+	 * The {@code ParserHints} define parser hints for a {@code JSONList}.
+	 *
+	 * @author Waffles
+	 * @since 09 Aug 2025
+	 * @version 1.1
+	 *
+	 * 
+	 * @see ListParser
+	 * @see JSONObject
+	 */
+	public static class ParserHints implements ListParser.Hints<JSONObject>
+	{
+		@Override
+		public JSONObject.Parser Parser()
+		{
+			return new JSONObject.Parser();
+		}
+		
+		
+		@Override
+		public char LowerBound()
+		{
+			return LOWER_BOUND;
+		}
+		
+		@Override
+		public char UpperBound()
+		{
+			return UPPER_BOUND;
+		}
+		
+		@Override
+		public char Separator()
+		{
+			return SEPARATOR;
+		}
+	}
+	
+	/**
+	 * A {@code JSONList.Parser} parses a{@code JSONList}.
+	 * As a subclass of {@code ListParser} it looks for the
+	 * appropriate delimiters '[ , ]' and parses any
+	 * {@code JSONObject} it finds in between.
 	 *
 	 * @author Waffles
 	 * @since 16 Mar 2024
@@ -33,9 +119,9 @@ public class JSONList extends List<JSONObject> implements JSONObject, ListFormat
 	 * 
 	 * 
 	 * @see JSONList
-	 * @see Token
+	 * @see Parsable
 	 */
-	public static class Parser implements Token.Parser<JSONList>
+	public static class Parser implements Parsable<JSONList>
 	{
 		private ListParser<JSONObject> list;		
 		
@@ -44,22 +130,9 @@ public class JSONList extends List<JSONObject> implements JSONObject, ListFormat
 		 */
 		public Parser()
 		{
-			list = new ListParser<>('[', ',', ']')
-			{
-				@Override
-				public JSONObject.Parser produce()
-				{
-					return new JSONObject.Parser();
-				}	
-			};
+			list = new ListParser<>(new ParserHints());
 		}
 
-		
-		@Override
-		public boolean consume(Character s)
-		{
-			return list.consume(s);
-		}
 		
 		@Override
 		public JSONList generate()
@@ -73,7 +146,13 @@ public class JSONList extends List<JSONObject> implements JSONObject, ListFormat
 			
 			return tgt;
 		}
-
+		
+		@Override
+		public boolean consume(Character s)
+		{
+			return list.consume(s);
+		}
+		
 		@Override
 		public void reset()
 		{
@@ -83,20 +162,14 @@ public class JSONList extends List<JSONObject> implements JSONObject, ListFormat
 	
 	
 	@Override
-	public Iterable<JSONObject> FormatList()
+	public ListFormat<JSONObject> Formatter()
 	{
-		return this;
-	}
-	
-	@Override
-	public ListFormat<JSONObject> Formatter(boolean isCompact)
-	{
-		return new ListFormat<>(isCompact, '[', ',', ']');
+		return new ListFormat<>(new FormatHints());
 	}
 
 	@Override
-	public ListFormat<JSONObject> Formatter()
+	public Iterable<JSONObject> Tokens()
 	{
-		return Formatter(true);
+		return this;
 	}
 }

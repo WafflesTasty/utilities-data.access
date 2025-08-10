@@ -3,7 +3,7 @@ package waffles.utils.dacs.files.tokens.third.toml.tree;
 import java.util.Iterator;
 
 import waffles.utils.dacs.files.tokens.third.toml.tree.nodes.TOMLNode;
-import waffles.utils.lang.Format;
+import waffles.utils.lang.tokens.format.Format;
 import waffles.utils.sets.trees.traversal.DepthFirst;
 import waffles.utils.tools.collections.iterators.EmptyIterator;
 
@@ -21,9 +21,9 @@ import waffles.utils.tools.collections.iterators.EmptyIterator;
 public class TOMLFormat implements Format<TOMLTree>
 {
 	/**
-	 * The {@code TOMLFormat.Verbose} class iterates over the
+	 * A {@code TOMLFormat.Descriptor} iterates over the
 	 * nodes in a {@code TOMLTree} in a depth-first manner,
-	 * performing verbose parsing on each in turn.
+	 * performing descriptive parsing on each in turn.
 	 *
 	 * @author Waffles
 	 * @since 21 Mar 2024
@@ -32,21 +32,21 @@ public class TOMLFormat implements Format<TOMLTree>
 	 * 
 	 * @see Iterator
 	 */
-	public class Verbose implements Iterator<String>
+	public class Descriptor implements Iterator<String>
 	{
 		private String next;
 		private Iterator<String> text;
 		private Iterator<TOMLNode> nodes;
 		
 		/**
-		 * Creates a new {@code Verbose}.
+		 * Creates a new {@code Descriptor}.
 		 * 
 		 * @param node  a root node
 		 * 
 		 * 
 		 * @see TOMLNode
 		 */
-		public Verbose(TOMLNode node)
+		public Descriptor(TOMLNode node)
 		{
 			nodes = new DepthFirst<>(node);
 			text = new EmptyIterator<>();
@@ -66,7 +66,7 @@ public class TOMLFormat implements Format<TOMLTree>
 			if(nodes.hasNext())
 			{
 				TOMLNode node = nodes.next();
-				text = node.verbose().iterator();
+				text = node.describe().iterator();
 				return findNext();
 			}
 			
@@ -90,14 +90,14 @@ public class TOMLFormat implements Format<TOMLTree>
 	
 	
 	@Override
-	public Iterator<String> verbose(TOMLTree tree)
+	public Iterable<String> describe(TOMLTree t)
 	{
-		return new Verbose(tree.Root());
+		return () -> new Descriptor(t.Root());
 	}
 	
 	@Override
-	public String parse(TOMLTree tree)
+	public String parse(TOMLTree t)
 	{
-		return tree.Root().parse();
+		return t.Root().condense();
 	}
 }

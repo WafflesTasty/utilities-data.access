@@ -2,7 +2,7 @@ package waffles.utils.dacs.utilities;
 
 import java.nio.Buffer;
 import waffles.utils.sets.CountableSet;
-import waffles.utils.tools.patterns.semantics.Decorator;
+import waffles.utils.tools.patterns.properties.values.Decorator;
 
 /**
  * A {@code Volatile} object maintains data in a {@code ByteBuffer}.

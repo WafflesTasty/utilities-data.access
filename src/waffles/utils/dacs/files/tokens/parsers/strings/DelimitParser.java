@@ -1,10 +1,11 @@
-package waffles.utils.dacs.utilities.parsers.strings;
+package waffles.utils.dacs.files.tokens.parsers.strings;
 
-import waffles.utils.dacs.utilities.parsers.BasicParser;
+import waffles.utils.lang.Characters;
+import waffles.utils.lang.tokens.parsers.basic.BasicParser;
 import waffles.utils.tools.primitives.Array;
 
 /**
- * A {@code StringParser} parses an arbitrary string enclosed by double quotes '"'.
+ * A {@code DelimitParser} parses an arbitrary string enclosed by delimiters.
  *
  * @author Waffles
  * @since 18 Mar 2024
@@ -13,20 +14,20 @@ import waffles.utils.tools.primitives.Array;
  * 
  * @see BasicParser
  */
-public class StringParser extends BasicParser<String>
+public class DelimitParser extends BasicParser<String>
 {
 	/**
-	 * Defines the default delimiter used for parsing {@code Strings}.
+	 * Defines a default delimiter.
 	 */
 	public static final char DELIM = '"';
 	/**
-	 * Defines the default escape used for parsing {@code Strings}.
+	 * Defines a default escape.
 	 */
 	public static final char ESCAPER = '\\';
 
 	
 	private char[] ESCAPEES = new char[]{'"', '\\', '/', 'b', 'f', 'n', 'r', 't'};
-	
+
 	private static enum State
 	{
 		INITIAL,
@@ -38,42 +39,40 @@ public class StringParser extends BasicParser<String>
 	
 	
 	private State state;
-	private char escape;
-	private char upper, lower;
+	private char esc, low, upp;
 	
 	/**
-	 * Creates a new {@code StringParser}.
+	 * Creates a new {@code DelimitParser}.
 	 * The default delimiter is '"'.
 	 * The default escape is '\'.
 	 */
-	public StringParser()
+	public DelimitParser()
 	{
 		this(DELIM);
 	}
 	
 	/**
-	 * Creates a new {@code StringParser}.
+	 * Creates a new {@code DelimitParser}.
 	 * The default escape is '\'.
 	 * 
 	 * @param d  a delimiter
 	 */
-	public StringParser(char d)
+	public DelimitParser(char d)
 	{
 		this(d, d);
 	}
 	
 	/**
-	 * Creates a new {@code StringParser}.
+	 * Creates a new {@code DelimitParser}.
 	 * 
-	 * @param u  an upper delimiter
 	 * @param l   a lower delimiter
+	 * @param u  an upper delimiter
 	 */
-	public StringParser(char u, char l)
+	public DelimitParser(char l, char u)
 	{
 		state = State.INITIAL;
-		escape = ESCAPER;
-		upper = u;
-		lower = l;
+		low = l; upp = u;
+		esc = ESCAPER;
 	}	
 	
 	
@@ -89,7 +88,10 @@ public class StringParser extends BasicParser<String>
 		{
 		case INITIAL:
 		{
-			if(s == upper)
+			if(Characters.isWhiteSpace(s))
+				return true;
+			
+			if(s == low)
 			{
 				state = State.RUNNING;
 				return true;
@@ -100,9 +102,9 @@ public class StringParser extends BasicParser<String>
 		}
 		case RUNNING:
 		{
-			if(s == escape)
+			if(s == esc)
 				state = State.ESCAPE;
-			if(s == lower)
+			if(s == upp)
 				state = State.DONE;
 			return true;
 		}
@@ -124,7 +126,7 @@ public class StringParser extends BasicParser<String>
 	}
 	
 	@Override
-	public String generate(String s)
+	public String compute(String s)
 	{
 		if(state == State.DONE)
 		{

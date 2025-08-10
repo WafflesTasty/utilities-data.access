@@ -2,8 +2,8 @@ package waffles.utils.dacs.files.tokens.third.csv.rows;
 
 import waffles.utils.dacs.files.tokens.literals.StringToken;
 import waffles.utils.dacs.files.tokens.third.csv.CSVRow;
-import waffles.utils.dacs.utilities.parsers.strings.StringGateParser;
-import waffles.utils.lang.Format;
+import waffles.utils.lang.tokens.format.Format;
+import waffles.utils.lang.tokens.parsers.strings.GatedParser;
 
 /**
  * A {@code CSVComment} defines a {@code CSVRow} representing a comment.
@@ -15,15 +15,15 @@ import waffles.utils.lang.Format;
  * 
  * @see CSVRow
  */
-public class CSVComment implements CSVRow, Comparable<CSVComment>
+public class CSVComment extends CSVRow
 {
 	/**
-	 * Returns a delimiter for a {@code CSVComment}.
+	 * Defines a delimiter for a {@code CSVComment}.
 	 */
 	public static final char DELIMITER = '#';
 		
 	/**
-	 * A {@code CSVComment.Formatter} can format {@code CSVComments}.
+	 * A {@code Formatter} parses a {@code CSVComment} into a string.
 	 *
 	 * @author Waffles
 	 * @since 21 Mar 2024
@@ -43,7 +43,7 @@ public class CSVComment implements CSVRow, Comparable<CSVComment>
 	}
 		
 	/**
-	 * A {@code CSVComment.Parser} parses {@code CSVComments} as string gates.
+	 * A {@code Parser} parses a {@code CSVComment} as a string gate.
 	 * A comment line can be preceded by whitespace but
 	 * must otherwise start with a hashtag #,
 	 * i.e. # This is a comment.
@@ -53,10 +53,10 @@ public class CSVComment implements CSVRow, Comparable<CSVComment>
 	 * @version 1.1
 	 *
 	 * 
-	 * @see StringGateParser
+	 * @see GatedParser
 	 * @see CSVComment
 	 */
-	public static class Parser extends StringGateParser<CSVComment>
+	public static class Parser extends GatedParser<CSVComment>
 	{
 		/**
 		 * Creates a new {@code Parser}.
@@ -68,14 +68,13 @@ public class CSVComment implements CSVRow, Comparable<CSVComment>
 
 		
 		@Override
-		public CSVComment generate(String cmt)
+		public CSVComment compute(String cmt)
 		{
 			return new CSVComment(cmt);
 		}
 	}
 
 
-	private int line;
 	private StringToken token;
 	
 	/**
@@ -88,9 +87,8 @@ public class CSVComment implements CSVRow, Comparable<CSVComment>
 		setToken(s);
 	}
 	
-	
 	/**
-	 * Changes the token of the {@code CSVComment}.
+	 * Changes the {@code CSVComment} token.
 	 * 
 	 * @param s  a comment string
 	 */
@@ -106,7 +104,7 @@ public class CSVComment implements CSVRow, Comparable<CSVComment>
 	}
 	
 	/**
-	 * Returns the token of the {@code CSVComment}.
+	 * Returns the {@code CSVComment} token.
 	 * 
 	 * @return  a string token
 	 * 
@@ -119,33 +117,6 @@ public class CSVComment implements CSVRow, Comparable<CSVComment>
 	}
 
 	
-	/**
-	 * Changes the line of the {@code CSVComment}.
-	 * 
-	 * @param l  a line number
-	 */
-	public void setLine(int l)
-	{
-		line = l;
-	}
-	
-	/**
-	 * Returns the line of the {@code CSVComment}.
-	 * 
-	 * @return  a line number
-	 */
-	public int Line()
-	{
-		return line;
-	}
-
-	
-	@Override
-	public int compareTo(CSVComment c)
-	{
-		return Line() - c.Line();
-	}
-	
 	@Override
 	public Format<?> Formatter()
 	{
@@ -157,6 +128,4 @@ public class CSVComment implements CSVRow, Comparable<CSVComment>
 	{
 		return Type.COMMENT;
 	}
-
-
 }

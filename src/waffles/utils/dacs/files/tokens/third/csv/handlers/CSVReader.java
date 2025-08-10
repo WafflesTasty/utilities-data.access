@@ -5,11 +5,11 @@ import java.util.Iterator;
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.Reader;
 import waffles.utils.dacs.files.plaintext.strings.StringReader;
-import waffles.utils.dacs.files.tokens.third.csv.CSVRow;
+import waffles.utils.dacs.files.tokens.parsers.ChoiceParser;
 import waffles.utils.dacs.files.tokens.third.csv.CSVFile.Hints;
+import waffles.utils.dacs.files.tokens.third.csv.CSVRow;
 import waffles.utils.dacs.files.tokens.third.csv.rows.CSVComment;
 import waffles.utils.dacs.files.tokens.third.csv.rows.CSVData;
-import waffles.utils.dacs.utilities.parsers.choice.ChoiceParser;
 import waffles.utils.lang.Strings;
 
 /**
@@ -21,9 +21,9 @@ import waffles.utils.lang.Strings;
  * @version 1.1
  *
  * 
- * @see CSVRow
- * @see Iterable
  * @see Reader
+ * @see Iterable
+ * @see CSVRow
  */
 public class CSVReader implements Reader<Iterable<CSVRow>>
 {
@@ -38,7 +38,7 @@ public class CSVReader implements Reader<Iterable<CSVRow>>
 	 * @see ChoiceParser
 	 * @see CSVRow
 	 */
-	public class Parser extends ChoiceParser<CSVRow>
+	public class Parser extends ChoiceParser<CSVRow, CSVRow>
 	{
 		/**
 		 * Creates a new {@code Parser}.
@@ -49,15 +49,11 @@ public class CSVReader implements Reader<Iterable<CSVRow>>
 			add(new CSVData.Parser(hints));
 		}
 
-
+		
 		@Override
-		public void reset()
+		public CSVRow compute(CSVRow r)
 		{
-//			Parse an initial space to load
-//			CSVComment as the initial
-//			parser target.			
-			super.reset();
-			consume(' ');
+			return r;
 		}
 	}
 	
@@ -92,8 +88,8 @@ public class CSVReader implements Reader<Iterable<CSVRow>>
 			reader = new StringReader();
 			lines = reader.read(file).iterator();
 		}
-		
 
+		
 		@Override
 		public boolean hasNext()
 		{
@@ -105,12 +101,11 @@ public class CSVReader implements Reader<Iterable<CSVRow>>
 		{
 			parser.reset();
 			String s = lines.next();
-			System.out.println(s);
 			for(char c : Strings.iterate(s))
 			{
 				parser.consume(c);
 			}
-			
+
 			return parser.generate();
 		}
 		

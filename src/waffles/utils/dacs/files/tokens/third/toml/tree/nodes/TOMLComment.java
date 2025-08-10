@@ -1,8 +1,7 @@
 package waffles.utils.dacs.files.tokens.third.toml.tree.nodes;
 
-import waffles.utils.dacs.files.tokens.third.toml.TOMLParser;
-import waffles.utils.dacs.utilities.parsers.strings.StringGateParser;
-import waffles.utils.lang.Format;
+import waffles.utils.dacs.files.tokens.third.toml.TOMLParser.Data;
+import waffles.utils.lang.tokens.parsers.strings.GatedParser;
 
 /**
  * A {@code TOMLComment} defines a {@code TOMLNode} representing a comment line.
@@ -22,7 +21,7 @@ public class TOMLComment extends TOMLNode
 	public static final char DELIMITER = '#';
 	
 	/**
-	 * A {@code TOMLComment.Parser} parses a comment line.
+	 * A {@code TOMLComment.Parser} parses a {@code TOMLComment}.
 	 * A comment line can be preceded by whitespace but
 	 * must otherwise start with a hashtag #,
 	 * i.e. # This is a comment.
@@ -32,10 +31,10 @@ public class TOMLComment extends TOMLNode
 	 * @version 1.1
 	 *
 	 * 
-	 * @see StringGateParser
-	 * @see TOMLParser
+	 * @see GatedParser
+	 * @see Data
 	 */
-	public static class Parser extends StringGateParser<TOMLParser.Data> implements TOMLParser
+	public static class Parser extends GatedParser<Data>
 	{
 		/**
 		 * Creates a new {@code Parser}.
@@ -47,29 +46,28 @@ public class TOMLComment extends TOMLNode
 
 
 		@Override
-		public Data generate(String cmt)
+		public Data compute(String cmt)
 		{
 			return new Data(new TOMLComment(cmt), 1);
 		}
 	}
 	
 	/**
-	 * A {@code TOMLComment.Formatter} performs basic parsing for a {@code TOMLComment}.
+	 * A {@code TOMLComment.Formatter} formats a {@code TOMLComment}.
 	 *
 	 * @author Waffles
 	 * @since 21 Mar 2024
 	 * @version 1.1
 	 * 
 	 * 
-	 * @see TOMLComment
-	 * @see Format
+	 * @see TOMLNode
 	 */
 	public static class Formatter extends TOMLNode.Formatter<TOMLComment>
 	{
 		@Override
 		public String parse(TOMLComment c)
 		{
-			String cmt = c.Key().parse();
+			String cmt = c.Key().condense();
 			cmt = cmt.substring(1, cmt.length()-1);
 			return DELIMITER + " " + cmt;
 		}

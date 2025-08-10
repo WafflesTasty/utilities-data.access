@@ -1,6 +1,6 @@
-package waffles.utils.dacs.utilities.parsers.primitive;
+package waffles.utils.dacs.files.tokens.parsers.primitive;
 
-import waffles.utils.dacs.utilities.parsers.BasicParser;
+import waffles.utils.lang.tokens.parsers.basic.BasicParser;
 import waffles.utils.tools.primitives.Array;
 import waffles.utils.tools.primitives.Floats;
 
@@ -41,6 +41,12 @@ public class FloatParser extends BasicParser<Float>
 		state = State.INITIAL;
 	}
 	
+	
+	@Override
+	public Float compute(String s)
+	{
+		return Floats.parse(s);
+	}
 		
 	@Override
 	public boolean allows(Character s)
@@ -88,17 +94,11 @@ public class FloatParser extends BasicParser<Float>
 			return false;
 		}
 	}
-	
-	@Override
-	public Float generate(String s)
-	{
-		return Floats.parse(s);
-	}
-	
+		
 	@Override
 	public void reset()
 	{
-		super.reset();
 		state = State.INITIAL;
+		super.reset();
 	}
 }

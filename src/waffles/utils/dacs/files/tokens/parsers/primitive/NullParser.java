@@ -1,6 +1,6 @@
-package waffles.utils.dacs.utilities.parsers.primitive;
+package waffles.utils.dacs.files.tokens.parsers.primitive;
 
-import waffles.utils.dacs.utilities.parsers.strings.FixedSetParser;
+import waffles.utils.dacs.files.tokens.parsers.strings.FixedSetParser;
 
 /**
  * A {@code NullParser} parses a null value from a string.
@@ -20,12 +20,12 @@ public class NullParser<O> extends FixedSetParser<O>
 	 */
 	public NullParser()
 	{
-		super("null");
+		super("null", "NULL");
 	}
 
 
 	@Override
-	public O generate(String s)
+	public O compute(String s)
 	{
 		return null;
 	}

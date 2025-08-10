@@ -3,23 +3,27 @@ package waffles.utils.dacs.files.tokens;
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.Reader;
 import waffles.utils.dacs.files.plaintext.chars.CharReader;
-import waffles.utils.dacs.files.tokens.Token.Parser;
+import waffles.utils.lang.tokens.Token;
+import waffles.utils.lang.tokens.parsers.Parsable;
 
 /**
- * A {@code TokenReader} reads {@code Tokens} from a {@code File}.
+ * A {@code TokenReader} reads a {@code Token} from a {@code File}.
+ * The behavior of the reader is dependent on a {@code Parser}, which
+ * runs through all characters in the {{@link #read(Iterable)}
+ * method and generates the resulting {@code Token}.
  *
  * @author Waffles
  * @since 05 Dec 2023
  * @version 1.1
  * 
  * 
- * @param <T>  a token class
+ * @param <T>  a token type
  * @see Reader
  * @see Token
  */
 public class TokenReader<T extends Token> implements Reader<T>
 {	
-	private Parser<T> parser;
+	private Parsable<T> parser;
 	
 	/**
 	 * Creates a new {@code TokenReader}.
@@ -27,9 +31,9 @@ public class TokenReader<T extends Token> implements Reader<T>
 	 * @param p  a token parser
 	 * 
 	 * 
-	 * @see Parser
+	 * @see Parsable
 	 */
-	public TokenReader(Parser<T> p)
+	public TokenReader(Parsable<T> p)
 	{
 		parser = p;
 	}
@@ -40,9 +44,9 @@ public class TokenReader<T extends Token> implements Reader<T>
 	 * @return  a token parser
 	 * 
 	 * 
-	 * @see Token
+	 * @see Parsable
 	 */
-	public Parser<T> Parser()
+	public Parsable<T> Parser()
 	{
 		return parser;
 	}

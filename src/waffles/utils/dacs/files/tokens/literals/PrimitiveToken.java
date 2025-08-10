@@ -1,11 +1,12 @@
 package waffles.utils.dacs.files.tokens.literals;
 
-import waffles.utils.dacs.files.tokens.Token;
-import waffles.utils.lang.Format;
+import waffles.utils.dacs.files.tokens.parsers.primitive.choice.PrimitiveParser;
+import waffles.utils.lang.tokens.Token;
+import waffles.utils.lang.tokens.format.Format;
 
 /**
  * A {@code PrimitiveToken} defines a {@code Token} for a primitive value.
- * Primitives are parsed based on its {@code toString()} method.
+ * Primitives are parsed based on their {@code toString()} method.
  *
  * @author Waffles
  * @since 21 Mar 2024
@@ -16,6 +17,26 @@ import waffles.utils.lang.Format;
  */
 public class PrimitiveToken implements Token
 {
+	/**
+	 * A {@code PrimitiveToken.Parser} generates primitive tokens.
+	 *
+	 * @author Waffles
+	 * @since 09 Aug 2025
+	 * @version 1.1
+	 *
+	 * 
+	 * @see PrimitiveParser
+	 */
+	public static class Parser extends PrimitiveParser<PrimitiveToken>
+	{
+		@Override
+		public PrimitiveToken compute(Object o)
+		{
+			return new PrimitiveToken(o);
+		}
+	}
+	
+	
 	private Object value;
 	
 	/**

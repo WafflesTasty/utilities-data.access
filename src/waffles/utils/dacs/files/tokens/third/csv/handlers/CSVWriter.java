@@ -18,9 +18,9 @@ import waffles.utils.dacs.utilities.errors.AccessError;
  * @version 1.1
  *
  * 
- * @see CSVRow
  * @see Iterable
  * @see Writer
+ * @see CSVRow
  */
 public class CSVWriter implements Writer<Iterable<CSVRow>>
 {
@@ -33,9 +33,9 @@ public class CSVWriter implements Writer<Iterable<CSVRow>>
 		try
 		{
 			writer = Files.newBufferedWriter(f.Path(), FileSystem.CHAR_SET);
-			for(CSVRow row : rows)
+			for(CSVRow r : rows)
 			{
-				writer.write(row.parse() + "\r\n");
+				writer.write(r.condense() + "\r\n");
 			}
 			writer.close();
 			file = f;

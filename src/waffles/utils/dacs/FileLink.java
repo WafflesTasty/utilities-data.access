@@ -5,7 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import waffles.utils.dacs.utilities.errors.AccessError;
-import waffles.utils.tools.patterns.semantics.Immutable;
+import waffles.utils.tools.patterns.properties.Immutable;
 
 /**
  * A {@code FileLink} defines a symbolic link in the {@code FileSystem}.

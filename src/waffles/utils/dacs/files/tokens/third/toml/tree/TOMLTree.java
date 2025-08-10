@@ -1,7 +1,7 @@
 package waffles.utils.dacs.files.tokens.third.toml.tree;
 
 import waffles.utils.dacs.files.tokens.third.toml.tree.nodes.TOMLNode;
-import waffles.utils.lang.Formattable;
+import waffles.utils.lang.tokens.Token;
 import waffles.utils.sets.trees.Tree;
 import waffles.utils.tools.primitives.Array;
 
@@ -17,10 +17,10 @@ import waffles.utils.tools.primitives.Array;
  * @version 1.1
  *
  * 
- * @see Formattable
+ * @see Token
  * @see Tree
  */
-public class TOMLTree extends Tree implements Formattable
+public class TOMLTree extends Tree implements Token
 {
 	/**
 	 * Returns a child of the {@code TOMLTree}.

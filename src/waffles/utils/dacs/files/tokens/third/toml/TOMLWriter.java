@@ -21,9 +21,9 @@ public class TOMLWriter implements Writer<TOMLTree>
 	private StringWriter writer;
 	
 	@Override
-	public void write(TOMLTree tree, File f)
+	public void write(TOMLTree t, File f)
 	{
 		writer = new StringWriter();
-		writer.write(tree.verbose(), f);
+		writer.write(t.describe(), f);
 	}
 }

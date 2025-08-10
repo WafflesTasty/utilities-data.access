@@ -1,12 +1,15 @@
 package waffles.utils.dacs.files.tokens.third.json.objects;
 
+import waffles.utils.dacs.files.tokens.literals.PrimitiveToken;
 import waffles.utils.dacs.files.tokens.literals.StringToken;
+import waffles.utils.dacs.files.tokens.parsers.primitive.choice.StringParser;
 import waffles.utils.dacs.files.tokens.third.json.JSONObject;
-import waffles.utils.dacs.utilities.parsers.tokens.StringTokenParser;
-import waffles.utils.lang.Format;
+import waffles.utils.lang.tokens.format.Format;
 
 /**
- * A {@code JSONLiteral} parses an object value through its {@code toString()} method.
+ * A {@code JSONLiteral} defines a primitive value in a {@code JSONFile}.
+ * It behaves precisely like a {@code StringToken} in terms of
+ * formatting and parsing methods.
  *
  * @author Waffles
  * @since 15 Mar 2024
@@ -18,13 +21,15 @@ import waffles.utils.lang.Format;
  */
 public class JSONLiteral extends StringToken implements JSONObject
 {
-	private static final char DELIMITER = '"';
-	
+	/**
+	 * Defines the default delimiter for a {@code JSONLiteral}.
+	 */
+	public static final char DELIMITER = '"';
 	
 	/**
-	 * A {@code JSONLiteral.Parser} parses a string to a {@code JSONLiteral}.
-	 * As a subclass of {@code LiteralParser} it attempts the following
-	 * primitive type parsers in succession.
+	 * A {@code JSONLiteral.Parser} parses a s{@code JSONLiteral}.
+	 * As a subclass of {@code StringParser} it attempts the
+	 * following primitive type parsers in succession.
 	 * <ul>
 	 * <li> {@code NullParser} </li>
 	 * <li> {@code BooleanParser} </li>
@@ -33,16 +38,15 @@ public class JSONLiteral extends StringToken implements JSONObject
 	 * <li> {@code StringParser} </li>
 	 * </ul>
 	 * 
-	 *
 	 * @author Waffles
 	 * @since 16 Mar 2024
 	 * @version 1.1
 	 *
 	 * 
-	 * @see StringTokenParser
+	 * @see StringParser
 	 * @see JSONLiteral
 	 */
-	public static class Parser extends StringTokenParser<JSONLiteral>
+	public static class Parser extends StringParser<JSONLiteral>
 	{
 		/**
 		 * Creates a new {@code JSONLiteral.Parser}.
@@ -54,9 +58,9 @@ public class JSONLiteral extends StringToken implements JSONObject
 
 		
 		@Override
-		public JSONLiteral generate(Object obj)
+		public JSONLiteral compute(Object o)
 		{
-			return new JSONLiteral(obj);
+			return new JSONLiteral(o);
 		}
 	}
 	
@@ -102,7 +106,7 @@ public class JSONLiteral extends StringToken implements JSONObject
 	}
 	
 	/**
-	 * Creates a new {@code StringToken}.
+	 * Creates a new {@code JSONLiteral}.
 	 * 
 	 * @param val  an object value
 	 */
@@ -113,8 +117,8 @@ public class JSONLiteral extends StringToken implements JSONObject
 
 
 	@Override
-	public Format<JSONLiteral> Formatter(boolean isCompact)
+	public Format<PrimitiveToken> Formatter()
 	{
-		return obj -> Formatter(DELIMITER).parse(obj);
+		return Formatter(DELIMITER);
 	}
 }

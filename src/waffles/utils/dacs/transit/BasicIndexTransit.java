@@ -1,6 +1,6 @@
 package waffles.utils.dacs.transit;
 
-import waffles.utils.tools.patterns.semantics.Clearable;
+import waffles.utils.tools.patterns.basic.Clearable;
 
 /**
  * A {@code BasicIndexTransit} provides a default {@code Transit.Indexed} implementation.

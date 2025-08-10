@@ -1,7 +1,7 @@
 package waffles.utils.dacs.transit.domain;
 
 import waffles.utils.dacs.transit.Transit;
-import waffles.utils.tools.patterns.persistence.Data;
+import waffles.utils.tools.patterns.properties.counters.data.Data;
 
 /**
  * A {@code Domain} defines a {@code Transit} as a basic data pattern.
