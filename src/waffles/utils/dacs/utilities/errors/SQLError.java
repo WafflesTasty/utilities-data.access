@@ -1,6 +1,6 @@
 package waffles.utils.dacs.utilities.errors;
 
-import waffles.utils.dacs.db.sql.SQLAccess;
+import waffles.utils.dacs.utilities.encrypt.Accessible;
 
 /**
  * An {@code SQLError} is thrown whenever an error occurs during {@code Database} access.
@@ -23,11 +23,11 @@ public class SQLError extends RuntimeException
 	 * @param acs  an sql access
 	 * 
 	 * 
-	 * @see SQLAccess
+	 * @see Accessible
 	 */
-	public SQLError(SQLAccess acs)
+	public SQLError(Accessible acs)
 	{
-		super("Could not access database " + acs.Host() + " with username " + acs.Username() + ".");
+		super("Could not access database " + acs.Host() + " with username " + acs.User() + ".");
 	}
 	
 	/**
