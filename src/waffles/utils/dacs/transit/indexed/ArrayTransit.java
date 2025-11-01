@@ -2,7 +2,7 @@ package waffles.utils.dacs.transit.indexed;
 
 import waffles.utils.dacs.transit.BasicIndexTransit;
 import waffles.utils.dacs.transit.Transit;
-import waffles.utils.sets.arrays.ArrayLike;
+import waffles.utils.sets.indexed.array.ArrayLike;
 
 /**
  * An {@code ArrayTransit} provides a {@code BasicIndexTransit} implementation which

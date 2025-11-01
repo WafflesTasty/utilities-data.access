@@ -4,7 +4,7 @@ import java.nio.ShortBuffer;
 
 import waffles.utils.dacs.transit.MultiTransit;
 import waffles.utils.dacs.utilities.Volatile;
-import waffles.utils.sets.arrays.set.ShortSet;
+import waffles.utils.sets.indexed.array.set.ShortSet;
 
 /**
  * A {@code ShortTransit} loads and unloads short arrays into a {@code ShortBuffer}.

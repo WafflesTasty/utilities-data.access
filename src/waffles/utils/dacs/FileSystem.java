@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import waffles.utils.sets.utilities.collectables.Hierarchy;
+import waffles.utils.sets.utilities.rooted.Hierarchy;
 
 /**
  * The {@code FileSystem} defines static operations that target the host file system.

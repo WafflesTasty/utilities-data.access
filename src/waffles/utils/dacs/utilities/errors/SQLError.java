@@ -3,7 +3,7 @@ package waffles.utils.dacs.utilities.errors;
 import waffles.utils.dacs.db.sql.SQLAccess;
 
 /**
- * An {@code SQLError} is thrown whenever a database cannot be accessed.
+ * An {@code SQLError} is thrown whenever an error occurs during {@code Database} access.
  *
  * @author Waffles
  * @since Sep 17, 2019
@@ -28,5 +28,15 @@ public class SQLError extends RuntimeException
 	public SQLError(SQLAccess acs)
 	{
 		super("Could not access database " + acs.Host() + " with username " + acs.Username() + ".");
+	}
+	
+	/**
+	 * Creates a new {@code SQLError}.
+	 * 
+	 * @param sql  an sql string
+	 */
+	public SQLError(String sql)
+	{
+		super("Invalid SQL statement: " + sql);
 	}
 }

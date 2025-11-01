@@ -4,7 +4,7 @@ import java.nio.DoubleBuffer;
 
 import waffles.utils.dacs.transit.MultiTransit;
 import waffles.utils.dacs.utilities.Volatile;
-import waffles.utils.sets.arrays.set.DoubleSet;
+import waffles.utils.sets.indexed.array.set.DoubleSet;
 
 /**
  * A {@code DoubleTransit} loads and unloads double arrays into a {@code DoubleBuffer}.

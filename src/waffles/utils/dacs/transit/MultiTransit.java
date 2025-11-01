@@ -1,6 +1,6 @@
 package waffles.utils.dacs.transit;
 
-import waffles.utils.sets.arrays.ArrayLike;
+import waffles.utils.sets.indexed.array.ArrayLike;
 import waffles.utils.tools.patterns.properties.counters.data.Persistible;
 
 /**

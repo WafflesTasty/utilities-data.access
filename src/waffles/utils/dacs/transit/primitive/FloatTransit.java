@@ -4,7 +4,7 @@ import java.nio.FloatBuffer;
 
 import waffles.utils.dacs.transit.MultiTransit;
 import waffles.utils.dacs.utilities.Volatile;
-import waffles.utils.sets.arrays.like.FloatArray;
+import waffles.utils.sets.indexed.array.like.FloatArray;
 
 /**
  * A {@code FloatTransit} loads and unloads float arrays into a {@code FloatBuffer}.

@@ -4,7 +4,7 @@ import java.nio.LongBuffer;
 
 import waffles.utils.dacs.transit.MultiTransit;
 import waffles.utils.dacs.utilities.Volatile;
-import waffles.utils.sets.arrays.set.LongSet;
+import waffles.utils.sets.indexed.array.set.LongSet;
 
 /**
  * A {@code LongTransit} loads and unloads long arrays into a {@code LongBuffer}.

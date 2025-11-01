@@ -1,7 +1,5 @@
 package waffles.utils.dacs.files.plaintext;
 
-import waffles.utils.lang.time.iso.ISODate;
-import waffles.utils.lang.time.iso.ISOTime;
 import waffles.utils.lang.utilities.ISO;
 
 /**
@@ -31,8 +29,8 @@ public interface Logger
 	 */
 	public default void logException(Throwable e)
 	{
-		String date = ISODate.now().parse(ISO.Format.LONG);
-		String time = ISOTime.now().parse(ISO.Format.LONG);
+		String date = ISO.Date.now().condense(ISO.Format.LONG);
+		String time = ISO.Time.now().condense(ISO.Format.LONG);
 		
 		logMessage(e + " at " + time + ", " + date + ":");
 		for(StackTraceElement emt : e.getStackTrace())

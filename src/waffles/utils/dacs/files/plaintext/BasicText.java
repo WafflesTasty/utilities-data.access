@@ -2,20 +2,20 @@ package waffles.utils.dacs.files.plaintext;
 
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.plaintext.strings.StringReader;
-import waffles.utils.sets.indexed.delegate.List;
+import waffles.utils.sets.countable.wrapper.JavaList;
 import waffles.utils.tools.collections.Iterables;
 
 /**
- * A {@code BasicText} defines a text file as a {@code List} of strings.
+ * A {@code BasicText} defines a text file as a {@code JavaList} of strings.
  *
  * @author Waffles
  * @since Sep 17, 2019
  * @version 1.0
  * 
  * 
- * @see List
+ * @see JavaList
  */
-public class BasicText extends List<String>
+public class BasicText extends JavaList<String>
 {
 	/**
 	 * Creates a new {@code BasicText}.

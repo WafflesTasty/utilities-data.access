@@ -4,7 +4,7 @@ import java.nio.IntBuffer;
 
 import waffles.utils.dacs.transit.MultiTransit;
 import waffles.utils.dacs.utilities.Volatile;
-import waffles.utils.sets.arrays.set.IntegerSet;
+import waffles.utils.sets.indexed.array.set.IntegerSet;
 
 /**
  * An {@code IntegerTransit} loads and unloads integer arrays into an {@code IntBuffer}.

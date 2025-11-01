@@ -4,7 +4,7 @@ import java.nio.ByteBuffer;
 
 import waffles.utils.dacs.transit.MultiTransit;
 import waffles.utils.dacs.utilities.Volatile;
-import waffles.utils.sets.arrays.set.ByteSet;
+import waffles.utils.sets.indexed.array.set.ByteSet;
 
 /**
  * A {@code ByteTransit} loads and unloads byte arrays into a {@code ByteBuffer}.

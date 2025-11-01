@@ -6,11 +6,11 @@ import java.awt.image.DataBufferByte;
 
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.assets.readers.BufferedImageReader;
-import waffles.utils.geom.bounds.Bounded2D;
-import waffles.utils.geom.bounds.Bounds2D;
-import waffles.utils.geom.collidable.axial.cuboid.Rectangle;
-import waffles.utils.geom.utilities.Shapeable;
-import waffles.utils.sets.arrays.set.ByteSet;
+import waffles.utils.geom.spatial.bounds.Bounds2D;
+import waffles.utils.geom.spatial.bounds.owners.Bounded2D;
+import waffles.utils.geom.spatial.data.Axial2D;
+import waffles.utils.geomold.bounds.axial.BNDAxial2D;
+import waffles.utils.sets.indexed.array.set.ByteSet;
 
 /**
  * An {@code Image} manages a {@code .png} file as a {@code Bytes} object.
@@ -20,11 +20,11 @@ import waffles.utils.sets.arrays.set.ByteSet;
  * @version 1.1
  * 
  * 
- * @see Shapeable
+ * @see Axial2D
  * @see Bounded2D
  * @see ByteSet
  */
-public class Image implements ByteSet, Bounded2D, Shapeable
+public class Image implements Axial2D, Bounded2D, ByteSet
 {
 	private BufferedImage src;
 	
@@ -83,19 +83,34 @@ public class Image implements ByteSet, Bounded2D, Shapeable
 		
 		return new int[]{w, h};
 	}
-	
-	@Override
-	public Rectangle Shape()
-	{
-		int w = src.getWidth();
-		int h = src.getHeight();
-
-		return new Rectangle(w, h);
-	}
-	
+		
 	@Override
 	public Bounds2D Bounds()
 	{
-		return Shape().Bounds();
+		return new BNDAxial2D(this);
+	}
+	
+	@Override
+	public float Height()
+	{
+		return src.getHeight();
+	}
+	
+	@Override
+	public float Width()
+	{
+		return src.getWidth();
+	}
+	
+	@Override
+	public float X()
+	{
+		return src.getWidth() / 2;
+	}
+	
+	@Override
+	public float Y()
+	{
+		return src.getHeight() / 2;
 	}
 }
