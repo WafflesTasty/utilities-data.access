@@ -2,6 +2,8 @@ package waffles.utils.dacs.db;
 
 import java.util.UUID;
 
+import waffles.utils.lang.tokens.Token;
+
 /**
  * A {@code DBEntity} defines an entity that can be transferred to a database.
  * Each entity is represented by a unique {@link #GUID()} identifier.
@@ -15,7 +17,7 @@ import java.util.UUID;
  * @see Database
  */
 public abstract class DBEntity<D extends Database<?>>
-{	
+{		
 	/**
 	 * A {@code Getter} queries a single value in a {@code DBEntity}.
 	 *
@@ -34,11 +36,11 @@ public abstract class DBEntity<D extends Database<?>>
 		 * Queries an entity with the {@code Getter}.
 		 * 
 		 * @param e  an entity
-		 * @return   a value
+		 * @return   a token
 		 */
-		public abstract Object get(E e);
+		public abstract Token get(E e);
 	}
-	
+		
 	/**
 	 * A {@code Setter} changes a single value in a {@code DBEntity}.
 	 *
@@ -61,6 +63,28 @@ public abstract class DBEntity<D extends Database<?>>
 		 * @return  {@code true} if successful
 		 */
 		public abstract boolean set(E e, Object v);
+	}
+	
+	/**
+	 * A {@code Value} returns a single object in a {@code DBEntity}.
+	 *
+	 * @author Waffles
+	 * @since 03 Nov 2025
+	 * @version 1.1
+	 *
+	 *
+	 * @param <E>  an entity type
+	 * @see DBEntity
+	 */
+	public static interface Value<E extends DBEntity<?>>
+	{
+		/**
+		 * Queries an entity for the {@code Value}.
+		 * 
+		 * @param e  an entity
+		 * @return   a value
+		 */
+		public abstract Object get(E e);
 	}
 	
 	

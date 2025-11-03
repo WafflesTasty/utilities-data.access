@@ -81,6 +81,6 @@ public class TOMLData extends TOMLTree
 		}
 		
 		TOMLPair pair = (TOMLPair) node;
-		return pair.Value().Value();
+		return (O) pair.Value().Value();
 	}
 }

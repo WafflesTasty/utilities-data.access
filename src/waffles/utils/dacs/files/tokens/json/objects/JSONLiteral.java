@@ -3,8 +3,8 @@ package waffles.utils.dacs.files.tokens.json.objects;
 import waffles.utils.dacs.files.tokens.json.JSONObject;
 import waffles.utils.lang.tokens.format.Format;
 import waffles.utils.lang.tokens.parsers.choice.primitive.StringParser;
-import waffles.utils.lang.tokens.primitive.PrimitiveToken;
 import waffles.utils.lang.tokens.primitive.StringToken;
+import waffles.utils.tools.patterns.properties.values.Valuable;
 
 /**
  * A {@code JSONLiteral} defines a primitive value in a {@code JSONFile}.
@@ -117,7 +117,7 @@ public class JSONLiteral extends StringToken implements JSONObject
 
 
 	@Override
-	public Format<PrimitiveToken> Formatter()
+	public Format<? extends Valuable<?>> Formatter()
 	{
 		return Formatter(DELIMITER);
 	}

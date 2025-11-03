@@ -4,11 +4,13 @@ import java.util.Iterator;
 
 import waffles.utils.dacs.db.DBEntity;
 import waffles.utils.dacs.db.DBEntity.Getter;
+import waffles.utils.dacs.db.DBEntity.Value;
 import waffles.utils.dacs.db.schema.DBMap;
 import waffles.utils.lang.tokens.ListToken;
+import waffles.utils.lang.tokens.Token;
 import waffles.utils.lang.tokens.format.Format;
 import waffles.utils.lang.tokens.primitive.LiteralToken;
-import waffles.utils.lang.tokens.primitive.wrapper.ValueToken;
+import waffles.utils.lang.tokens.primitive.StringToken;
 import waffles.utils.tools.patterns.properties.values.Valuable;
 
 /**
@@ -34,10 +36,10 @@ public class DBGetter<E extends DBEntity<?>> extends DBMap<Getter<E>>
 	 * @version 1.1
 	 *
 	 * 
-	 * @see ValueToken
 	 * @see Iterator
+	 * @see Token
 	 */
-	public class Tokens implements Iterator<ValueToken<?>>
+	public class Tokens implements Iterator<Token>
 	{
 		private E entity;
 		private Iterator<LiteralToken> keys;
@@ -61,12 +63,36 @@ public class DBGetter<E extends DBEntity<?>> extends DBMap<Getter<E>>
 		}
 
 		@Override
-		public ValueToken<?> next()
+		public Token next()
 		{
 			Getter<E> g = get(keys.next());
-			Valuable<?> v = () -> g.get(entity);
-			return new ValueToken<>(v);
+			return g.get(entity);
 		}
+	}
+
+	
+	/**
+	 * Puts a key-value pair into the {@code DBGetter}.
+	 * A {@code Valuable} object is wrapped in a {@code ValueToken}.
+	 * 
+	 * @param key  a map key
+	 * @param val  a map value
+	 * @return  an old value
+	 * 
+	 * 
+	 * @see Getter
+	 * @see Value
+	 */
+	public Getter<E> put(String key, Value<E> val)
+	{
+		return put(key, (Getter<E>) e -> new StringToken(val.get(e))
+		{
+			@Override
+			public Format<? extends Valuable<?>> Formatter()
+			{
+				return Formatter(s -> true, '\'');
+			}	
+		});
 	}
 	
 	/**
@@ -76,15 +102,15 @@ public class DBGetter<E extends DBEntity<?>> extends DBMap<Getter<E>>
 	 * @return  a list token
 	 * 
 	 * 
-	 * @see ValueToken
 	 * @see ListToken
+	 * @see Token
 	 */
-	public ListToken<ValueToken<?>> Values(E e)
+	public ListToken<Token> Values(E e)
 	{
 		return new ListToken<>()
 		{
 			@Override
-			public Iterable<ValueToken<?>> Tokens()
+			public Iterable<Token> Tokens()
 			{
 				return () -> new Tokens(e);
 			}

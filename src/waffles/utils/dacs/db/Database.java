@@ -12,7 +12,6 @@ import waffles.utils.dacs.db.schema.format.SQLSelect;
 import waffles.utils.dacs.db.schema.format.SQLUpdate;
 import waffles.utils.dacs.db.schema.maps.DBSetter;
 import waffles.utils.dacs.utilities.DataLink;
-import waffles.utils.dacs.utilities.encrypt.Login;
 import waffles.utils.dacs.utilities.errors.SQLError;
 
 /**
@@ -26,12 +25,12 @@ import waffles.utils.dacs.utilities.errors.SQLError;
  * @param <E>  an entity type
  * @see DataLink
  * @see DBEntity
- * @see Login
+ * @see DBLogin
  */
-public abstract class Database<E extends DBEntity<?>> implements DataLink<Login, Boolean>
+public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogin, Boolean>
 {
 	private Connection cnc;
-	private Login login;
+	private DBLogin login;
 	
 	/**
 	 * Commits {@code Database} changes.
@@ -151,13 +150,14 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<Login,
 		}
 		catch (SQLException e)
 		{
+			e.printStackTrace();
 			throw new SQLError(sql);
 		}
 	}
 	
 	
 	@Override
-	public boolean disconnect(Login log)
+	public boolean disconnect(DBLogin log)
 	{
 		try
 		{
@@ -174,9 +174,10 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<Login,
 	}
 	
 	@Override
-	public Boolean connect(Login log)
+	public Boolean connect(DBLogin log)
 	{
 		String pfx = Prefix();
+		String db = log.Database();
 		String host = log.Host();
 		String user = log.User();
 		String pass = log.Pass();
@@ -189,12 +190,12 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<Login,
 				cnc.close();
 			}
 			
-			cnc = DriverManager.getConnection(pfx + host, user, pass);
+			cnc = DriverManager.getConnection(pfx + host + "/" + db, user, pass);
 			return cnc.isValid(0);
 		}
 		catch(SQLException e)
 		{
-			return false;
+			return false;	
 		}
 	}
 }
