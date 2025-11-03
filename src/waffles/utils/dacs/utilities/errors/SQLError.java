@@ -1,6 +1,7 @@
 package waffles.utils.dacs.utilities.errors;
 
-import waffles.utils.dacs.utilities.encrypt.Accessible;
+import waffles.utils.dacs.utilities.encrypt.Login;
+import waffles.utils.lang.tokens.primitive.LiteralToken;
 
 /**
  * An {@code SQLError} is thrown whenever an error occurs during {@code Database} access.
@@ -16,18 +17,32 @@ public class SQLError extends RuntimeException
 {
 	private static final long serialVersionUID = -6362191960875407040L;
 
+	
+	/**
+	 * Creates a new {@code SQLError}.
+	 * 
+	 * @param tkn  a table column
+	 * @param tbl  a table name
+	 * 
+	 * 
+	 * @see LiteralToken
+	 */
+	public SQLError(LiteralToken tkn, String tbl)
+	{
+		super("Could not access column " + tkn.Value() + " on table " + tbl + ".");
+	}
 
 	/**
 	 * Creates a new {@code SQLError}.
 	 * 
-	 * @param acs  an sql access
+	 * @param log  an sql login
 	 * 
 	 * 
-	 * @see Accessible
+	 * @see Login
 	 */
-	public SQLError(Accessible acs)
+	public SQLError(Login log)
 	{
-		super("Could not access database " + acs.Host() + " with username " + acs.User() + ".");
+		super("Could not access database " + log.Host() + " with user " + log.User() + ".");
 	}
 	
 	/**
