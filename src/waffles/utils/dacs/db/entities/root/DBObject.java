@@ -1,7 +1,9 @@
-package waffles.utils.dacs.db;
+package waffles.utils.dacs.db.entities.root;
 
 import java.util.UUID;
 
+import waffles.utils.dacs.db.Database;
+import waffles.utils.dacs.db.entities.DBEntity;
 import waffles.utils.dacs.db.schema.DBSchema;
 
 /**
@@ -31,7 +33,7 @@ public abstract class DBObject<D extends Database<?>> implements DBEntity<D>
 	 * @see DBObject
 	 * @see DBSchema
 	 */
-	public class Schema<O extends DBObject<?>> extends DBSchema<O>
+	public static class Schema<O extends DBObject<?>> extends DBSchema<O>
 	{
 		/**
 		 * Creates a new {@code Schema}.
@@ -40,8 +42,7 @@ public abstract class DBObject<D extends Database<?>> implements DBEntity<D>
 		 */
 		public Schema(String tbl)
 		{
-			super(tbl);
-			Getter().put(Database.ID, getGUID());
+			super(tbl);	Getter().put(Database.ID, getGUID());
 		}
 		
 		Value<O> getGUID()

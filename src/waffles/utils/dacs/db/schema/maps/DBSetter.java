@@ -2,8 +2,8 @@ package waffles.utils.dacs.db.schema.maps;
 
 import java.sql.ResultSet;
 
-import waffles.utils.dacs.db.DBEntity;
-import waffles.utils.dacs.db.DBEntity.Setter;
+import waffles.utils.dacs.db.entities.DBEntity;
+import waffles.utils.dacs.db.entities.DBEntity.Setter;
 import waffles.utils.dacs.db.schema.DBMap;
 import waffles.utils.lang.tokens.primitive.LiteralToken;
 

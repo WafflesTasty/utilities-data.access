@@ -1,7 +1,8 @@
-package waffles.utils.dacs.db;
+package waffles.utils.dacs.db.entities;
 
 import java.util.UUID;
 
+import waffles.utils.dacs.db.Database;
 import waffles.utils.lang.tokens.Token;
 
 /**

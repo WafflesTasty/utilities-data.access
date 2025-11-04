@@ -2,11 +2,11 @@ package waffles.utils.dacs.db.schema.maps;
 
 import java.util.Iterator;
 
-import waffles.utils.dacs.db.DBEntity;
-import waffles.utils.dacs.db.DBEntity.Getter;
-import waffles.utils.dacs.db.DBEntity.Value;
+import waffles.utils.dacs.db.entities.DBEntity;
+import waffles.utils.dacs.db.entities.DBEntity.Getter;
+import waffles.utils.dacs.db.entities.DBEntity.Value;
 import waffles.utils.dacs.db.schema.DBMap;
-import waffles.utils.dacs.db.schema.DBPair;
+import waffles.utils.dacs.utilities.database.DBPair;
 import waffles.utils.lang.tokens.ListToken;
 import waffles.utils.lang.tokens.MapToken;
 import waffles.utils.lang.tokens.PairToken;

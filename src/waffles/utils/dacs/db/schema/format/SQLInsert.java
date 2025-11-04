@@ -1,6 +1,6 @@
 package waffles.utils.dacs.db.schema.format;
 
-import waffles.utils.dacs.db.DBEntity;
+import waffles.utils.dacs.db.entities.DBEntity;
 import waffles.utils.dacs.db.schema.DBSchema;
 import waffles.utils.lang.tokens.format.Format;
 

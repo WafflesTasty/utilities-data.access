@@ -1,4 +1,4 @@
-package waffles.utils.dacs.db.schema;
+package waffles.utils.dacs.utilities.database;
 
 import waffles.utils.lang.tokens.PairToken;
 import waffles.utils.lang.tokens.Token;

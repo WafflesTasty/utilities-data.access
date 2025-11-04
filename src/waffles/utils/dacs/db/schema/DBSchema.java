@@ -1,6 +1,6 @@
 package waffles.utils.dacs.db.schema;
 
-import waffles.utils.dacs.db.DBEntity;
+import waffles.utils.dacs.db.entities.DBEntity;
 import waffles.utils.dacs.db.schema.maps.DBGetter;
 import waffles.utils.dacs.db.schema.maps.DBSetter;
 import waffles.utils.lang.tokens.Token;

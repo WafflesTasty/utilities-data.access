@@ -2,8 +2,8 @@ package waffles.utils.dacs.db.third;
 
 import java.sql.DriverManager;
 
-import waffles.utils.dacs.db.DBEntity;
 import waffles.utils.dacs.db.Database;
+import waffles.utils.dacs.db.entities.DBEntity;
 
 /**
  * The {@code MariaDB} class defines a {@code Database} for {@code MariaDB}.
