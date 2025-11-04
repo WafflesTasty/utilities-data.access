@@ -1,12 +1,11 @@
 package waffles.utils.dacs.db.schema.format;
 
 import waffles.utils.dacs.db.DBEntity;
-import waffles.utils.dacs.db.Database;
 import waffles.utils.dacs.db.schema.DBSchema;
 import waffles.utils.lang.tokens.format.Format;
 
 /**
- * An {@code SQLUpdate} formats an SQL string for a {@code DBEntity} update.
+ * An {@code SQLInsert} formats an SQL string for a {@code DBEntity} insert.
  *
  * @author Waffles
  * @since 03 Nov 2025
@@ -18,16 +17,16 @@ import waffles.utils.lang.tokens.format.Format;
  * @see DBSchema
  * @see Format
  */
-public class SQLUpdate<E extends DBEntity<?>> implements Format<DBSchema<E>>
+public class SQLInsert<E extends DBEntity<?>> implements Format<DBSchema<E>>
 {
 	private E ent;
 	
 	/**
-	 * Creates a new {@code SQLUpdate}.
+	 * Creates a new {@code SQLInsert}.
 	 * 
 	 * @param e  an entity
 	 */
-	public SQLUpdate(E e)
+	public SQLInsert(E e)
 	{
 		ent = e;
 	}
@@ -36,13 +35,13 @@ public class SQLUpdate<E extends DBEntity<?>> implements Format<DBSchema<E>>
 	@Override
 	public String parse(DBSchema<E> scm)
 	{
-		String pairs = scm.Pairs(ent);
+		String vals = scm.Values(ent);
+		String keys = scm.Keys();
 		
 		String sql = "";
-		sql += "UPDATE " + scm.Table() + " ";
-		sql += "SET " + pairs + " ";
-		sql += "WHERE " + Database.ID + " = ";
-		sql += "'" + ent.GUID() + "'";
+		sql += "INSERT " + scm.Table();
+		sql += " (" + keys + ") ";
+		sql += "VALUES (" + vals + ")";
 		return sql;
 	}
 }

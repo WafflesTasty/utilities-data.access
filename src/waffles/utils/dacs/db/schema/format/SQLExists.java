@@ -6,7 +6,7 @@ import waffles.utils.dacs.db.schema.DBSchema;
 import waffles.utils.lang.tokens.format.Format;
 
 /**
- * An {@code SQLUpdate} formats an SQL string for a {@code DBEntity} update.
+ * An {@code SQLExists} formats an SQL string for a {@code DBEntity} existence check.
  *
  * @author Waffles
  * @since 03 Nov 2025
@@ -18,29 +18,27 @@ import waffles.utils.lang.tokens.format.Format;
  * @see DBSchema
  * @see Format
  */
-public class SQLUpdate<E extends DBEntity<?>> implements Format<DBSchema<E>>
+public class SQLExists<E extends DBEntity<?>> implements Format<DBSchema<E>>
 {
 	private E ent;
 	
 	/**
-	 * Creates a new {@code SQLUpdate}.
+	 * Creates a new {@code SQLExists}.
 	 * 
 	 * @param e  an entity
 	 */
-	public SQLUpdate(E e)
+	public SQLExists(E e)
 	{
 		ent = e;
 	}
-	
+
 	
 	@Override
 	public String parse(DBSchema<E> scm)
-	{
-		String pairs = scm.Pairs(ent);
-		
+	{	
 		String sql = "";
-		sql += "UPDATE " + scm.Table() + " ";
-		sql += "SET " + pairs + " ";
+		sql += "SELECT id FROM";
+		sql += " " + scm.Table() + " ";
 		sql += "WHERE " + Database.ID + " = ";
 		sql += "'" + ent.GUID() + "'";
 		return sql;

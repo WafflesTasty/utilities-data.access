@@ -16,7 +16,7 @@ import waffles.utils.lang.tokens.Token;
  * @param <D>  a database type
  * @see Database
  */
-public abstract class DBEntity<D extends Database<?>>
+public interface DBEntity<D extends Database<?>>
 {		
 	/**
 	 * A {@code Getter} queries a single value in a {@code DBEntity}.
@@ -87,42 +87,7 @@ public abstract class DBEntity<D extends Database<?>>
 		public abstract Object get(E e);
 	}
 	
-	
-	private UUID uid;
-
-	/**
-	 * Creates a new {@code DBEntity}.
-	 * 
-	 * @param id  a unique identifier
-	 */
-	public DBEntity(String id)
-	{
-		this(UUID.fromString(id));
-	}
-	
-	/**
-	 * Creates a new {@code DBEntity}.
-	 * 
-	 * @param id  a unique identifier
-	 * 
-	 * 
-	 * @see UUID
-	 */
-	public DBEntity(UUID id)
-	{
-		uid = id;
-	}
 		
-	/**
-	 * Creates a new {@code DBEntity}.
-	 * A random {@code UUID} is generated.
-	 */
-	public DBEntity()
-	{
-		this(UUID.randomUUID());
-	}
-
-	
 	/**
 	 * Deletes the {@code DBEntity}.
 	 * 
@@ -131,6 +96,22 @@ public abstract class DBEntity<D extends Database<?>>
 	 */
 	public abstract boolean delete(D db);
 
+	/**
+	 * Fetches the {@code DBEntity}.
+	 * 
+	 * @param db  a database
+	 * @return  {@code true} if exists
+	 */
+	public abstract boolean exists(D db);
+	
+	/**
+	 * Inserts the {@code DBEntity}.
+	 * 
+	 * @param db  a database
+	 * @return  {@code true} if inserted
+	 */
+	public abstract boolean insert(D db);
+	
 	/**
 	 * Selects the {@code DBEntity}.
 	 * 
@@ -146,7 +127,7 @@ public abstract class DBEntity<D extends Database<?>>
 	 * @return  {@code true} if updated
 	 */
 	public abstract boolean update(D db);
-	
+		
 	
 	/**
 	 * Returns the {@code DBEntity} id.
@@ -156,8 +137,5 @@ public abstract class DBEntity<D extends Database<?>>
 	 * 
 	 * @see UUID
 	 */
- 	public UUID GUID()
-	{
-		return uid;
-	}
+ 	public abstract UUID GUID();
 }

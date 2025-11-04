@@ -8,6 +8,8 @@ import java.sql.Statement;
 
 import waffles.utils.dacs.db.schema.DBSchema;
 import waffles.utils.dacs.db.schema.format.SQLDelete;
+import waffles.utils.dacs.db.schema.format.SQLExists;
+import waffles.utils.dacs.db.schema.format.SQLInsert;
 import waffles.utils.dacs.db.schema.format.SQLSelect;
 import waffles.utils.dacs.db.schema.format.SQLUpdate;
 import waffles.utils.dacs.db.schema.maps.DBSetter;
@@ -29,6 +31,12 @@ import waffles.utils.dacs.utilities.errors.SQLError;
  */
 public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogin, Boolean>
 {
+	/**
+	 * Defines the UID column name.
+	 */
+	public static final String ID = "id";
+	
+	
 	private Connection cnc;
 	private DBLogin login;
 	
@@ -101,6 +109,53 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	}
 	
 	/**
+	 * Finds an entity within the {@code Database}.
+	 * 
+	 * @param ent  a database entity
+	 * @param scm  a database schema
+	 * @return  {@code true} if exists
+	 */
+	public boolean exists(E ent, DBSchema<E> scm)
+	{
+		SQLExists<E> exi = new SQLExists<>(ent);
+		String sql = exi.parse(scm);
+		
+		try
+		{
+			Statement s = cnc.createStatement();
+			ResultSet r = s.executeQuery(sql);
+			return r.next();
+		}
+		catch (SQLException e)
+		{
+			throw new SQLError(sql);
+		}
+	}
+	
+	/**
+	 * Inserts an entity into the {@code Database}.
+	 * 
+	 * @param ent  a database entity
+	 * @param scm  a database schema
+	 * @return  {@code true} if successful
+	 */
+	public boolean insert(E ent, DBSchema<E> scm)
+	{
+		SQLInsert<E> ins = new SQLInsert<>(ent);
+		String sql = ins.parse(scm);
+		
+		try
+		{
+			Statement s = cnc.createStatement();
+			return s.executeUpdate(sql) > 0;
+		}
+		catch (SQLException e)
+		{
+			throw new SQLError(sql);
+		}
+	}
+	
+	/**
 	 * Selects an entity from the {@code Database}.
 	 * 
 	 * @param ent  a database entity
@@ -150,7 +205,6 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 		}
 		catch (SQLException e)
 		{
-			e.printStackTrace();
 			throw new SQLError(sql);
 		}
 	}

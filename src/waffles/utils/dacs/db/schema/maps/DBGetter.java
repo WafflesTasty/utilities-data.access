@@ -6,7 +6,10 @@ import waffles.utils.dacs.db.DBEntity;
 import waffles.utils.dacs.db.DBEntity.Getter;
 import waffles.utils.dacs.db.DBEntity.Value;
 import waffles.utils.dacs.db.schema.DBMap;
+import waffles.utils.dacs.db.schema.DBPair;
 import waffles.utils.lang.tokens.ListToken;
+import waffles.utils.lang.tokens.MapToken;
+import waffles.utils.lang.tokens.PairToken;
 import waffles.utils.lang.tokens.Token;
 import waffles.utils.lang.tokens.format.Format;
 import waffles.utils.lang.tokens.primitive.LiteralToken;
@@ -28,6 +31,51 @@ import waffles.utils.tools.patterns.properties.values.Valuable;
  */
 public class DBGetter<E extends DBEntity<?>> extends DBMap<Getter<E>>
 {
+	/**
+	 * The {@code Pairs} iterator traverses key-value pairs of a {@code DBEntity}.
+	 *
+	 * @author Waffles
+	 * @since 03 Nov 2025
+	 * @version 1.1
+	 *
+	 * 
+	 * @see Iterator
+	 * @see DBPair
+	 */
+	public class Pairs implements Iterator<DBPair>
+	{
+		private E entity;
+		private Iterator<LiteralToken> keys;
+		
+		/**
+		 * Creates new {@code Pairs}.
+		 * 
+		 * @param e  an entity
+		 */
+		public Pairs(E e)
+		{
+			keys = Keys().iterator();
+			entity = e;
+		}
+
+				
+		@Override
+		public boolean hasNext()
+		{
+			return keys.hasNext();
+		}
+
+		@Override
+		public DBPair next()
+		{
+			LiteralToken key = keys.next();
+			Getter<E> g = get(keys.next());
+			Token val = g.get(entity);
+			
+			return new DBPair(key, val);
+		}
+	}
+	
 	/**
 	 * The {@code Tokens} iterator traverses all values of a {@code DBEntity}.
 	 *
@@ -94,9 +142,9 @@ public class DBGetter<E extends DBEntity<?>> extends DBMap<Getter<E>>
 			}	
 		});
 	}
-	
+		
 	/**
-	 * Returns a {@code ListToken} of entity values.
+	 * Returns a {@code ListToken} of entity value tokens.
 	 * 
 	 * @param e  an entity
 	 * @return  a list token
@@ -113,6 +161,34 @@ public class DBGetter<E extends DBEntity<?>> extends DBMap<Getter<E>>
 			public Iterable<Token> Tokens()
 			{
 				return () -> new Tokens(e);
+			}
+			
+			@Override
+			public Format<?> Formatter()
+			{
+				return Formatter(',');
+			}
+		};
+	}
+
+	/**
+	 * Returns a {@code MapToken} of key-value pairs.
+	 * 
+	 * @param e  an entity
+	 * @return  a map token
+	 * 
+	 * 
+	 * @see PairToken
+	 * @see MapToken
+	 */
+	public MapToken<DBPair> Pairs(E e)
+	{
+		return new MapToken<>()
+		{
+			@Override
+			public Iterable<DBPair> Tokens()
+			{
+				return () -> new Pairs(e);
 			}
 			
 			@Override
