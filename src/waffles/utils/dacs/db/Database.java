@@ -175,8 +175,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 			if(r.next())
 			{
 				DBSetter<E> set = scm.Setter();
-				set.update(ent, r);
-				return true;
+				return set.update(ent, r);
 			}
 			
 			return false;

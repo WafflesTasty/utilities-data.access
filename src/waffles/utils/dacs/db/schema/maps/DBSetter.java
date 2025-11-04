@@ -27,16 +27,22 @@ public class DBSetter<E extends DBEntity<?>> extends DBMap<Setter<E>>
 	 * 
 	 * @param e  an entity
 	 * @param r  a result set
+	 * @return  {@code true} if successful
 	 * 
 	 * 
 	 * @see ResultSet
 	 * @see DBEntity
 	 */
-	public void update(E e, ResultSet r)
+	public boolean update(E e, ResultSet r)
 	{
 		for(LiteralToken tkn : Keys())
 		{
-			get(tkn).set(e, r);
+			if(!get(tkn).set(e, r))
+			{
+				return false;
+			}
 		}
+		
+		return true;
 	}
 }
