@@ -13,28 +13,29 @@ import waffles.utils.lang.tokens.format.Format;
  * @version 1.1
  *
  *
- * @param <E>  an entity type
- * @see DBEntity
  * @see DBSchema
  * @see Format
  */
-public class SQLExists<E extends DBEntity<?>> implements Format<DBSchema<E>>
+public class SQLExists implements Format<DBSchema<?>>
 {
-	private E ent;
+	private DBEntity<?> ent;
 	
 	/**
 	 * Creates a new {@code SQLExists}.
 	 * 
 	 * @param e  an entity
+	 * 
+	 * 
+	 * @see DBEntity
 	 */
-	public SQLExists(E e)
+	public SQLExists(DBEntity<?> e)
 	{
 		ent = e;
 	}
 
 	
 	@Override
-	public String parse(DBSchema<E> scm)
+	public String parse(DBSchema<?> scm)
 	{	
 		String sql = "";
 		sql += "SELECT id FROM";

@@ -3,6 +3,7 @@ package waffles.utils.dacs.db.entities;
 import java.util.UUID;
 
 import waffles.utils.dacs.db.Database;
+import waffles.utils.dacs.db.schema.DBSchema;
 import waffles.utils.lang.tokens.Token;
 
 /**
@@ -18,7 +19,43 @@ import waffles.utils.lang.tokens.Token;
  * @see Database
  */
 public interface DBEntity<D extends Database<?>>
-{		
+{	
+	/**
+	 * Defines the unique null identifier.
+	 */
+	public static final UUID NULL_ID = UUID.fromString("00000000-0000-0000-0000-000000000000");
+	
+	/**
+	 * A {@code DBEntity.Schema} maps a {@code DBEntity} to a unique table row.
+	 *
+	 * @author Waffles
+	 * @since 04 Nov 2025
+	 * @version 1.1
+	 *
+	 *
+	 * @param <O>  an object type
+	 * @see DBEntity
+	 * @see DBSchema
+	 */
+	public static class Schema<O extends DBEntity<?>> extends DBSchema<O>
+	{
+		/**
+		 * Creates a new {@code Schema}.
+		 * 
+		 * @param tbl  a database table
+		 */
+		public Schema(String tbl)
+		{
+			super(tbl);	Getter().put(Database.ID, getGUID());
+		}
+		
+		Value<O> getGUID()
+		{
+			return e -> e.GUID();
+		}
+	}
+	
+	
 	/**
 	 * A {@code Getter} queries a single value in a {@code DBEntity}.
 	 *

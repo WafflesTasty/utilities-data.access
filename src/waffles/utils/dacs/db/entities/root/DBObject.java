@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import waffles.utils.dacs.db.Database;
 import waffles.utils.dacs.db.entities.DBEntity;
-import waffles.utils.dacs.db.schema.DBSchema;
 
 /**
  * A {@code DBObject} implements {@code DBEntity} as a root object.
@@ -20,38 +19,7 @@ import waffles.utils.dacs.db.schema.DBSchema;
  * @see DBEntity
  */
 public abstract class DBObject<D extends Database<?>> implements DBEntity<D>
-{		
-	/**
-	 * A {@code DBObject.Schema} maps a {@code DBObject} to a unique table row.
-	 *
-	 * @author Waffles
-	 * @since 04 Nov 2025
-	 * @version 1.1
-	 *
-	 *
-	 * @param <O>  an object type
-	 * @see DBObject
-	 * @see DBSchema
-	 */
-	public static class Schema<O extends DBObject<?>> extends DBSchema<O>
-	{
-		/**
-		 * Creates a new {@code Schema}.
-		 * 
-		 * @param tbl  a database table
-		 */
-		public Schema(String tbl)
-		{
-			super(tbl);	Getter().put(Database.ID, getGUID());
-		}
-		
-		Value<O> getGUID()
-		{
-			return e -> e.GUID();
-		}
-	}
-	
-	
+{			
 	private UUID uid;
 
 	/**

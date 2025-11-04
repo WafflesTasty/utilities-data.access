@@ -13,28 +13,29 @@ import waffles.utils.lang.tokens.format.Format;
  * @version 1.1
  *
  *
- * @param <E>  an entity type
- * @see DBEntity
  * @see DBSchema
  * @see Format
  */
-public class SQLDelete<E extends DBEntity<?>> implements Format<DBSchema<E>>
+public class SQLDelete implements Format<DBSchema<?>>
 {
-	private E ent;
+	private DBEntity<?> ent;
 	
 	/**
 	 * Creates a new {@code SQLDelete}.
 	 * 
 	 * @param e  an entity
+	 * 
+	 * 
+	 * @see DBEntity
 	 */
-	public SQLDelete(E e)
+	public SQLDelete(DBEntity<?> e)
 	{
 		ent = e;
 	}
 
 	
 	@Override
-	public String parse(DBSchema<E> scm)
+	public String parse(DBSchema<?> scm)
 	{	
 		String sql = "";
 		sql += "DELETE FROM";

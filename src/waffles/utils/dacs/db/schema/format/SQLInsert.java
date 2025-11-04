@@ -12,28 +12,29 @@ import waffles.utils.lang.tokens.format.Format;
  * @version 1.1
  *
  *
- * @param <E>  an entity type
- * @see DBEntity
  * @see DBSchema
  * @see Format
  */
-public class SQLInsert<E extends DBEntity<?>> implements Format<DBSchema<E>>
+public class SQLInsert implements Format<DBSchema<?>>
 {
-	private E ent;
+	private DBEntity<?> ent;
 	
 	/**
 	 * Creates a new {@code SQLInsert}.
 	 * 
 	 * @param e  an entity
+	 * 
+	 * 
+	 * @see DBEntity
 	 */
-	public SQLInsert(E e)
+	public SQLInsert(DBEntity<?> e)
 	{
 		ent = e;
 	}
 	
 	
 	@Override
-	public String parse(DBSchema<E> scm)
+	public String parse(DBSchema<?> scm)
 	{
 		String vals = scm.Values(ent);
 		String keys = scm.Keys();

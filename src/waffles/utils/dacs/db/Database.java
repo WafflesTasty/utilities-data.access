@@ -92,10 +92,13 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * @param ent  a database entity
 	 * @param scm  a database schema
 	 * @return  {@code true} if successful
+	 * 
+	 * 
+	 * @see DBSchema
 	 */
-	public boolean delete(E ent, DBSchema<E> scm)
+	public boolean delete(E ent, DBSchema<? super E> scm)
 	{
-		SQLDelete<E> del = new SQLDelete<>(ent);
+		SQLDelete del = new SQLDelete(ent);
 		String sql = del.parse(scm);
 		
 		try
@@ -115,10 +118,13 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * @param ent  a database entity
 	 * @param scm  a database schema
 	 * @return  {@code true} if exists
+	 * 
+	 * 
+	 * @see DBSchema
 	 */
-	public boolean exists(E ent, DBSchema<E> scm)
+	public boolean exists(E ent, DBSchema<? super E> scm)
 	{
-		SQLExists<E> exi = new SQLExists<>(ent);
+		SQLExists exi = new SQLExists(ent);
 		String sql = exi.parse(scm);
 		
 		try
@@ -139,10 +145,13 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * @param ent  a database entity
 	 * @param scm  a database schema
 	 * @return  {@code true} if successful
+	 * 
+	 * 
+	 * @see DBSchema
 	 */
-	public boolean insert(E ent, DBSchema<E> scm)
+	public boolean insert(E ent, DBSchema<? super E> scm)
 	{
-		SQLInsert<E> ins = new SQLInsert<>(ent);
+		SQLInsert ins = new SQLInsert(ent);
 		String sql = ins.parse(scm);
 		
 		try
@@ -162,10 +171,13 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * @param ent  a database entity
 	 * @param scm  a database schema
 	 * @return  {@code true} if successful
+	 * 
+	 * 
+	 * @see DBSchema
 	 */
-	public boolean select(E ent, DBSchema<E> scm)
+	public boolean select(E ent, DBSchema<? super E> scm)
 	{
-		SQLSelect<E> sel = new SQLSelect<>(ent);
+		SQLSelect sel = new SQLSelect(ent);
 		String sql = sel.parse(scm);
 		
 		try
@@ -174,7 +186,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 			ResultSet r = s.executeQuery(sql);
 			if(r.next())
 			{
-				DBSetter<E> set = scm.Setter();
+				DBSetter<? super E> set = scm.Setter();
 				return set.update(ent, r);
 			}
 			
@@ -192,10 +204,13 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * @param ent  a database entity
 	 * @param scm  a database schema
 	 * @return  {@code true} if successful
+	 * 
+	 * 
+	 * @see DBSchema
 	 */
-	public boolean update(E ent, DBSchema<E> scm)
+	public boolean update(E ent, DBSchema<? super E> scm)
 	{
-		SQLUpdate<E> upd = new SQLUpdate<>(ent);
+		SQLUpdate upd = new SQLUpdate(ent);
 		String sql = upd.parse(scm);
 		
 		try

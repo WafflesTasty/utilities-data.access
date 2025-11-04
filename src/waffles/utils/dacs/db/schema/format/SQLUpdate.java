@@ -13,28 +13,30 @@ import waffles.utils.lang.tokens.format.Format;
  * @version 1.1
  *
  *
- * @param <E>  an entity type
  * @see DBEntity
  * @see DBSchema
  * @see Format
  */
-public class SQLUpdate<E extends DBEntity<?>> implements Format<DBSchema<E>>
+public class SQLUpdate implements Format<DBSchema<?>>
 {
-	private E ent;
+	private DBEntity<?> ent;
 	
 	/**
 	 * Creates a new {@code SQLUpdate}.
 	 * 
 	 * @param e  an entity
+	 * 
+	 * 
+	 * @see DBEntity
 	 */
-	public SQLUpdate(E e)
+	public SQLUpdate(DBEntity<?> e)
 	{
 		ent = e;
 	}
 	
 	
 	@Override
-	public String parse(DBSchema<E> scm)
+	public String parse(DBSchema<?> scm)
 	{
 		String pairs = scm.Pairs(ent);
 		

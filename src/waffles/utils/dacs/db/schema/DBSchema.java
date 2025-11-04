@@ -63,30 +63,6 @@ public class DBSchema<E extends DBEntity<?>> implements Token
  		return setter;
  	}
 
- 	/**
- 	 * Returns the {@code DBSchema} values.
- 	 * 
- 	 * @param e  a source entity
- 	 * @return   a value string
- 	 */
- 	public String Values(E e)
- 	{
- 		return Getter().Values(e).condense();
- 	}
- 	
- 	/**
- 	 * Returns the {@code DBSchema} pairs.
- 	 * This method excludes the id column,
- 	 * for compatibility with updates.
- 	 * 
- 	 * @param e  a source entity
- 	 * @return   a value string
- 	 */
-	public String Pairs(E e)
-	{
-		return Getter().Pairs(e).condense();
-	}
- 	 	
 	/**
 	 * Returns the {@code DBSchema} table.
 	 * 
@@ -105,6 +81,37 @@ public class DBSchema<E extends DBEntity<?>> implements Token
  	public String Keys()
  	{
  		return Getter().condense();
+ 	}
+ 	
+ 	
+ 	/**
+ 	 * Returns the {@code DBSchema} pairs.
+ 	 * This method excludes the id column,
+ 	 * for compatibility with updates.
+ 	 * 
+ 	 * @param e  a source entity
+ 	 * @return   a value string
+ 	 * 
+ 	 * 
+ 	 * @see DBEntity
+ 	 */
+	public String Pairs(DBEntity<?> e)
+	{
+		return Getter().Pairs((E) e).condense();
+	}
+ 	
+ 	/**
+ 	 * Returns the {@code DBSchema} values.
+ 	 * 
+ 	 * @param e  a source entity
+ 	 * @return   a value string
+ 	 * 
+ 	 * 
+ 	 * @see DBEntity
+ 	 */
+ 	public String Values(DBEntity<?> e)
+ 	{
+ 		return Getter().Values((E) e).condense();
  	}
 
 
