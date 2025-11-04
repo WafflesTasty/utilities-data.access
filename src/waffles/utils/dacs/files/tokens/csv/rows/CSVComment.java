@@ -3,7 +3,7 @@ package waffles.utils.dacs.files.tokens.csv.rows;
 import waffles.utils.dacs.files.tokens.csv.CSVRow;
 import waffles.utils.lang.tokens.format.Format;
 import waffles.utils.lang.tokens.parsers.basic.strings.GatedParser;
-import waffles.utils.lang.tokens.primitive.StringToken;
+import waffles.utils.lang.tokens.values.primitive.StringToken;
 
 /**
  * A {@code CSVComment} defines a {@code CSVRow} representing a comment.

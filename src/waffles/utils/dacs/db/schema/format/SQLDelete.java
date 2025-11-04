@@ -1,6 +1,5 @@
 package waffles.utils.dacs.db.schema.format;
 
-import waffles.utils.dacs.db.Database;
 import waffles.utils.dacs.db.entities.DBEntity;
 import waffles.utils.dacs.db.schema.DBSchema;
 import waffles.utils.lang.tokens.format.Format;
@@ -40,7 +39,7 @@ public class SQLDelete implements Format<DBSchema<?>>
 		String sql = "";
 		sql += "DELETE FROM";
 		sql += " " + scm.Table() + " ";
-		sql += "WHERE " + Database.ID + " = ";
+		sql += "WHERE " + scm.ID() + " = ";
 		sql += "'" + ent.GUID() + "'";
 		return sql;
 	}

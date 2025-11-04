@@ -25,19 +25,13 @@ import waffles.utils.dacs.utilities.errors.SQLError;
  * @version 1.1
  *
  *
- * @param <E>  an entity type
+ * @param <E>  a root type
  * @see DataLink
  * @see DBEntity
  * @see DBLogin
  */
 public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogin, Boolean>
 {
-	/**
-	 * Defines the UID column name.
-	 */
-	public static final String ID = "id";
-	
-	
 	private Connection cnc;
 	private DBLogin login;
 	
@@ -96,7 +90,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * 
 	 * @see DBSchema
 	 */
-	public boolean delete(E ent, DBSchema<? super E> scm)
+	public <F extends E> boolean delete(F ent, DBSchema<? super F> scm)
 	{
 		SQLDelete del = new SQLDelete(ent);
 		String sql = del.parse(scm);
@@ -122,7 +116,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * 
 	 * @see DBSchema
 	 */
-	public boolean exists(E ent, DBSchema<? super E> scm)
+	public <F extends E> boolean exists(F ent, DBSchema<? super F> scm)
 	{
 		SQLExists exi = new SQLExists(ent);
 		String sql = exi.parse(scm);
@@ -149,7 +143,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * 
 	 * @see DBSchema
 	 */
-	public boolean insert(E ent, DBSchema<? super E> scm)
+	public <F extends E> boolean insert(F ent, DBSchema<? super F> scm)
 	{
 		SQLInsert ins = new SQLInsert(ent);
 		String sql = ins.parse(scm);
@@ -175,7 +169,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * 
 	 * @see DBSchema
 	 */
-	public boolean select(E ent, DBSchema<? super E> scm)
+	public <F extends E> boolean select(F ent, DBSchema<? super F> scm)
 	{
 		SQLSelect sel = new SQLSelect(ent);
 		String sql = sel.parse(scm);
@@ -186,7 +180,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 			ResultSet r = s.executeQuery(sql);
 			if(r.next())
 			{
-				DBSetter<? super E> set = scm.Setter();
+				DBSetter<? super F> set = scm.Setter();
 				return set.update(ent, r);
 			}
 			
@@ -208,7 +202,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * 
 	 * @see DBSchema
 	 */
-	public boolean update(E ent, DBSchema<? super E> scm)
+	public <F extends E> boolean update(F ent, DBSchema<? super F> scm)
 	{
 		SQLUpdate upd = new SQLUpdate(ent);
 		String sql = upd.parse(scm);

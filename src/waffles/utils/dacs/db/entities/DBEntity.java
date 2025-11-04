@@ -46,7 +46,7 @@ public interface DBEntity<D extends Database<?>>
 		 */
 		public Schema(String tbl)
 		{
-			super(tbl);	Getter().put(Database.ID, getGUID());
+			super(tbl);	Getter().put(ID(), getGUID());
 		}
 		
 		Value<O> getGUID()

@@ -8,7 +8,7 @@ import waffles.utils.lang.tokens.format.ListFormat;
 import waffles.utils.lang.tokens.parsers.Parsable;
 import waffles.utils.lang.tokens.parsers.cyclic.CyclicParser;
 import waffles.utils.lang.tokens.parsers.cyclic.CyclicParser.Hints;
-import waffles.utils.lang.tokens.primitive.StringToken;
+import waffles.utils.lang.tokens.values.primitive.StringToken;
 import waffles.utils.sets.countable.wrapper.JavaList;
 import waffles.utils.sets.indexed.IndexedSet;
 

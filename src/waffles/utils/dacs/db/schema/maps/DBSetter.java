@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import waffles.utils.dacs.db.entities.DBEntity;
 import waffles.utils.dacs.db.entities.DBEntity.Setter;
 import waffles.utils.dacs.db.schema.DBMap;
-import waffles.utils.lang.tokens.primitive.LiteralToken;
+import waffles.utils.lang.tokens.values.primitive.LiteralToken;
 
 /**
  * A {@code DBSetter} maps table columns to {@code Setter} objects.

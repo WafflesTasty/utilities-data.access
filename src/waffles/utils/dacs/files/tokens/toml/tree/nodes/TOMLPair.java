@@ -3,7 +3,7 @@ package waffles.utils.dacs.files.tokens.toml.tree.nodes;
 import waffles.utils.dacs.files.tokens.toml.TOMLParser.Data;
 import waffles.utils.lang.tokens.PairToken;
 import waffles.utils.lang.tokens.parsers.basic.PairParser;
-import waffles.utils.lang.tokens.primitive.StringToken;
+import waffles.utils.lang.tokens.values.primitive.StringToken;
 
 /**
  * A {@code TOMLPair} defines a single key-value pair for a {@code TOMLFile}.

@@ -21,6 +21,12 @@ import waffles.utils.lang.tokens.format.Format;
  */
 public class DBSchema<E extends DBEntity<?>> implements Token
 {
+	/**
+	 * Defines a default id column.
+	 */
+	public static String DEFAULT_ID = "id";
+	
+	
 	private String table;
 	private DBGetter<E> getter;
 	private DBSetter<E> setter;
@@ -72,7 +78,7 @@ public class DBSchema<E extends DBEntity<?>> implements Token
 	{
 		return table;
 	}
- 	
+ 		
 	/**
 	 * Returns the {@code DBSchema} keys.
 	 * 
@@ -82,6 +88,16 @@ public class DBSchema<E extends DBEntity<?>> implements Token
  	{
  		return Getter().condense();
  	}
+ 	
+ 	/**
+ 	 * Returns the {@code DBSchema} id.
+ 	 * 
+ 	 * @return  an id column
+ 	 */
+	public String ID()
+	{
+		return DEFAULT_ID;
+	}
  	
  	
  	/**

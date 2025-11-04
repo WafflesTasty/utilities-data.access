@@ -7,14 +7,13 @@ import waffles.utils.dacs.db.entities.DBEntity.Getter;
 import waffles.utils.dacs.db.entities.DBEntity.Value;
 import waffles.utils.dacs.db.schema.DBMap;
 import waffles.utils.dacs.utilities.database.DBPair;
+import waffles.utils.dacs.utilities.database.DBToken;
 import waffles.utils.lang.tokens.ListToken;
 import waffles.utils.lang.tokens.MapToken;
 import waffles.utils.lang.tokens.PairToken;
 import waffles.utils.lang.tokens.Token;
 import waffles.utils.lang.tokens.format.Format;
-import waffles.utils.lang.tokens.primitive.LiteralToken;
-import waffles.utils.lang.tokens.primitive.StringToken;
-import waffles.utils.tools.patterns.properties.values.Valuable;
+import waffles.utils.lang.tokens.values.primitive.LiteralToken;
 
 /**
  * A {@code DBGetter} maps table columns to {@code Getter} objects.
@@ -69,9 +68,7 @@ public class DBGetter<E extends DBEntity<?>> extends DBMap<Getter<E>>
 		public DBPair next()
 		{
 			LiteralToken key = keys.next();
-			Getter<E> g = get(keys.next());
-			Token val = g.get(entity);
-			
+			Token val = get(key).get(entity);
 			return new DBPair(key, val);
 		}
 	}
@@ -133,14 +130,7 @@ public class DBGetter<E extends DBEntity<?>> extends DBMap<Getter<E>>
 	 */
 	public Getter<E> put(String key, Value<E> val)
 	{
-		return put(key, (Getter<E>) e -> new StringToken(val.get(e))
-		{
-			@Override
-			public Format<? extends Valuable<?>> Formatter()
-			{
-				return Formatter(s -> true, '\'');
-			}	
-		});
+		return put(key, (Getter<E>) e -> new DBToken(val.get(e)));
 	}
 		
 	/**

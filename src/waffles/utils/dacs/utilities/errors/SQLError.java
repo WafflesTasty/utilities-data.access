@@ -1,7 +1,7 @@
 package waffles.utils.dacs.utilities.errors;
 
 import waffles.utils.dacs.utilities.encrypt.Login;
-import waffles.utils.lang.tokens.primitive.LiteralToken;
+import waffles.utils.lang.tokens.values.primitive.LiteralToken;
 
 /**
  * An {@code SQLError} is thrown whenever an error occurs during {@code Database} access.

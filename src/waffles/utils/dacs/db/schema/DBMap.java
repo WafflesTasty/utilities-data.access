@@ -2,7 +2,7 @@ package waffles.utils.dacs.db.schema;
 
 import waffles.utils.lang.tokens.ListToken;
 import waffles.utils.lang.tokens.format.Format;
-import waffles.utils.lang.tokens.primitive.LiteralToken;
+import waffles.utils.lang.tokens.values.primitive.LiteralToken;
 import waffles.utils.sets.countable.keymaps.wrapper.JavaMap;
 
 /**

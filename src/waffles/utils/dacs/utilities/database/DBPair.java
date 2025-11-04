@@ -3,7 +3,7 @@ package waffles.utils.dacs.utilities.database;
 import waffles.utils.lang.tokens.PairToken;
 import waffles.utils.lang.tokens.Token;
 import waffles.utils.lang.tokens.format.Format;
-import waffles.utils.lang.tokens.primitive.LiteralToken;
+import waffles.utils.lang.tokens.values.primitive.LiteralToken;
 
 /**
  * A {@code DBPair} defines a key-value pair for SQL databases.

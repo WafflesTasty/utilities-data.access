@@ -6,7 +6,7 @@ import waffles.utils.lang.Strings;
 import waffles.utils.lang.tokens.Token;
 import waffles.utils.lang.tokens.format.Format;
 import waffles.utils.lang.tokens.parsers.choice.primitive.StringParser;
-import waffles.utils.lang.tokens.primitive.StringToken;
+import waffles.utils.lang.tokens.values.primitive.StringToken;
 import waffles.utils.sets.utilities.rooted.Nodal;
 import waffles.utils.sets.utilities.rooted.Node;
 
