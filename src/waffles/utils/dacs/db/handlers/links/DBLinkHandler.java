@@ -19,6 +19,7 @@ import waffles.utils.dacs.utilities.db.tokens.maps.DBMap;
  *
  * @see DBHandler
  */
+@FunctionalInterface
 public interface DBLinkHandler extends DBHandler
 {
 	/**

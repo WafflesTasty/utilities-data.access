@@ -46,8 +46,6 @@ public class DBSchema<H extends DBHandleable<?>> implements Countable, Token
  		
  		getter = new JavaMap<>();
  		setter = new JavaMap<>();
- 		
- 		add(ID(), getGUID());
 	}
   	
  	
@@ -146,11 +144,6 @@ public class DBSchema<H extends DBHandleable<?>> implements Countable, Token
 	}
 	
 		
-	private DBGetter<H> getGUID()
-	{
-		return h -> h.GUID();
-	}
-
  	@Override
 	public Format<DBSchema<?>> Formatter()
 	{
