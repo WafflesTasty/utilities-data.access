@@ -4,7 +4,7 @@ import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.Storage;
 import waffles.utils.dacs.files.tokens.csv.rows.CSVComment;
 import waffles.utils.dacs.files.tokens.csv.rows.CSVData;
-import waffles.utils.dacs.utilities.errors.FormatError;
+import waffles.utils.dacs.utilities.files.FormatError;
 import waffles.utils.lang.tokens.values.primitive.StringToken;
 import waffles.utils.sets.countable.wrapper.JavaList;
 import waffles.utils.tools.patterns.operator.Operable;

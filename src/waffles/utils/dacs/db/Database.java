@@ -6,16 +6,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import waffles.utils.dacs.db.entities.DBEntity;
+import waffles.utils.dacs.db.handlers.DBHandleable;
+import waffles.utils.dacs.db.handlers.DBHandler;
+import waffles.utils.dacs.db.operations.SQLDelete;
+import waffles.utils.dacs.db.operations.SQLExists;
+import waffles.utils.dacs.db.operations.SQLInsert;
+import waffles.utils.dacs.db.operations.SQLSelect;
+import waffles.utils.dacs.db.operations.SQLUpdate;
 import waffles.utils.dacs.db.schema.DBSchema;
-import waffles.utils.dacs.db.schema.format.SQLDelete;
-import waffles.utils.dacs.db.schema.format.SQLExists;
-import waffles.utils.dacs.db.schema.format.SQLInsert;
-import waffles.utils.dacs.db.schema.format.SQLSelect;
-import waffles.utils.dacs.db.schema.format.SQLUpdate;
-import waffles.utils.dacs.db.schema.maps.DBSetter;
 import waffles.utils.dacs.utilities.DataLink;
-import waffles.utils.dacs.utilities.errors.SQLError;
+import waffles.utils.dacs.utilities.db.data.DBRow;
+import waffles.utils.dacs.utilities.db.errors.SQLError;
 
 /**
  * The {@code Database} class provides access to an entity-based SQL database.
@@ -25,61 +26,66 @@ import waffles.utils.dacs.utilities.errors.SQLError;
  * @version 1.1
  *
  *
- * @param <E>  a root type
+ * @param <H>  a handler type
+ * @see DBHandleable
  * @see DataLink
- * @see DBEntity
  * @see DBLogin
  */
-public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogin, Boolean>
+public abstract class Database<H extends DBHandleable<?>> implements DataLink<DBLogin, Boolean>
 {
-	private Connection cnc;
 	private DBLogin login;
+	private Connection cnc;
+
+	@Override
+	public Boolean connect()
+	{
+		return connect(login);
+	}
 	
-	/**
-	 * Commits {@code Database} changes.
-	 */
-	public void commit()
+	@Override
+	public Boolean connect(DBLogin log)
+	{
+		String pfx = Prefix();
+		String db = log.Database();
+		String host = log.Host();
+		String user = log.User();
+		String pass = log.Pass();
+		
+		try
+		{
+			login = log;
+			if(cnc != null)
+			{
+				cnc.close();
+			}
+			
+			cnc = DriverManager.getConnection(pfx + host + "/" + db, user, pass);
+			return cnc.isValid(0);
+		}
+		catch(SQLException e)
+		{
+			return false;	
+		}
+	}
+	
+	@Override
+	public boolean disconnect(DBLogin log)
 	{
 		try
 		{
 			if(cnc != null)
-			{
-				cnc.commit();
-			}
+				cnc.close();
+			cnc = null;
 		}
-		catch (SQLException e)
+		catch(SQLException e)
 		{
-			throw new SQLError(login);
+			return false;
 		}
-	}
-	
-	/**
-	 * Rolls back {@code Database} changes.
-	 */
-	public void rollback()
-	{
-		try
-		{
-			if(cnc != null)
-			{
-				cnc.rollback();
-			}
-		}
-		catch (SQLException e)
-		{
-			throw new SQLError(login);
-		}
+		
+		return true;
 	}
 
-	
-	/**
-	 * Returns the prefix of the {@code Database}.
-	 * 
-	 * @return  a host prefix
-	 */
-	public abstract String Prefix();
 
-	
 	/**
 	 * Deletes an entity from the {@code Database}.
 	 * 
@@ -90,7 +96,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * 
 	 * @see DBSchema
 	 */
-	public <F extends E> boolean delete(F ent, DBSchema<? super F> scm)
+	public <G extends H> boolean delete(G ent, DBSchema<? super G> scm)
 	{
 		SQLDelete del = new SQLDelete(ent);
 		String sql = del.parse(scm);
@@ -116,7 +122,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * 
 	 * @see DBSchema
 	 */
-	public <F extends E> boolean exists(F ent, DBSchema<? super F> scm)
+	public <G extends H> boolean exists(G ent, DBSchema<? super G> scm)
 	{
 		SQLExists exi = new SQLExists(ent);
 		String sql = exi.parse(scm);
@@ -143,7 +149,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * 
 	 * @see DBSchema
 	 */
-	public <F extends E> boolean insert(F ent, DBSchema<? super F> scm)
+	public <G extends H> boolean insert(G ent, DBSchema<? super G> scm)
 	{
 		SQLInsert ins = new SQLInsert(ent);
 		String sql = ins.parse(scm);
@@ -169,7 +175,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * 
 	 * @see DBSchema
 	 */
-	public <F extends E> boolean select(F ent, DBSchema<? super F> scm)
+	public <G extends H> boolean select(G ent, DBSchema<? super G> scm)
 	{
 		SQLSelect sel = new SQLSelect(ent);
 		String sql = sel.parse(scm);
@@ -177,14 +183,11 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 		try
 		{
 			Statement s = cnc.createStatement();
-			ResultSet r = s.executeQuery(sql);
-			if(r.next())
-			{
-				DBSetter<? super F> set = scm.Setter();
-				return set.update(ent, r);
-			}
+			ResultSet set = s.executeQuery(sql);
 			
-			return false;
+			DBHandler h = ent.Handler();
+			DBRow row = new DBRow(set);
+			return h.load(row, scm);
 		}
 		catch (SQLException e)
 		{
@@ -202,7 +205,7 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 	 * 
 	 * @see DBSchema
 	 */
-	public <F extends E> boolean update(F ent, DBSchema<? super F> scm)
+	public <G extends H> boolean update(G ent, DBSchema<? super G> scm)
 	{
 		SQLUpdate upd = new SQLUpdate(ent);
 		String sql = upd.parse(scm);
@@ -217,48 +220,49 @@ public abstract class Database<E extends DBEntity<?>> implements DataLink<DBLogi
 			throw new SQLError(sql);
 		}
 	}
+
 	
+	/**
+	 * Returns the prefix of the {@code Database}.
+	 * 
+	 * @return  a host prefix
+	 */
+	public abstract String Prefix();
 	
-	@Override
-	public boolean disconnect(DBLogin log)
+
+	/**
+	 * Rolls back {@code Database} changes.
+	 */
+	public void rollback()
 	{
 		try
 		{
-			if(cnc != null)
-				cnc.close();
-			cnc = null;
-		}
-		catch(SQLException e)
-		{
-			return false;
-		}
-		
-		return true;
-	}
-	
-	@Override
-	public Boolean connect(DBLogin log)
-	{
-		String pfx = Prefix();
-		String db = log.Database();
-		String host = log.Host();
-		String user = log.User();
-		String pass = log.Pass();
-		
-		try
-		{
-			login = log;
 			if(cnc != null)
 			{
-				cnc.close();
+				cnc.rollback();
 			}
-			
-			cnc = DriverManager.getConnection(pfx + host + "/" + db, user, pass);
-			return cnc.isValid(0);
 		}
-		catch(SQLException e)
+		catch (SQLException e)
 		{
-			return false;	
+			throw new SQLError(login);
+		}
+	}
+	
+	/**
+	 * Commits {@code Database} changes.
+	 */
+	public void commit()
+	{
+		try
+		{
+			if(cnc != null)
+			{
+				cnc.commit();
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new SQLError(login);
 		}
 	}
 }

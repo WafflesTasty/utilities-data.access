@@ -1,7 +1,7 @@
 package waffles.utils.dacs.files;
 
 import waffles.utils.dacs.File;
-import waffles.utils.dacs.utilities.errors.AccessError;
+import waffles.utils.dacs.utilities.files.AccessError;
 
 /**
  * A {@code Storage} defines data which can be read or written to the file system.

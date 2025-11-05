@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.FileSystem;
 import waffles.utils.dacs.files.Writer;
-import waffles.utils.dacs.utilities.errors.AccessError;
+import waffles.utils.dacs.utilities.files.AccessError;
 import waffles.utils.lang.tokens.Token;
 
 /**

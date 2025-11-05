@@ -2,7 +2,7 @@ package waffles.utils.dacs.files.tokens.csv.rows;
 
 import waffles.utils.dacs.files.tokens.csv.CSVFile;
 import waffles.utils.dacs.files.tokens.csv.CSVRow;
-import waffles.utils.dacs.utilities.errors.FormatError;
+import waffles.utils.dacs.utilities.files.FormatError;
 import waffles.utils.lang.tokens.ListToken;
 import waffles.utils.lang.tokens.format.ListFormat;
 import waffles.utils.lang.tokens.parsers.Parsable;

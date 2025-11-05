@@ -8,7 +8,7 @@ import java.util.Iterator;
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.FileSystem;
 import waffles.utils.dacs.files.Reader;
-import waffles.utils.dacs.utilities.errors.AccessError;
+import waffles.utils.dacs.utilities.files.AccessError;
 
 /**
  * A {@code StringReader} reads text files by iterating over each line in order.

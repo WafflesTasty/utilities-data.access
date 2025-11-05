@@ -1,13 +1,16 @@
 package waffles.utils.dacs.db.schema;
 
-import waffles.utils.dacs.db.entities.DBEntity;
-import waffles.utils.dacs.db.schema.maps.DBGetter;
-import waffles.utils.dacs.db.schema.maps.DBSetter;
+import waffles.utils.dacs.db.handlers.DBHandleable;
+import waffles.utils.dacs.utilities.db.DBGetter;
+import waffles.utils.dacs.utilities.db.DBSetter;
+import waffles.utils.dacs.utilities.db.tokens.DBToken;
 import waffles.utils.lang.tokens.Token;
 import waffles.utils.lang.tokens.format.Format;
+import waffles.utils.sets.countable.keymaps.wrapper.JavaMap;
+import waffles.utils.tools.patterns.properties.counters.Countable;
 
 /**
- * A {@code DBSchema} maps database table columns to {@code DBEntity} values.
+ * A {@code DBSchema} maps database table columns to {@code DBHandleable} values.
  * A {@code DBSchema} is used to facilitate delete, select and update statements.
  * 
  * @author Waffles
@@ -15,62 +18,115 @@ import waffles.utils.lang.tokens.format.Format;
  * @version 1.1
  * 
  * 
- * @param <E>  an entity type
- * @see DBEntity
+ * @param <H>  a handler type
+ * @see DBHandleable
+ * @see Countable
  * @see Token
  */
-public class DBSchema<E extends DBEntity<?>> implements Token
-{
+public class DBSchema<H extends DBHandleable<?>> implements Countable, Token
+{	
 	/**
 	 * Defines a default id column.
 	 */
 	public static String DEFAULT_ID = "id";
-	
+		
 	
 	private String table;
-	private DBGetter<E> getter;
-	private DBSetter<E> setter;
-	
+	private JavaMap<DBToken, DBGetter<H>> getter;
+	private JavaMap<DBToken, DBSetter<H>> setter;
+
 	/**
 	 * Creates a new {@code DBSchema}.
 	 * 
-	 * @param tbl  a database table
+	 * @param t  a database table
 	 */
- 	public DBSchema(String tbl)
+ 	public DBSchema(String t)
 	{
- 		table = tbl;
- 		getter = new DBGetter<>();
- 		setter = new DBSetter<>();
+ 		table = t;
+ 		
+ 		getter = new JavaMap<>();
+ 		setter = new JavaMap<>();
+ 		
+ 		add(ID(), getGUID());
 	}
-
+  	
+ 	
 	/**
-	 * Returns the {@code DBSchema} getter.
+	 * Adds a getter to the {@code DBSchema}.
 	 * 
-	 * @return  a database getter
+	 * @param key  a database key
+	 * @param val  a database getter
 	 * 
 	 * 
 	 * @see DBGetter
 	 */
- 	public DBGetter<E> Getter()
- 	{
- 		return getter;
- 	}
- 	
+	public void add(String key, DBGetter<H> val)
+	{
+		getter.put(new DBToken(key), val);
+	}
+	
 	/**
-	 * Returns the {@code DBSchema} setter.
+	 * Adds a setter to the {@code DBSchema}.
 	 * 
-	 * @return  a database setter
+	 * @param key  a database key
+	 * @param val  a database setter
 	 * 
 	 * 
 	 * @see DBSetter
 	 */
- 	public DBSetter<E> Setter()
- 	{
- 		return setter;
- 	}
-
+	public void add(String key, DBSetter<H> val)
+	{
+		setter.put(new DBToken(key), val);
+	}
+ 	
+	
 	/**
-	 * Returns the {@code DBSchema} table.
+	 * Returns a getter from the {@code DBSchema}.
+	 * 
+	 * @param key  a database key
+	 * @return  a database getter
+	 * 
+	 * 
+	 * @see DBGetter
+	 * @see DBToken
+	 */
+	public DBGetter<H> Getter(DBToken key)
+	{
+		return getter.get(key);
+	}
+	
+	/**
+	 * Returns a setter from the {@code DBSchema}.
+	 * 
+	 * @param key  a database key
+	 * @return  a database setter
+	 * 
+	 * 
+	 * @see DBSetter
+	 * @see DBToken
+	 */
+	public DBSetter<H> Setter(DBToken key)
+	{
+		return setter.get(key);
+	}
+	
+	/**
+	 * Iterates the keys of the {@code DBSchema}.
+	 * 
+	 * @return  a key iterable
+	 * 
+	 * 
+	 * @see Iterable
+	 * @see DBToken
+	 */
+	public Iterable<DBToken> Keys()
+	{
+		return getter.Keys();
+	}
+	
+	
+	/**
+	 * Returns the table of the {@code DBSchema}.
 	 * 
 	 * @return  a table name
 	 */
@@ -78,19 +134,9 @@ public class DBSchema<E extends DBEntity<?>> implements Token
 	{
 		return table;
 	}
- 		
-	/**
-	 * Returns the {@code DBSchema} keys.
-	 * 
-	 * @return  a key string
-	 */
- 	public String Keys()
- 	{
- 		return Getter().condense();
- 	}
- 	
+ 		 	
  	/**
- 	 * Returns the {@code DBSchema} id.
+ 	 * Returns the id of the {@code DBSchema}.
  	 * 
  	 * @return  an id column
  	 */
@@ -98,42 +144,22 @@ public class DBSchema<E extends DBEntity<?>> implements Token
 	{
 		return DEFAULT_ID;
 	}
- 	
- 	
- 	/**
- 	 * Returns the {@code DBSchema} pairs.
- 	 * This method excludes the id column,
- 	 * for compatibility with updates.
- 	 * 
- 	 * @param e  a source entity
- 	 * @return   a value string
- 	 * 
- 	 * 
- 	 * @see DBEntity
- 	 */
-	public String Pairs(DBEntity<?> e)
+	
+		
+	private DBGetter<H> getGUID()
 	{
-		return Getter().Pairs((E) e).condense();
+		return h -> h.GUID();
 	}
- 	
- 	/**
- 	 * Returns the {@code DBSchema} values.
- 	 * 
- 	 * @param e  a source entity
- 	 * @return   a value string
- 	 * 
- 	 * 
- 	 * @see DBEntity
- 	 */
- 	public String Values(DBEntity<?> e)
- 	{
- 		return Getter().Values((E) e).condense();
- 	}
 
-
-	@Override
+ 	@Override
 	public Format<DBSchema<?>> Formatter()
 	{
-		return s -> s.Table();
+ 		return s -> s.Table();
+	}
+
+	@Override
+	public int Count()
+	{
+		return getter.Count();
 	}
 }

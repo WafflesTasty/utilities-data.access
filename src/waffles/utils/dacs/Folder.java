@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import waffles.utils.dacs.utilities.Streamer;
-import waffles.utils.dacs.utilities.errors.AccessError;
+import waffles.utils.dacs.utilities.files.AccessError;
 
 /**
  * The {@code Folder} class defines a directory in the file system.

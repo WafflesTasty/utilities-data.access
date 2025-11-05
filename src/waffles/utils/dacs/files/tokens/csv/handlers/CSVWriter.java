@@ -7,7 +7,7 @@ import waffles.utils.dacs.File;
 import waffles.utils.dacs.FileSystem;
 import waffles.utils.dacs.files.Writer;
 import waffles.utils.dacs.files.tokens.csv.CSVRow;
-import waffles.utils.dacs.utilities.errors.AccessError;
+import waffles.utils.dacs.utilities.files.AccessError;
 
 /**
  * A {@code CSVWriter} writes {@code CSVRows} to a {@code File}.

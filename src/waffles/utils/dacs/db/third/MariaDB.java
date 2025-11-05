@@ -3,7 +3,7 @@ package waffles.utils.dacs.db.third;
 import java.sql.DriverManager;
 
 import waffles.utils.dacs.db.Database;
-import waffles.utils.dacs.db.entities.DBEntity;
+import waffles.utils.dacs.db.handlers.DBHandleable;
 
 /**
  * The {@code MariaDB} class defines a {@code Database} for {@code MariaDB}.
@@ -13,11 +13,11 @@ import waffles.utils.dacs.db.entities.DBEntity;
  * @version 1.1
  *
  * 
- * @param <E>  an entity type
+ * @param <H>  a handler type
+ * @see DBHandleable
  * @see Database
- * @see DBEntity
  */
-public class MariaDB<E extends DBEntity<?>> extends Database<E>
+public class MariaDB<H extends DBHandleable<?>> extends Database<H>
 {
 	static
 	{

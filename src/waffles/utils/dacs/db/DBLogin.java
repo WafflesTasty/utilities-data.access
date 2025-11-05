@@ -1,6 +1,6 @@
 package waffles.utils.dacs.db;
 
-import waffles.utils.dacs.utilities.encrypt.Login;
+import waffles.utils.dacs.utilities.login.Login;
 
 /**
  * A {@code DBLogin} provides access to an SQL database.

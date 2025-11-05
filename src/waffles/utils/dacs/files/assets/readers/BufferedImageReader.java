@@ -8,7 +8,7 @@ import com.sixlegs.png.PngImage;
 
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.Reader;
-import waffles.utils.dacs.utilities.errors.AccessError;
+import waffles.utils.dacs.utilities.files.AccessError;
 
 /**
  * A {@code BufferedImageReader} loads .PNG images into a {@code BufferedImage}.
