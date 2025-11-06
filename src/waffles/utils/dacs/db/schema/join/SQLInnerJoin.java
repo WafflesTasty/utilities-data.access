@@ -6,7 +6,7 @@ import waffles.utils.dacs.utilities.db.format.DBToken;
 import waffles.utils.dacs.utilities.db.sql.SQLFormat;
 
 /**
- * A {@code SQLJoinFormat} defines formatting for an SQL inner join.
+ * A {@code SQLInnerJoin} defines formatting for an SQL inner join.
  *
  * @author Waffles
  * @since 06 Nov 2025
@@ -15,19 +15,19 @@ import waffles.utils.dacs.utilities.db.sql.SQLFormat;
  * 
  * @see SQLFormat
  */
-public class SQLJoinFormat implements SQLFormat
+public class SQLInnerJoin implements SQLFormat
 {
 	private DBInnerJoin<?> scm;
 	
 	/**
-	 * Creates a new {@code SQLJoinFormat}.
+	 * Creates a new {@code SQLInnerJoin}.
 	 * 
 	 * @param s  a database schema
 	 * 
 	 * 
 	 * @see DBInnerJoin
 	 */
-	public SQLJoinFormat(DBInnerJoin<?> s)
+	public SQLInnerJoin(DBInnerJoin<?> s)
 	{
 		scm = s;
 	}
@@ -36,6 +36,8 @@ public class SQLJoinFormat implements SQLFormat
 	@Override
 	public String Keys(DBHandleable<?> hnd)
 	{
+		DBTable<?> mst = scm.Master();
+		
 		String s = "";
 		for(DBTable<?> tbl : scm)
 		{

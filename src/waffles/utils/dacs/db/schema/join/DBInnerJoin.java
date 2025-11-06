@@ -41,13 +41,14 @@ public class DBInnerJoin<H extends DBHandleable<?>> extends DBSchema<H> implemen
 		@Override
 		public default SQLFormat get(DBSchema<?> scm, SQLOps ops)
 		{
+			DBInnerJoin<?> j = (DBInnerJoin<?>) scm;
 			if(ops == SQLOps.SELECT)
 			{
-				DBInnerJoin<?> j = (DBInnerJoin<?>) scm;
-				return new SQLJoinFormat(j);
+				return new SQLInnerJoin(j);
 			}
 			
-			return () -> scm;
+			DBTable<?> m = j.Master();
+			return m.Formatter(ops);
 		}
 	}
 	
@@ -89,5 +90,11 @@ public class DBInnerJoin<H extends DBHandleable<?>> extends DBSchema<H> implemen
 	public Formatter Formatter()
 	{
 		return () -> Master().Formatter().Master();
+	}
+
+	@Override
+	public String ID()
+	{
+		return Master().ID();
 	}
 }

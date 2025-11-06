@@ -48,6 +48,7 @@ public interface DBMap extends KeyMap<DBLiteral, DBToken>, MapToken<DBPair>
 		 */
 		public Format(DBMap m)
 		{
+			super(',');
 			map = m;
 		}
 			
