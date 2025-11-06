@@ -1,8 +1,13 @@
 package waffles.utils.dacs.db.handlers;
 
 import waffles.utils.dacs.db.schema.DBSchema;
+<<<<<<< HEAD
 import waffles.utils.dacs.utilities.db.DBRow;
 import waffles.utils.dacs.utilities.db.format.maps.DBMap;
+=======
+import waffles.utils.dacs.utilities.db.data.DBRow;
+import waffles.utils.dacs.utilities.db.tokens.maps.DBMap;
+>>>>>>> branch 'master' of https://github.com/WafflesTasty/utilities-data.access
 
 /**
  * A {@code DBHandler} manages how data is loaded into a {@code DBHandleable}.

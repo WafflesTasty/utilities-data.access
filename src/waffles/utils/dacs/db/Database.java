@@ -15,8 +15,13 @@ import waffles.utils.dacs.db.operations.SQLSelect;
 import waffles.utils.dacs.db.operations.SQLUpdate;
 import waffles.utils.dacs.db.schema.DBSchema;
 import waffles.utils.dacs.utilities.DataLink;
+<<<<<<< HEAD
 import waffles.utils.dacs.utilities.db.DBRow;
 import waffles.utils.dacs.utilities.db.sql.SQLError;
+=======
+import waffles.utils.dacs.utilities.db.data.DBRow;
+import waffles.utils.dacs.utilities.db.errors.SQLError;
+>>>>>>> branch 'master' of https://github.com/WafflesTasty/utilities-data.access
 
 /**
  * The {@code Database} class provides access to an entity-based SQL database.

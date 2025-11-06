@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+<<<<<<< HEAD
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -16,5 +17,29 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+=======
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Zeno/Documents/Jade/libraries/external/iotools/java png/javapng-2.0.jar" sourcepath="C:/Users/Zeno/Documents/Jade/libraries/external/iotools/java png/javapng-2.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/D:/Users/Zeno/Documents/Jade/libraries/external/iotools/java%20png/javapng-2.0.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Zeno/Documents/Jade/libraries/external/iotools/json/json-20210307.jar" sourcepath="C:/Users/Zeno/Documents/Jade/libraries/external/iotools/json/json-20210307.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/Zeno/Documents/Jade/libraries/external/iotools/json/json-20210307.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Zeno/Documents/Jade/libraries/external/iotools/sql/mariadb/mariadb-java-client-2.7.4.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Tools"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Language"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Collections"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Algebra"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Geometry"/>
+>>>>>>> branch 'master' of https://github.com/WafflesTasty/utilities-data.access
 	<classpathentry kind="output" path="bin"/>
 </classpath>

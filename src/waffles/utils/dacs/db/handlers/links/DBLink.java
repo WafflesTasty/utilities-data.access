@@ -60,4 +60,30 @@ public interface DBLink<D extends Database<?>, E extends DBEntity<D>> extends DB
 	{
 		return Parent().GUID();
 	}
+<<<<<<< HEAD
+=======
+
+
+
+	@Override
+	public default boolean delete(D db)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public default boolean insert(D db)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public default boolean select(D db)
+	{
+		return false;
+//		return db.select(this, null);
+	}
+>>>>>>> branch 'master' of https://github.com/WafflesTasty/utilities-data.access
 }
