@@ -65,7 +65,7 @@ public class SQLJoinSelect implements SQLFormat<DBLink<?>>
 		sql += "FROM";
 		sql += " " + from + " ";
 		sql += "WHERE";
-		sql += " " + mst.GUID() + " = ";
+		sql += " " + mst.Name() + "." + mst.GUID() + " = ";
 		sql += "'" + ent.GUID() + "'";
 		return sql;
 	}

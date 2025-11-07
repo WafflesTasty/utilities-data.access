@@ -2,8 +2,10 @@ package waffles.utils.dacs.db.access.links;
 
 import waffles.utils.dacs.db.access.DBFormat;
 import waffles.utils.dacs.db.access.DBSchema;
+import waffles.utils.dacs.db.access.entity.DBEntity;
 import waffles.utils.dacs.db.access.entity.DBTable;
 import waffles.utils.dacs.db.access.entity.format.SQLEntityInsert;
+import waffles.utils.dacs.db.access.entity.format.SQLEntitySelect;
 import waffles.utils.dacs.db.access.entity.format.SQLEntityUpdate;
 import waffles.utils.dacs.db.access.format.SQLAccessDelete;
 import waffles.utils.dacs.db.access.format.SQLAccessExists;
@@ -21,11 +23,12 @@ import waffles.utils.sets.countable.wrapper.JavaList;
  * @version 1.1
  *
  *
- * @param <L>  a link type
+ * @param <E>  a child type
+ * @see DBEntity
  * @see DBSchema
  * @see DBLink
  */
-public abstract class DBJoin<L extends DBLink<?>> implements DBSchema<L>
+public abstract class DBJoin<E extends DBLink<?>> implements DBSchema<E>
 {
 	/**
 	 * A {@code Format} generates SQL for a {@code DBJoin}.
@@ -63,7 +66,14 @@ public abstract class DBJoin<L extends DBLink<?>> implements DBSchema<L>
 			case INSERT:
 				return new SQLEntityInsert(Join().Master());				
 			case SELECT:
+			{
+				if(Join().Slaves().isEmpty())
+				{
+					return new SQLEntitySelect(Join().Master());
+				}
+				
 				return new SQLJoinSelect(Join());
+			}
 			case UPDATE:
 				return new SQLEntityUpdate(Join().Master());
 			default:
@@ -73,37 +83,16 @@ public abstract class DBJoin<L extends DBLink<?>> implements DBSchema<L>
 	}
 
 	
-	private DBTable<?> master;
 	private JavaList<DBTable<?>> slaves;
 	
 	/**
 	 * Creates a new {@code DBJoin}.
-	 * 
-	 * @param mst  a master table
-	 * 
-	 * 
-	 * @see DBTable
 	 */
-	public DBJoin(DBTable<?> mst)
+	public DBJoin()
 	{
 		slaves = new JavaList<>();
-		master = mst;
 	}
-	
-	/**
-	 * Returns the slaves of the {@code DBJoin}.
-	 * 
-	 * @return  a slave iterable
-	 * 
-	 * 
-	 * @see Iterable
-	 * @see DBTable
-	 */
-	public Iterable<DBTable<?>> Slaves()
-	{
-		return slaves;
-	}
-	
+		
 	/**
 	 * Adds a slave to the {@code DBJoin}.
 	 * 
@@ -117,12 +106,20 @@ public abstract class DBJoin<L extends DBLink<?>> implements DBSchema<L>
 		slaves.add(s);
 	}
 	
-			
-	@Override
-	public DBTable<?> Master()
+	/**
+	 * Returns the {@code DBJoin} slaves.
+	 * 
+	 * @return  a slave iterable
+	 * 
+	 * 
+	 * @see JavaList
+	 * @see DBTable
+	 */
+	public JavaList<DBTable<?>> Slaves()
 	{
-		return master;
+		return slaves;
 	}
+
 
 	@Override
 	public Format Formatter()
