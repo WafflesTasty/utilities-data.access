@@ -1,4 +1,4 @@
-package waffles.utils.dacs.utilities.db.format;
+package waffles.utils.dacs.utilities.db.tokens;
 
 import waffles.utils.lang.tokens.format.Format;
 import waffles.utils.tools.patterns.properties.Gateway;

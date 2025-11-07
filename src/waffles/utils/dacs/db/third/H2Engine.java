@@ -3,7 +3,7 @@ package waffles.utils.dacs.db.third;
 import java.sql.DriverManager;
 
 import waffles.utils.dacs.db.Database;
-import waffles.utils.dacs.db.handlers.DBHandleable;
+import waffles.utils.dacs.db.access.DBAccess;
 
 /**
  * The {@code H2Engine} class defines a {@code Database} for {@code H2}.
@@ -13,11 +13,11 @@ import waffles.utils.dacs.db.handlers.DBHandleable;
  * @version 1.1
  *
  * 
- * @param <H>  a handler type
- * @see DBHandleable
+ * @param <A>  an access type
  * @see Database
+ * @see DBAccess
  */
-public class H2Engine<H extends DBHandleable<?>> extends Database<H>
+public class H2Engine<A extends DBAccess<?>> extends Database<A>
 {
 	static
 	{
@@ -32,9 +32,12 @@ public class H2Engine<H extends DBHandleable<?>> extends Database<H>
 		}
 	}
 
-	@Override
-	public String Prefix()
+
+	/**
+	 * Creates a new {@code H2Engine}.
+	 */
+	public H2Engine()
 	{
-		return "jdbc:h2://";
+		super("jdbc:h2://");
 	}
 }

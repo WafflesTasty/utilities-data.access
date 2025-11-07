@@ -1,4 +1,4 @@
-package waffles.utils.dacs.db;
+package waffles.utils.dacs.utilities.db;
 
 import waffles.utils.dacs.utilities.login.Login;
 

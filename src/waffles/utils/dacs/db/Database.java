@@ -6,17 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import waffles.utils.dacs.db.handlers.DBHandleable;
-import waffles.utils.dacs.db.handlers.DBHandler;
-import waffles.utils.dacs.db.operations.SQLDelete;
-import waffles.utils.dacs.db.operations.SQLExists;
-import waffles.utils.dacs.db.operations.SQLInsert;
-import waffles.utils.dacs.db.operations.SQLSelect;
-import waffles.utils.dacs.db.operations.SQLUpdate;
-import waffles.utils.dacs.db.schema.DBSchema;
+import waffles.utils.dacs.db.access.DBAccess;
+import waffles.utils.dacs.db.access.DBSchema;
 import waffles.utils.dacs.utilities.DataLink;
-import waffles.utils.dacs.utilities.db.DBRow;
+import waffles.utils.dacs.utilities.db.DBLoader;
+import waffles.utils.dacs.utilities.db.DBLogin;
 import waffles.utils.dacs.utilities.db.sql.SQLError;
+import waffles.utils.dacs.utilities.db.sql.SQLFormat;
+import waffles.utils.dacs.utilities.db.sql.SQLOps;
 
 /**
  * The {@code Database} class provides access to an entity-based SQL database.
@@ -26,50 +23,202 @@ import waffles.utils.dacs.utilities.db.sql.SQLError;
  * @version 1.1
  *
  *
- * @param <H>  a handler type
- * @see DBHandleable
+ * @param <A>  an access type
+ * @see DBAccess
  * @see DataLink
  * @see DBLogin
  */
-public abstract class Database<H extends DBHandleable<?>> implements DataLink<DBLogin, Boolean>
+public abstract class Database<A extends DBAccess<?>> implements DataLink<DBLogin, Boolean>
 {
-	private DBLogin login;
+	private String prefix;
 	private Connection cnc;
-
-	@Override
-	public Boolean connect()
+	private DBLogin login;
+	
+	/**
+	 * Creates a new {@code Database}.
+	 * 
+	 * @param pfx  a host prefix
+	 */
+	public Database(String pfx)
 	{
-		return connect(login);
+		prefix = pfx;
 	}
 	
-	@Override
-	public Boolean connect(DBLogin log)
+	/**
+	 * Queries data in the {@code Database}.
+	 * 
+	 * @param sql  an sql string
+	 * @return  a row iterator
+	 * 
+	 * 
+	 * @see DBRow
+	 */
+	public DBRow query(String sql)
 	{
-		String pfx = Prefix();
-		String db = log.Database();
-		String host = log.Host();
-		String user = log.User();
-		String pass = log.Pass();
-		
 		try
 		{
-			login = log;
-			if(cnc != null)
-			{
-				cnc.close();
-			}
-			
-			cnc = DriverManager.getConnection(pfx + host + "/" + db, user, pass);
-			return cnc.isValid(0);
+			Statement s = cnc.createStatement();
+			ResultSet set = s.executeQuery(sql);
+			return new DBRow(set);
 		}
-		catch(SQLException e)
+		catch (SQLException e)
 		{
-			return false;	
+			throw new SQLError(sql);
 		}
 	}
 	
+	/**
+	 * Updates data in the {@code Database}.
+	 * 
+	 * @param sql  an sql string
+	 * @return  {@code true} if successful
+	 */
+	public boolean update(String sql)
+	{
+		try
+		{
+			Statement s = cnc.createStatement();
+			return s.executeUpdate(sql) > 0;
+		}
+		catch (SQLException e)
+		{
+			throw new SQLError(sql);
+		}
+	}
+	
+	
+	/**
+	 * Deletes a {@code DBAccessible} from the {@code Database}.
+	 * 
+	 * @param acs  a database access
+	 * @param scm  a database schema
+	 * @return  {@code true} if successful
+	 * 
+	 * 
+	 * @see DBSchema
+	 */
+	public <B extends A> boolean delete(B acs, DBSchema<? super B> scm)
+	{
+		SQLFormat<?> fmt = scm.Formatter(SQLOps.DELETE);
+		return update(fmt.castAndParse(acs));
+	}
+	
+	/**
+	 * Fetches a {@code DBAccessible} from the {@code Database}.
+	 * 
+	 * @param acs  a database access
+	 * @param scm  a database schema
+	 * @return  {@code true} if successful
+	 * 
+	 * 
+	 * @see DBSchema
+	 */
+	public <B extends A> boolean exists(B acs, DBSchema<? super B> scm)
+	{
+		SQLFormat<?> fmt = scm.Formatter(SQLOps.EXISTS);
+		return query(fmt.castAndParse(acs)).hasNext();
+	}
+	
+	/**
+	 * Inserts a {@code DBAccessible} into the {@code Database}.
+	 * 
+	 * @param acs  a database access
+	 * @param scm  a database schema
+	 * @return  {@code true} if successful
+	 * 
+	 * 
+	 * @see DBSchema
+	 */
+	public <B extends A> boolean insert(B acs, DBSchema<? super B> scm)
+	{
+		SQLFormat<?> fmt = scm.Formatter(SQLOps.INSERT);
+		return update(fmt.castAndParse(acs));
+	}
+	
+	/**
+	 * Selects a {@code DBAccessible} from the {@code Database}.
+	 * 
+	 * @param acs  a database access
+	 * @param scm  a database schema
+	 * @return  {@code true} if successful
+	 * 
+	 * 
+	 * @see DBSchema
+	 */
+	public <B extends A> boolean select(B acs, DBSchema<? super B> scm)
+	{
+		DBLoader<? super B> loader = scm.Loader();
+		SQLFormat<?> fmt = scm.Formatter(SQLOps.SELECT);
+		DBRow data = query(fmt.castAndParse(acs));
+		return loader.load(acs, data);
+	}
+	
+	/**
+	 * Updates a {@code DBAccessible} into the {@code Database}.
+	 * 
+	 * @param acs  a database access
+	 * @param scm  a database schema
+	 * @return  {@code true} if successful
+	 * 
+	 * 
+	 * @see DBSchema
+	 */
+	public <B extends A> boolean update(B acs, DBSchema<? super B> scm)
+	{
+		SQLFormat<?> fmt = scm.Formatter(SQLOps.UPDATE);
+		return update(fmt.castAndParse(acs));
+	}
+	
+	
+	/**
+	 * Rolls back {@code Database} changes.
+	 * 
+	 * @return  {@code true} if successful
+	 */
+	public boolean rollback()
+	{
+		try
+		{
+			if(cnc != null)
+			{
+				cnc.rollback();
+				return true;
+			}
+			
+			return false;
+		}
+		catch (SQLException e)
+		{
+			throw new SQLError(login);
+		}
+	}
+	
+	/**
+	 * Commits {@code Database} changes.
+	 * 
+	 * @return  {@code true} if successful
+	 */
+	public boolean commit()
+	{
+		try
+		{
+			if(cnc != null)
+			{
+				cnc.commit();
+				return true;
+			}
+			
+			return false;
+		}
+		catch (SQLException e)
+		{
+			throw new SQLError(login);
+		}
+	}
+
+
 	@Override
-	public boolean disconnect(DBLogin log)
+	public boolean disconnect(DBLogin l)
 	{
 		try
 		{
@@ -85,184 +234,34 @@ public abstract class Database<H extends DBHandleable<?>> implements DataLink<DB
 		return true;
 	}
 
-
-	/**
-	 * Deletes an entity from the {@code Database}.
-	 * 
-	 * @param ent  a database entity
-	 * @param scm  a database schema
-	 * @return  {@code true} if successful
-	 * 
-	 * 
-	 * @see DBSchema
-	 */
-	public <G extends H> boolean delete(G ent, DBSchema<? super G> scm)
+	@Override
+	public Boolean connect(DBLogin l)
 	{
-		SQLDelete del = new SQLDelete(ent);
-		String sql = del.parse(scm);
+		String db = l.Database();
+		String host = l.Host();
+		String user = l.User();
+		String pass = l.Pass();
 		
 		try
 		{
-			Statement s = cnc.createStatement();			
-			return s.executeUpdate(sql) > 0;
-		}
-		catch (SQLException e)
-		{
-			throw new SQLError(sql);
-		}
-	}
-	
-	/**
-	 * Finds an entity within the {@code Database}.
-	 * 
-	 * @param ent  a database entity
-	 * @param scm  a database schema
-	 * @return  {@code true} if exists
-	 * 
-	 * 
-	 * @see DBSchema
-	 */
-	public <G extends H> boolean exists(G ent, DBSchema<? super G> scm)
-	{
-		SQLExists exi = new SQLExists(ent);
-		String sql = exi.parse(scm);
-		
-		try
-		{
-			Statement s = cnc.createStatement();
-			ResultSet r = s.executeQuery(sql);
-			return r.next();
-		}
-		catch (SQLException e)
-		{
-			throw new SQLError(sql);
-		}
-	}
-	
-	/**
-	 * Inserts an entity into the {@code Database}.
-	 * 
-	 * @param ent  a database entity
-	 * @param scm  a database schema
-	 * @return  {@code true} if successful
-	 * 
-	 * 
-	 * @see DBSchema
-	 */
-	public <G extends H> boolean insert(G ent, DBSchema<? super G> scm)
-	{
-		SQLInsert ins = new SQLInsert(ent);
-		String sql = ins.parse(scm);
-		
-		try
-		{
-			Statement s = cnc.createStatement();
-			return s.executeUpdate(sql) > 0;
-		}
-		catch (SQLException e)
-		{
-			throw new SQLError(sql);
-		}
-	}
-	
-	/**
-	 * Selects an entity from the {@code Database}.
-	 * 
-	 * @param ent  a database entity
-	 * @param scm  a database schema
-	 * @return  {@code true} if successful
-	 * 
-	 * 
-	 * @see DBSchema
-	 */
-	public <G extends H> boolean select(G ent, DBSchema<? super G> scm)
-	{
-		SQLSelect sel = new SQLSelect(ent);
-		String sql = sel.parse(scm);
-		
-		try
-		{
-			Statement s = cnc.createStatement();
-			ResultSet set = s.executeQuery(sql);
+			login = l;
+			if(cnc != null)
+			{
+				cnc.close();
+			}
 			
-			DBHandler h = ent.Handler();
-			DBRow row = new DBRow(set);
-			return h.load(row, scm);
+			cnc = DriverManager.getConnection(prefix + host + "/" + db, user, pass);
+			return cnc.isValid(0);
 		}
-		catch (SQLException e)
+		catch(SQLException e)
 		{
-			throw new SQLError(sql);
+			return false;	
 		}
 	}
 	
-	/**
-	 * Updates an entity into the {@code Database}.
-	 * 
-	 * @param ent  a database entity
-	 * @param scm  a database schema
-	 * @return  {@code true} if successful
-	 * 
-	 * 
-	 * @see DBSchema
-	 */
-	public <G extends H> boolean update(G ent, DBSchema<? super G> scm)
+	@Override
+	public Boolean connect()
 	{
-		SQLUpdate upd = new SQLUpdate(ent);
-		String sql = upd.parse(scm);
-		
-		try
-		{
-			Statement s = cnc.createStatement();
-			return s.executeUpdate(sql) > 0;
-		}
-		catch (SQLException e)
-		{
-			throw new SQLError(sql);
-		}
-	}
-
-	
-	/**
-	 * Returns the prefix of the {@code Database}.
-	 * 
-	 * @return  a host prefix
-	 */
-	public abstract String Prefix();
-	
-
-	/**
-	 * Rolls back {@code Database} changes.
-	 */
-	public void rollback()
-	{
-		try
-		{
-			if(cnc != null)
-			{
-				cnc.rollback();
-			}
-		}
-		catch (SQLException e)
-		{
-			throw new SQLError(login);
-		}
-	}
-	
-	/**
-	 * Commits {@code Database} changes.
-	 */
-	public void commit()
-	{
-		try
-		{
-			if(cnc != null)
-			{
-				cnc.commit();
-			}
-		}
-		catch (SQLException e)
-		{
-			throw new SQLError(login);
-		}
+		return connect(login);
 	}
 }

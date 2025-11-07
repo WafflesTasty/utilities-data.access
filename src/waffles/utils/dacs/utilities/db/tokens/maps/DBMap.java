@@ -1,6 +1,7 @@
 package waffles.utils.dacs.utilities.db.tokens.maps;
 
 import waffles.utils.dacs.utilities.db.tokens.DBList;
+import waffles.utils.dacs.utilities.db.tokens.DBLiteral;
 import waffles.utils.dacs.utilities.db.tokens.DBToken;
 import waffles.utils.lang.tokens.MapToken;
 import waffles.utils.lang.tokens.format.ListFormat;
@@ -13,13 +14,14 @@ import waffles.utils.sets.countable.keymaps.KeyMap;
  * @since 05 Nov 2025
  * @version 1.1
  *
- *
+ * 
+ * @see DBLiteral
  * @see MapToken
  * @see DBToken
  * @see DBPair
  * @see KeyMap
  */
-public interface DBMap extends KeyMap<DBToken, DBToken>, MapToken<DBPair>
+public interface DBMap extends KeyMap<DBLiteral, DBToken>, MapToken<DBPair>
 {
 	/**
 	 * The {@code Format} class defines formatting for a {@code DBMap}.
@@ -46,6 +48,7 @@ public interface DBMap extends KeyMap<DBToken, DBToken>, MapToken<DBPair>
 		 */
 		public Format(DBMap m)
 		{
+			super(',');
 			map = m;
 		}
 			
@@ -70,10 +73,10 @@ public interface DBMap extends KeyMap<DBToken, DBToken>, MapToken<DBPair>
 		 * @return  a key list
 		 * 
 		 * 
-		 * @see DBToken
+		 * @see DBLiteral
 		 * @see DBList
 		 */
-		public DBList<DBToken> Keys()
+		public DBList<DBLiteral> Keys()
 		{
 			return () -> map.Keys();
 		}
@@ -88,7 +91,7 @@ public interface DBMap extends KeyMap<DBToken, DBToken>, MapToken<DBPair>
 	 */
 	public default DBToken get(String key)
 	{
-		return get(new DBToken(key));
+		return get(new DBLiteral(key));
 	}
 	
 	/**
@@ -100,7 +103,7 @@ public interface DBMap extends KeyMap<DBToken, DBToken>, MapToken<DBPair>
 	 */
 	public default DBToken put(String key, DBToken val)
 	{
-		return put(new DBToken(key), val);
+		return put(new DBLiteral(key), val);
 	}
 	
 	/**
@@ -115,6 +118,16 @@ public interface DBMap extends KeyMap<DBToken, DBToken>, MapToken<DBPair>
 		return put(key, new DBToken(val));
 	}
 
+	
+	@Override
+	public abstract Iterable<DBPair> Pairs();
+	
+	@Override
+	public default Iterable<DBPair> Tokens()
+	{
+		return Pairs();
+	}
+	
 	@Override
 	public default Format Formatter()
 	{

@@ -1,4 +1,4 @@
-package waffles.utils.dacs.utilities.db;
+package waffles.utils.dacs.db;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

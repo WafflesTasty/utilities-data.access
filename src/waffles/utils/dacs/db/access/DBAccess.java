@@ -1,39 +1,36 @@
-package waffles.utils.dacs.db.handlers;
+package waffles.utils.dacs.db.access;
 
 import waffles.utils.dacs.db.Database;
 import waffles.utils.dacs.utilities.Identifiable;
+import waffles.utils.lang.tokens.Token;
+import waffles.utils.lang.tokens.format.Format;
 
 /**
- * A {@code DBHandleable} defines SQL database operations.
+ * A {@code DBAccess} object maintains a dataset in a {@code Database}.
  *
  * @author Waffles
- * @since 05 Nov 2025
+ * @since 07 Nov 2025
  * @version 1.1
  *
  *
  * @param <D>  a database type
  * @see Identifiable
  * @see Database
+ * @see Token
  */
-public interface DBHandleable<D extends Database<?>> extends Identifiable
+@FunctionalInterface
+public interface DBAccess<D extends Database<?>> extends Identifiable, Token
 {
-	/**
-	 * Creates a handler for the {@code DBHandleable}.
-	 * 
-	 * @return  a database handler
-	 * 
-	 * 
-	 * @see DBHandler
-	 */
-	public abstract DBHandler Handler();
-	
 	/**
 	 * Deletes the {@code DBHandleable}.
 	 * 
 	 * @param db  a target database
 	 * @return  {@code true} if deleted
 	 */
-	public abstract boolean delete(D db);
+	public default boolean delete(D db)
+	{
+		return false;
+	}
 
 	/**
 	 * Fetches the {@code DBHandleable}.
@@ -41,7 +38,10 @@ public interface DBHandleable<D extends Database<?>> extends Identifiable
 	 * @param db  a target database
 	 * @return  {@code true} if exists
 	 */
-	public abstract boolean exists(D db);
+	public default boolean exists(D db)
+	{
+		return select(db);
+	}
 	
 	/**
 	 * Inserts the {@code DBHandleable}.
@@ -49,7 +49,10 @@ public interface DBHandleable<D extends Database<?>> extends Identifiable
 	 * @param db  a target database
 	 * @return  {@code true} if inserted
 	 */
-	public abstract boolean insert(D db);
+	public default boolean insert(D db)
+	{
+		return false;
+	}
 	
 	/**
 	 * Selects the {@code DBHandleable}.
@@ -57,7 +60,10 @@ public interface DBHandleable<D extends Database<?>> extends Identifiable
 	 * @param db  a target database
 	 * @return  {@code true} if selected
 	 */
-	public abstract boolean select(D db);
+	public default boolean select(D db)
+	{
+		return false;
+	}
 	
 	/**
 	 * Updates the {@code DBHandleable}.
@@ -65,5 +71,25 @@ public interface DBHandleable<D extends Database<?>> extends Identifiable
 	 * @param db  a target database
 	 * @return  {@code true} if updated
 	 */
-	public abstract boolean update(D db);
+	public default boolean update(D db)
+	{
+		if(!exists(db))
+			return insert(db);
+		else
+		{
+			if(delete(db))
+			{
+				return insert(db);
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	@Override
+	public default Format<?> Formatter()
+	{
+		return o -> GUID().toString();
+	}
 }
