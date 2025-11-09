@@ -1,5 +1,6 @@
 package waffles.utils.dacs.db.access.entity;
 
+import waffles.utils.dacs.db.DBRow;
 import waffles.utils.dacs.db.access.DBFormat;
 import waffles.utils.dacs.db.access.DBSchema;
 import waffles.utils.dacs.db.access.entity.format.SQLEntityInsert;
@@ -231,9 +232,10 @@ public class DBTable<E extends DBEntity<?>> implements DBSchema<E>
 			DBMap map = Formatter().Map(ent);
 			while(row.hasNext())
 			{
+				DBRow r = row.next();
 				for(DBLiteral tkn : map.Keys())
 				{
-					Object o = row.get(tkn.condense());
+					Object o = r.get(tkn.condense());
 					map.put(tkn, new DBToken(o));
 				}
 				

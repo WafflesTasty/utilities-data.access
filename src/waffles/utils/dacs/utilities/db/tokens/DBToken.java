@@ -100,10 +100,32 @@ public class DBToken extends StringToken
 		super(val);
 	}
 	
+		
+	@Override
+	public boolean equals(Object o)
+	{
+		if(o instanceof DBToken)
+		{
+			DBToken t = (DBToken) o;
+			
+			String s1 =   condense();
+			String s2 = t.condense();
+			
+			return s1.equals(s2);
+		}
+		
+		return false;
+	}
 	
 	@Override
 	public Format<?> Formatter()
 	{
 		return Formatter(new Hints());
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return condense().hashCode();
 	}
 }

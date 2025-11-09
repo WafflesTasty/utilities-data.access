@@ -100,7 +100,8 @@ public abstract class Database<A extends DBAccess<?>> implements DataLink<DBLogi
 	public <B extends A> boolean delete(B acs, DBSchema<? super B> scm)
 	{
 		SQLFormat<?> fmt = scm.Formatter(SQLOps.DELETE);
-		return update(fmt.castAndParse(acs));
+		update(fmt.castAndParse(acs));
+		return true;
 	}
 	
 	/**
@@ -166,7 +167,8 @@ public abstract class Database<A extends DBAccess<?>> implements DataLink<DBLogi
 	public <B extends A> boolean update(B acs, DBSchema<? super B> scm)
 	{
 		SQLFormat<?> fmt = scm.Formatter(SQLOps.UPDATE);
-		return update(fmt.castAndParse(acs));
+		update(fmt.castAndParse(acs));
+		return true;
 	}
 	
 	

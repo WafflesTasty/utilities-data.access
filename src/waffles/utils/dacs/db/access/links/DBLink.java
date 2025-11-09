@@ -3,7 +3,6 @@ package waffles.utils.dacs.db.access.links;
 import java.util.UUID;
 
 import waffles.utils.dacs.db.Database;
-import waffles.utils.dacs.db.access.DBAccess;
 import waffles.utils.dacs.db.access.entity.DBEntity;
 
 /**
@@ -17,9 +16,9 @@ import waffles.utils.dacs.db.access.entity.DBEntity;
  *
  * @param <D>  a database type
  * @see Database
- * @see DBAccess
+ * @see DBEntity
  */
-public interface DBLink<D extends Database<?>> extends DBAccess<D>
+public interface DBLink<D extends Database<?>> extends DBEntity<D>
 {
 	/**
 	 * Returns a parent {@code DBEntity}.
