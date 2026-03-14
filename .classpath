@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Algebra"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Collections"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Geometry"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Language"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Utilities - Tools"/>
-	<classpathentry kind="lib" path="C:/Users/Zeno/Documents/Jade/libraries/external/iotools/java png/javapng-2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Zeno/Documents/Jade/libraries/external/iotools/sql/mariadb/mariadb-java-client-2.7.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Zeno/Documents/Jade/libraries/external/iotools/sql/h2/h2-1.3.162.jar"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Utilities - Algebra"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Utilities - Collections"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Utilities - Geometry"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Utilities - Language"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Utilities - Tools"/>
+	<classpathentry exported="true" kind="lib" path="/home/waffles/Documents/Jade/libraries/external/iotools/sql/mariadb/mariadb-java-client-2.7.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="/home/waffles/Documents/Jade/libraries/external/iotools/sql/h2/h2-1.3.162.jar"/>
+	<classpathentry exported="true" kind="lib" path="/home/waffles/Documents/Jade/libraries/external/iotools/java png/javapng-2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
