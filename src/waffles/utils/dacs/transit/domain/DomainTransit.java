@@ -23,7 +23,7 @@ public interface DomainTransit<D> extends Transit.Index<D>
 	 * 
 	 * @see Domain
 	 */
-	public abstract Domain<D> Domain();
+	public abstract Domain<? super D> Domain();
 	
 	
 	@Override
