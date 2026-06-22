@@ -3,6 +3,8 @@ package waffles.utils.dacs.utilities;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import waffles.utils.dacs.files.assets.Image;
+
 /**
  * The {@code Buffers} class provides static-access utilities to manage buffers.
  *
@@ -17,6 +19,28 @@ public final class Buffers
 	 */
 	public static final ByteOrder ORDER = ByteOrder.nativeOrder();
 	
+	
+	/**
+	 * Creates a new {@code ByteBuffer}.
+	 * Byte data is loaded from an {@code Image}.
+	 * 
+	 * @param img  a source image
+	 * @return  a byte buffer
+	 * 
+	 * 
+	 * @see ByteBuffer
+	 * @see Image
+	 */
+	public static ByteBuffer create(Image img)
+	{
+		byte[] data = img.Array();
+		int[] dims  = img.Dimensions();
+		int l = data.length;
+
+		ByteBuffer b = Buffers.create(l);
+		return b.put(data).flip();
+	}
+	
 	/**
 	 * Creates a new {@code ByteBuffer}.
 	 * 
@@ -30,7 +54,7 @@ public final class Buffers
 	{
 		return ByteBuffer.allocateDirect(size).order(ORDER);
 	}
-	
+		
 	
 	private Buffers()
 	{

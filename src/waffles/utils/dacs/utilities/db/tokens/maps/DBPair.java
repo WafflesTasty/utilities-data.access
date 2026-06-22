@@ -1,5 +1,6 @@
 package waffles.utils.dacs.utilities.db.tokens.maps;
 
+import waffles.utils.dacs.utilities.db.tokens.DBLiteral;
 import waffles.utils.dacs.utilities.db.tokens.DBToken;
 import waffles.utils.lang.tokens.PairToken;
 import waffles.utils.lang.tokens.format.Format;
@@ -13,11 +14,13 @@ import waffles.utils.lang.tokens.format.Format;
  *
  * 
  * @see PairToken
+ * @see DBLiteral
  * @see DBToken
  */
-public class DBPair implements PairToken<DBToken, DBToken>
+public class DBPair implements PairToken<DBLiteral, DBToken>
 {
-	private DBToken key, val;
+	private DBToken val;
+	private DBLiteral key;
 	
 	/**
 	 * Creates a new {@code DBPair}.
@@ -26,9 +29,10 @@ public class DBPair implements PairToken<DBToken, DBToken>
 	 * @param v  a value token
 	 * 
 	 * 
+	 * @see DBLiteral
 	 * @see DBToken
 	 */
-	public DBPair(DBToken k, DBToken v)
+	public DBPair(DBLiteral k, DBToken v)
 	{
 		key = k;
 		val = v;
@@ -48,7 +52,7 @@ public class DBPair implements PairToken<DBToken, DBToken>
 	}
 	
 	@Override
-	public DBToken Key()
+	public DBLiteral Key()
 	{
 		return key;
 	}

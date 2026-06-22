@@ -12,12 +12,45 @@ import waffles.utils.lang.utilities.ISO;
 @FunctionalInterface
 public interface Logger
 {
+	public static final int DEPTH = 8;
+	
+	
 	/**
 	 * Logs a message into the {@code Logger}.
 	 * 
 	 * @param msg  a message string
 	 */
 	public abstract void logMessage(String msg);
+
+	/**
+	 * Logs an exception into the {@code Logger}.
+	 * 
+	 * @param e  an exception
+	 * @param d  a recursion depth
+	 * 
+	 * 
+	 * @see Throwable
+	 */
+	public default void logException(Throwable e, int d)
+	{
+		String date = ISO.Date.now().condense(ISO.Format.LONG);
+		String time = ISO.Time.now().condense(ISO.Format.LONG);
+		
+		logMessage(e + " at " + time + ", " + date + ":");
+		for(StackTraceElement emt : e.getStackTrace())
+		{
+			logMessage(emt.toString());
+		}
+		
+		if(d > 0)
+		{
+			Throwable c = e.getCause();
+			if(c != null)
+			{
+				logException(c, d - 1);
+			}
+		}
+	}
 	
 	/**
 	 * Logs an exception into the {@code Logger}.
@@ -29,13 +62,6 @@ public interface Logger
 	 */
 	public default void logException(Throwable e)
 	{
-		String date = ISO.Date.now().condense(ISO.Format.LONG);
-		String time = ISO.Time.now().condense(ISO.Format.LONG);
-		
-		logMessage(e + " at " + time + ", " + date + ":");
-		for(StackTraceElement emt : e.getStackTrace())
-		{
-			logMessage(emt.toString());
-		}
+		logException(e, DEPTH);
 	}
 }

@@ -6,6 +6,7 @@ import waffles.utils.dacs.utilities.db.tokens.DBToken;
 import waffles.utils.lang.tokens.MapToken;
 import waffles.utils.lang.tokens.format.ListFormat;
 import waffles.utils.sets.countable.keymaps.KeyMap;
+import waffles.utils.tools.collections.iterators.CastIterator;
 
 /**
  * A {@code DBMap} defines a {@code KeyMap} with SQL formatting.
@@ -118,14 +119,11 @@ public interface DBMap extends KeyMap<DBLiteral, DBToken>, MapToken<DBPair>
 		return put(key, new DBToken(val));
 	}
 
-	
-	@Override
-	public abstract Iterable<DBPair> Pairs();
-	
+
 	@Override
 	public default Iterable<DBPair> Tokens()
 	{
-		return Pairs();
+		return () -> new CastIterator<>(Pairs());
 	}
 	
 	@Override

@@ -6,7 +6,7 @@ import waffles.utils.dacs.db.Database;
 import waffles.utils.dacs.db.access.DBAccess;
 
 /**
- * A {@code DBEntity} defines a database object that maps to a table one-to-one.
+ * A {@code DBEntity} defines a database object that maps to a {@code DBTable} one-to-one.
  *
  * @author Waffles
  * @since 07 Nov 2025

@@ -129,9 +129,9 @@ public class CSVKernel implements Clearable, Storage, Operator<CSVFile>
 	 * 
 	 * @return  a line count
 	 */
-	public int LineCount()
+	public long LineCount()
 	{
-		int cnt = 0;
+		long cnt = 0;
 		
 		cnt += file.Count();
 		cnt += coms.Count();
@@ -194,7 +194,7 @@ public class CSVKernel implements Clearable, Storage, Operator<CSVFile>
 		return file;
 	}
 	
-	void check(CSVData d, int i)
+	void check(CSVData d, long i)
 	{
 		Hints h = Operable().Hints();
 		
@@ -217,7 +217,7 @@ public class CSVKernel implements Clearable, Storage, Operator<CSVFile>
 	@Override
 	public void read(File file)
 	{
-		int curr = -1;
+		long curr = -1;
 		Operable().clear();
 		Hints h = Operable().Hints();
 		

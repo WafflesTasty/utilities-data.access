@@ -1,91 +1,121 @@
 package waffles.utils.dacs.transit;
 
+import waffles.utils.dacs.utilities.Transport;
+import waffles.utils.sets.CountableSet;
+import waffles.utils.tools.patterns.properties.counters.Indexed;
+import waffles.utils.tools.patterns.properties.counters.data.Persistible;
+
 /**
- * A {@code Transit} can load and unload data into a {@code ByteBuffer}.
- *
+ * A {@code Transit} defines a generic loader of data.
+ * Its {@link #Count()} is assumed to be one more than
+ * the index of the highest loaded data object.
+ * 
  * @author Waffles
  * @since 13 Nov 2023
  * @version 1.1
  *
  *
- * @param <O>  an object type
+ * @param <D>  a data type
+ * @see CountableSet
  */
-public interface Transit<O>
-{	
+public interface Transit<D> extends CountableSet
+{		
 	/**
-	 * A {@code Queue} is a transit which can load and unload data sequentially.
-	 *
-	 * @author Waffles
-	 * @since 20 Nov 2023
-	 * @version 1.1
-	 *
-	 * 
-	 * @param <O>  an object type
-	 * @see Transit
-	 */
-	public static interface Queue<O> extends Transit<O>
-	{		
-		/**
-		 * Loads data into the {@code Transit.Queue}.
-		 * This operation advances the queue pointer.
-		 * 
-		 * @param obj  an object to load
-		 */
-		public abstract void load(O obj);
-		
-		/**
-		 * Unloads data from the {@code Transit.Queue}.
-		 * This operation advances the queue pointer.
-		 * 
-		 * @param obj  an object to load
-		 * @return  a loaded object
-		 */
-		public abstract O unload(O obj);
-	}
-	
-	/**
-	 * An {@code Indexed Transit} defines an index to load and unload from.
+	 * A {@code Transit.Index} defines a {@code Transit} with an {@link #Index()}.
+	 * The index is assumed to point to where the next load will take place.
 	 *
 	 * @author Waffles
 	 * @since 02 Dec 2023
 	 * @version 1.1
 	 *
 	 *
-	 * @param <O>  an object type
+	 * @param <D>  a data type
+	 * @see Indexed
 	 * @see Transit
 	 */
-	public static interface Indexed<O> extends Transit<O>
+	public static interface Index<D> extends Indexed.Mutable<Integer>, Transit<D>, Transport<D>
 	{
 		/**
-		 * Returns the index of the {@code Indexed Transit}.
+		 * Pulls a {@code Persistible} from the {@code Transit}.
 		 * 
-		 * @return  a target index
+		 * @param p    a persistible
+		 * @param idx  a transit index
+		 * 
+		 * 
+		 * @see Persistible
 		 */
-		public abstract int Index();
+		public default void pull(Persistible<? extends D> p, int idx)
+		{
+			pull(p.Data(), idx);
+		}
 		
 		/**
-		 * Changes the index of the {@code Indexed Transit}.
+		 * Pushes a {@code Persistible} into the {@code Transit}.
 		 * 
-		 * @param iTgt  a target index
+		 * @param p    a persistible
+		 * @param idx  a transit index
+		 * 
+		 * 
+		 * @see Persistible
 		 */
-		public abstract void setIndex(int iTgt);
+		public default void push(Persistible<? extends D> p, int idx)
+		{
+			push(p.Data(), idx);
+		}
+
+
+		@Override
+		public default void pull(D dat)
+		{
+			pull(dat, Index());
+		}
+		
+		@Override
+		public default void push(D dat)
+		{
+			push(dat, Index());
+		}
 	}
 	
-
-	/**
-	 * Loads data into the {@code Transit}.
-	 * 
-	 * @param obj  an object to load
-	 * @param iTgt  a buffer index
-	 */
-	public abstract void load(O obj, int iTgt);
 	
 	/**
-	 * Unloads data from the {@code Transit}.
+	 * Pulls a {@code Persistible} from the {@code Transit}.
 	 * 
-	 * @param obj  an object to load
-	 * @param iTgt  a buffer index
-	 * @return  a loaded object
+	 * @param p  a persistible
+	 * 
+	 * 
+	 * @see Persistible
 	 */
-	public abstract O unload(O obj, int iTgt);
+	public default void pull(Persistible<? extends D> p)
+	{
+		pull(p.Data());
+	}
+	
+	/**
+	 * Pushes a {@code Persistible} into the {@code Transit}.
+	 * 
+	 * @param p  a persistible
+	 * 
+	 * 
+	 * @see Persistible
+	 */
+	public default void push(Persistible<? extends D> p)
+	{
+		push(p.Data());
+	}
+	
+	
+	/**
+	 * Pulls data from the {@code Transit}.
+	 * 
+	 * @param dat  a data object to pull
+	 */
+	public abstract void pull(D dat);
+	
+	/**
+	 * Pushes data into the {@code Transit}.
+	 * 
+	 * @param dat  a data object to push
+	 */
+	public abstract void push(D dat);
 }

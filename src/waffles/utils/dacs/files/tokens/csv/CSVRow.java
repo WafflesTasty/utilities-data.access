@@ -1,7 +1,7 @@
 package waffles.utils.dacs.files.tokens.csv;
 
 import waffles.utils.lang.tokens.Token;
-import waffles.utils.tools.patterns.properties.counters.Indexable;
+import waffles.utils.tools.patterns.properties.counters.Indexed;
 import waffles.utils.tools.primitives.Longs;
 
 /**
@@ -13,10 +13,10 @@ import waffles.utils.tools.primitives.Longs;
  *
  * 
  * @see Comparable
- * @see Indexable
+ * @see Indexed
  * @see Token
  */
-public abstract class CSVRow extends Indexable.Base implements Comparable<CSVRow>, Token
+public abstract class CSVRow implements Comparable<CSVRow>, Indexed.Mutable<Long>, Token
 {
 	/**
 	 * The {@code Type} enum defines all types of a {@code CSVRow}.
@@ -40,6 +40,9 @@ public abstract class CSVRow extends Indexable.Base implements Comparable<CSVRow
 		DATA;
 	}
 		
+	
+	private Long index = 0l;
+	
 	/**
  	 * Returns the type of the {@code CSVRow}.
  	 * 
@@ -47,10 +50,22 @@ public abstract class CSVRow extends Indexable.Base implements Comparable<CSVRow
  	 */
 	public abstract Type Type();
 	
-	
+		
 	@Override
 	public int compareTo(CSVRow r)
 	{
 		return (int) Longs.sign(Index() - r.Index());
+	}
+	
+	@Override
+	public void setIndex(Long idx)
+	{
+		index = idx;
+	}
+	
+	@Override
+	public Long Index()
+	{
+		return index;
 	}
 }

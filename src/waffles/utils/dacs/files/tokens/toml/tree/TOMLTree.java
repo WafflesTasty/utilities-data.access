@@ -2,7 +2,7 @@ package waffles.utils.dacs.files.tokens.toml.tree;
 
 import waffles.utils.dacs.files.tokens.toml.tree.nodes.TOMLNode;
 import waffles.utils.lang.tokens.Token;
-import waffles.utils.sets.rooted.Tree;
+import waffles.utils.sets.arboreal.arborus.Graph;
 import waffles.utils.tools.primitives.Array;
 
 /**
@@ -17,10 +17,11 @@ import waffles.utils.tools.primitives.Array;
  * @version 1.1
  *
  * 
+ * @see TOMLNode
+ * @see Graph
  * @see Token
- * @see Tree
  */
-public class TOMLTree extends Tree implements Token
+public class TOMLTree extends Graph<TOMLNode> implements Token
 {
 	/**
 	 * Returns a child of the {@code TOMLTree}.

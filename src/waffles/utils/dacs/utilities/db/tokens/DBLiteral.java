@@ -1,7 +1,7 @@
 package waffles.utils.dacs.utilities.db.tokens;
 
 import waffles.utils.lang.tokens.format.Format;
-import waffles.utils.tools.patterns.properties.Gateway;
+import waffles.utils.tools.patterns.properties.checks.Gateway;
 
 /**
  * A {@code DBLiteral} defines a {@code StringToken} with literal SQL formatting.

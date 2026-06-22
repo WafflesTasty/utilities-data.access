@@ -4,7 +4,7 @@ import waffles.utils.dacs.db.access.DBAccess;
 import waffles.utils.lang.tokens.format.Format;
 
 /**
- * An {@code SQLFormat} formats a {@code DBAccess} into an SQL string.
+ * An {@code SQLFormat} formats {@code DBAccess} tokens into an SQL string.
  *
  * @author Waffles
  * @since 07 Nov 2025
@@ -12,6 +12,8 @@ import waffles.utils.lang.tokens.format.Format;
  *
  *
  * @param <A>  an access type
+ * @see DBAccess
+ * @see Format
  */
 public interface SQLFormat<A extends DBAccess<?>> extends Format<A>
 {

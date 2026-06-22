@@ -1,13 +1,14 @@
-package waffles.utils.dacs.db.access.entity.format;
+package waffles.utils.dacs.db.access.format;
 
-import waffles.utils.dacs.db.access.entity.DBEntity;
+import waffles.utils.dacs.db.access.DBAccess;
+import waffles.utils.dacs.db.access.DBSchema;
 import waffles.utils.dacs.db.access.entity.DBTable;
 import waffles.utils.dacs.utilities.db.sql.SQLFormat;
 import waffles.utils.dacs.utilities.db.tokens.maps.DBMap;
 import waffles.utils.dacs.utilities.db.tokens.maps.DBMap.Format;
 
 /**
- * An {@code SQLEntityInsert} inserts a {@code DBEntity} into a {@code DBTable}.
+ * An {@code SQLAccessInsert} inserts a {@code DBAccess} into a {@code DBTable}.
  *
  * @author Waffles
  * @since 03 Nov 2025
@@ -15,30 +16,31 @@ import waffles.utils.dacs.utilities.db.tokens.maps.DBMap.Format;
  *
  *
  * @see SQLFormat
- * @see DBEntity
+ * @see DBAccess
  */
-public class SQLEntityInsert implements SQLFormat<DBEntity<?>>
+public class SQLAccessInsert implements SQLFormat<DBAccess<?>>
 {
-	private DBTable<?> tbl;
+	private DBSchema<?> scm;
 	
 	/**
-	 * Creates a new {@code SQLEntityInsert}.
+	 * Creates a new {@code SQLAccessInsert}.
 	 * 
-	 * @param t  a database table
+	 * @param s  a database schema
 	 * 
 	 * 
-	 * @see DBTable
+	 * @see DBSchema
 	 */
-	public SQLEntityInsert(DBTable<?> t)
+	public SQLAccessInsert(DBSchema<?> s)
 	{
-		tbl = t;
+		scm = s;
 	}
 
 	
 	@Override
-	public String parse(DBEntity<?> ent)
+	public String parse(DBAccess<?> acs)
 	{	
-		DBMap map = tbl.Formatter().Map(ent);
+		DBMap map = scm.Map(acs);
+		DBTable<?> tbl = scm.Master();
 		Format fmt = map.Formatter();
 		
 		

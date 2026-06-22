@@ -6,10 +6,9 @@ import java.awt.image.DataBufferByte;
 
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.assets.readers.BufferedImageReader;
-import waffles.utils.geom.spatial.bounds.Bounds2D;
-import waffles.utils.geom.spatial.bounds.owners.Bounded2D;
-import waffles.utils.geom.spatial.data.Axial2D;
-import waffles.utils.geomold.bounds.axial.BNDAxial2D;
+import waffles.utils.geom.shapes.convex.axial.cube.HyperCuboid2D;
+import waffles.utils.geom.shapes.points.Arrow;
+import waffles.utils.geom.shapes.points.Point;
 import waffles.utils.sets.indexed.array.set.ByteSet;
 
 /**
@@ -20,11 +19,10 @@ import waffles.utils.sets.indexed.array.set.ByteSet;
  * @version 1.1
  * 
  * 
- * @see Axial2D
- * @see Bounded2D
+ * @see HyperCuboid2D
  * @see ByteSet
  */
-public class Image implements Axial2D, Bounded2D, ByteSet
+public class Image implements HyperCuboid2D, ByteSet
 {
 	private BufferedImage src;
 	
@@ -83,11 +81,11 @@ public class Image implements Axial2D, Bounded2D, ByteSet
 		
 		return new int[]{w, h};
 	}
-		
+
 	@Override
-	public Bounds2D Bounds()
+	public Point Origin()
 	{
-		return new BNDAxial2D(this);
+		return new Point(X(), Y(), 1f);
 	}
 	
 	@Override
@@ -100,6 +98,12 @@ public class Image implements Axial2D, Bounded2D, ByteSet
 	public float Width()
 	{
 		return src.getWidth();
+	}
+	
+	@Override
+	public Arrow Scale()
+	{
+		return new Arrow(Width(), Height());
 	}
 	
 	@Override

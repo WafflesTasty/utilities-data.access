@@ -3,7 +3,7 @@ package waffles.utils.dacs.utilities.db.tokens;
 import waffles.utils.lang.tokens.format.Format;
 import waffles.utils.lang.tokens.format.values.StringFormat;
 import waffles.utils.lang.tokens.values.primitive.StringToken;
-import waffles.utils.tools.patterns.properties.Gateway;
+import waffles.utils.tools.patterns.properties.checks.Gateway;
 
 /**
  * A {@code DBToken} defines a {@code StringToken} with SQL formatting.

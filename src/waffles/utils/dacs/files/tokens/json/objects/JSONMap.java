@@ -7,6 +7,7 @@ import waffles.utils.lang.tokens.parsers.Parsable;
 import waffles.utils.lang.tokens.parsers.cyclic.ListParser;
 import waffles.utils.sets.countable.keymaps.wrapper.JavaMap;
 import waffles.utils.sets.countable.wrapper.JavaList;
+import waffles.utils.tools.collections.iterators.CastIterator;
 
 /**
  * A {@code JSONMap} defines a mappings with a {@code JSONLiteral} key
@@ -178,6 +179,6 @@ public class JSONMap extends JavaMap<JSONLiteral, JSONObject> implements JSONObj
 	@Override
 	public Iterable<JSONPair> Tokens()
 	{
-		return Pairs();
+		return () -> new CastIterator<>(Pairs());
 	}
 }

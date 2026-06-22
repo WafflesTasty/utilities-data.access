@@ -3,72 +3,46 @@ package waffles.utils.dacs.transit.domain;
 import waffles.utils.dacs.transit.Transit;
 
 /**
- * A {@code DomainTransit} can upload sequential chunks of data according to a {@code Domain}.
+ * A {@code DomainTransit} can upload data chunks according to its {@code Domain}.
  *
  * @author Waffles
  * @since 29 Nov 2023
  * @version 1.1
  *
  *
- * @param <O>  an object type
+ * @param <D>  a data type
  * @see Transit
  */
-public interface DomainTransit<O> extends Transit.Queue<O>, Transit.Indexed<O>
+public interface DomainTransit<D> extends Transit.Index<D>
 {	
 	/**
-	 * Returns the object count of the {@code DomainTransit}.
+	 * Returns a transit {@code Domain}.
 	 * 
-	 * @return  a domain count
-	 */
-	public default int Count()
-	{
-		return Index() / Domain().DataSize();
-	}
-	
-	/**
-	 * Returns the domain of the {@code DomainTransit}.
-	 * 
-	 * @return  a data domain
+	 * @return  a transit domain
 	 * 
 	 * 
 	 * @see Domain
 	 */
-	public abstract Domain<O> Domain();
+	public abstract Domain<D> Domain();
 	
-		
+	
 	@Override
-	public default void load(O obj, int iTgt)
+	public default void pull(D dat, int idx)
 	{
-		Domain().load(obj, iTgt);
+		Domain().pull(dat, idx);
 	}
 	
 	@Override
-	public default O unload(O obj, int iTgt)
+	public default void push(D dat, int idx)
 	{
-		return Domain().unload(obj, iTgt);
-	}
-	
-	
-	@Override
-	public default void load(O obj)
-	{
-		int curr = Index();
-		Domain<O> dom = Domain();
-		int size = dom.DataSize();
-		
-		setIndex(curr + size);
-		dom.load(obj, curr);
+		int s = Domain().DataSize();
+		Domain().push(dat, idx);
+		setIndex(idx + s);
 	}
 	
 	@Override
-	public default O unload(O obj)
+	public default int Count()
 	{
-		int curr = Index();
-		Domain<O> dom = Domain();
-		int size = dom.DataSize();
-		
-		O dat = dom.unload(obj, curr);
-		setIndex(curr + size);
-		return dat;
+		return Index() / Domain().DataSize();
 	}
 }

@@ -113,7 +113,7 @@ public class CSVFile extends JavaList<CSVData> implements Operable<CSVFile>, Sto
 	public void put(int r, Object... set)
 	{
 		CSVData d;
-		if(!contains(r))
+		if(!defines(r))
 			d = new CSVData();
 		else
 			d = get(r);
@@ -168,7 +168,7 @@ public class CSVFile extends JavaList<CSVData> implements Operable<CSVFile>, Sto
 	 * @param s  a comment line
 	 * @param r  a row index
 	 */
-	public void addComment(String s, int r)
+	public void addComment(String s, long r)
 	{
 		addComment(new CSVComment(s), r);
 	}
@@ -182,7 +182,7 @@ public class CSVFile extends JavaList<CSVData> implements Operable<CSVFile>, Sto
 	 * 
 	 * @see CSVComment
 	 */
-	public void addComment(CSVComment c, int r)
+	public void addComment(CSVComment c, long r)
 	{
 		c.setIndex(r);
 		Operator().add(c);
@@ -219,7 +219,7 @@ public class CSVFile extends JavaList<CSVData> implements Operable<CSVFile>, Sto
 	 * 
 	 * @return  a line count
 	 */
-	public int LineCount()
+	public long LineCount()
 	{
 		return Operator().LineCount();
 	}

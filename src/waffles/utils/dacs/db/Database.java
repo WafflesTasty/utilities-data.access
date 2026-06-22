@@ -9,7 +9,6 @@ import java.sql.Statement;
 import waffles.utils.dacs.db.access.DBAccess;
 import waffles.utils.dacs.db.access.DBSchema;
 import waffles.utils.dacs.utilities.DataLink;
-import waffles.utils.dacs.utilities.db.DBLoader;
 import waffles.utils.dacs.utilities.db.DBLogin;
 import waffles.utils.dacs.utilities.db.sql.SQLError;
 import waffles.utils.dacs.utilities.db.sql.SQLFormat;
@@ -148,10 +147,9 @@ public abstract class Database<A extends DBAccess<?>> implements DataLink<DBLogi
 	 */
 	public <B extends A> boolean select(B acs, DBSchema<? super B> scm)
 	{
-		DBLoader<? super B> loader = scm.Loader();
 		SQLFormat<?> fmt = scm.Formatter(SQLOps.SELECT);
-		DBRow data = query(fmt.castAndParse(acs));
-		return loader.load(acs, data);
+		DBRow row = query(fmt.castAndParse(acs));
+		return scm.load(acs, row);
 	}
 	
 	/**

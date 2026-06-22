@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 
+import waffles.utils.lang.utilities.enums.Confirmation;
+
 /**
  * A {@code DBRow} iterates over rows in a database query.
  *
@@ -17,6 +19,7 @@ import java.util.Iterator;
 public class DBRow implements Iterator<DBRow>
 {
 	private ResultSet set;
+	private Confirmation cnf;
 	
 	/**
 	 * Creates a new {@code DBRow}.
@@ -28,6 +31,7 @@ public class DBRow implements Iterator<DBRow>
 	 */
 	public DBRow(ResultSet s)
 	{
+		cnf = Confirmation.PENDING;
 		set = s;
 	}
 	
@@ -73,7 +77,30 @@ public class DBRow implements Iterator<DBRow>
 	{
 		try
 		{
-			return set.next();			
+			switch(cnf)
+			{
+			case PENDING:
+			{
+				if(set.next())
+				{
+					cnf = Confirmation.CONFIRMED;
+					return true;
+				}			
+			}
+			case CONFIRMED:
+			{
+				if(!set.next())
+				{
+					cnf = Confirmation.CANCELLED;
+					return false;
+				}
+				
+				return true;
+			}
+			case CANCELLED:
+			default:
+				return false;
+			}
 		}
 		catch(SQLException e)
 		{

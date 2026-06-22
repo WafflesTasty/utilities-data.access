@@ -3,7 +3,6 @@ package waffles.utils.dacs.db.access;
 import waffles.utils.dacs.db.Database;
 import waffles.utils.dacs.utilities.Identifiable;
 import waffles.utils.lang.tokens.Token;
-import waffles.utils.lang.tokens.format.Format;
 
 /**
  * A {@code DBAccess} object maintains a dataset in a {@code Database}.
@@ -21,6 +20,13 @@ import waffles.utils.lang.tokens.format.Format;
 @FunctionalInterface
 public interface DBAccess<D extends Database<?>> extends Identifiable, Token
 {
+	@Override
+	public default DBFormat<?> Formatter()
+	{
+		return acs -> acs.GUID().toString();
+	}
+	
+	
 	/**
 	 * Deletes the {@code DBHandleable}.
 	 * 
@@ -84,12 +90,5 @@ public interface DBAccess<D extends Database<?>> extends Identifiable, Token
 		}
 		
 		return false;
-	}
-	
-	
-	@Override
-	public default Format<?> Formatter()
-	{
-		return o -> GUID().toString();
 	}
 }

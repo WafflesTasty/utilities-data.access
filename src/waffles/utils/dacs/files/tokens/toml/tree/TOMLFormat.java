@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import waffles.utils.dacs.files.tokens.toml.tree.nodes.TOMLNode;
 import waffles.utils.lang.tokens.format.Format;
-import waffles.utils.sets.utilities.rooted.iterators.DepthFirst;
+import waffles.utils.sets.utilities.arboreal.iterators.DepthFirst;
 import waffles.utils.tools.collections.iterators.EmptyIterator;
 
 /**

@@ -1,21 +1,25 @@
 package waffles.utils.dacs.transit.domain;
 
-import waffles.utils.dacs.transit.Transit;
+import waffles.utils.dacs.utilities.Transport;
 import waffles.utils.tools.patterns.properties.counters.data.Data;
 
 /**
- * A {@code Domain} defines a {@code Transit} as a basic data pattern.
+ * A {@code Domain} defines a {@code Transport} with a data size.
  *
  * @author Waffles
  * @since 27 Nov 2023
  * @version 1.1
  *
  *
- * @param <O>  an object type
- * @see Transit
+ * @param <D>  a data type
+ * @see Transport
  * @see Data
  */
-public interface Domain<O> extends Data, Transit<O>
+public interface Domain<D> extends Data, Transport<D>
 {
-	// NOT APPLICABLE
+	@Override
+	public default int DataSize()
+	{
+		return 0;
+	}
 }
