@@ -11,10 +11,10 @@ import waffles.utils.sets.indexed.array.ArrayLike;
  *
  * 
  * @param <A>  an array type
+ * @see DualTransit
  * @see ArrayLike
- * @see Transit
  */
-public interface ArrayTransit<A extends ArrayLike<?,?>> extends Transit.Index<A>
+public interface ArrayTransit<A extends ArrayLike<?,?>> extends DualTransit.Index<A>
 {
 	/**
 	 * An {@code ArrayTransit.Base} implements a basic {@code ArrayTransit}.

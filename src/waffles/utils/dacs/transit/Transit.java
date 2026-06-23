@@ -36,20 +36,6 @@ public interface Transit<D> extends CountableSet
 	public static interface Index<D> extends Indexed.Mutable<Integer>, Transit<D>, Transport<D>
 	{
 		/**
-		 * Pulls a {@code Persistible} from the {@code Transit}.
-		 * 
-		 * @param p    a persistible
-		 * @param idx  a transit index
-		 * 
-		 * 
-		 * @see Persistible
-		 */
-		public default void pull(Persistible<? extends D> p, int idx)
-		{
-			pull(p.Data(), idx);
-		}
-		
-		/**
 		 * Pushes a {@code Persistible} into the {@code Transit}.
 		 * 
 		 * @param p    a persistible
@@ -63,12 +49,6 @@ public interface Transit<D> extends CountableSet
 			push(p.Data(), idx);
 		}
 
-
-		@Override
-		public default void pull(D dat)
-		{
-			pull(dat, Index());
-		}
 		
 		@Override
 		public default void push(D dat)
@@ -77,19 +57,6 @@ public interface Transit<D> extends CountableSet
 		}
 	}
 	
-	
-	/**
-	 * Pulls a {@code Persistible} from the {@code Transit}.
-	 * 
-	 * @param p  a persistible
-	 * 
-	 * 
-	 * @see Persistible
-	 */
-	public default void pull(Persistible<? extends D> p)
-	{
-		pull(p.Data());
-	}
 	
 	/**
 	 * Pushes a {@code Persistible} into the {@code Transit}.
@@ -103,14 +70,6 @@ public interface Transit<D> extends CountableSet
 	{
 		push(p.Data());
 	}
-	
-	
-	/**
-	 * Pulls data from the {@code Transit}.
-	 * 
-	 * @param dat  a data object to pull
-	 */
-	public abstract void pull(D dat);
 	
 	/**
 	 * Pushes data into the {@code Transit}.

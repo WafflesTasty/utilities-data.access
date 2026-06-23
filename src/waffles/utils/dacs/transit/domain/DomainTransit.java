@@ -24,14 +24,8 @@ public interface DomainTransit<D> extends Transit.Index<D>
 	 * @see Domain
 	 */
 	public abstract Domain<? super D> Domain();
-	
-	
-	@Override
-	public default void pull(D dat, int idx)
-	{
-		Domain().pull(dat, idx);
-	}
-	
+
+
 	@Override
 	public default void push(D dat, int idx)
 	{
