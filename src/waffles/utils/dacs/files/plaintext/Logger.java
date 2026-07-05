@@ -12,6 +12,9 @@ import waffles.utils.lang.utilities.ISO;
 @FunctionalInterface
 public interface Logger
 {
+	/**
+	 * Defines a default recursion depth.
+	 */
 	public static final int DEPTH = 8;
 	
 	
