@@ -1,11 +1,14 @@
 package waffles.utils.dacs.files.assets;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
 
 import waffles.utils.dacs.File;
 import waffles.utils.dacs.files.assets.readers.BufferedImageReader;
+import waffles.utils.dacs.files.assets.writers.ImageWriter;
+import waffles.utils.dacs.utilities.color.Color;
 import waffles.utils.geom.shapes.convex.axial.cube.HyperCuboid2D;
 import waffles.utils.geom.shapes.points.Arrow;
 import waffles.utils.geom.shapes.points.Point;
@@ -29,6 +32,19 @@ public class Image implements HyperCuboid2D, ByteSet
 	/**
 	 * Creates a new {@code Image}.
 	 * 
+	 * @param file  a file
+	 * 
+	 * 
+	 * @see File
+	 */
+	public Image(File file)
+	{
+		this(new BufferedImageReader().read(file));
+	}
+	
+	/**
+	 * Creates a new {@code Image}.
+	 * 
 	 * @param s  a source image
 	 * 
 	 * 
@@ -40,31 +56,79 @@ public class Image implements HyperCuboid2D, ByteSet
 	}
 	
 	/**
-	 * Creates a new {@code Image}.
+	 * Returns a {@code BufferedImage}.
 	 * 
-	 * @param url  a file url
+	 * @return  a source image
 	 * 
 	 * 
-	 * @see String
+	 * @see BufferedImage
 	 */
-	public Image(String url)
+	public BufferedImage Buffer()
 	{
-		this(new File(url));
+		return src;
 	}
 	
+	
 	/**
-	 * Creates a new {@code Image}.
+	 * Saves the {@code Image} to file.
 	 * 
 	 * @param file  a file
 	 * 
 	 * 
 	 * @see File
 	 */
-	public Image(File file)
+	public void save(File file)
 	{
-		this(new BufferedImageReader().read(file));
+		new ImageWriter().write(this, file);
+	}
+	
+	/**
+	 * Changes a pixel in the {@code Image}.
+	 * 
+	 * @param c  a pixel color
+	 * @param x  a pixel x-coordinate
+	 * @param y  a pixel y-coordinate
+	 * 
+	 * 
+	 * @see Color
+	 */
+	public void set(Color c, int x, int y)
+	{
+		set(c, x, y, 1, 1);
 	}
 
+	/**
+	 * Changes a rectangle in the {@code Image}.
+	 * 
+	 * @param c  a pixel color
+	 * @param x  a rectangle x-coordinate
+	 * @param y  a rectangle y-coordinate
+	 * @param w  a rectangle width
+	 * @param h  a rectangle height
+	 * 
+	 * 
+	 * @see Color
+	 */
+	public void set(Color c, int x, int y, int w, int h)
+	{
+		Graphics2D g = src.createGraphics();
+		g.setColor(new java.awt.Color(c.R(), c.G(), c.B(), c.A()));
+		g.fillRect(x, y, w, h);
+	}
+		
+	/**
+	 * Fills the {@code Image} in a color.
+	 * 
+	 * @param c  a pixel color
+	 * 
+	 * 
+	 * @see Color
+	 */
+	public void fill(Color c)
+	{
+		set(c, 0, 0, (int) Width(), (int) Height());
+	}
+	
 
 	@Override
 	public byte[] Array()
@@ -76,8 +140,8 @@ public class Image implements HyperCuboid2D, ByteSet
 	@Override
 	public int[] Dimensions()
 	{
-		int w = src.getWidth();
-		int h = src.getHeight();
+		int w = (int) Width();
+		int h = (int) Height();
 		
 		return new int[]{w, h};
 	}
@@ -109,12 +173,12 @@ public class Image implements HyperCuboid2D, ByteSet
 	@Override
 	public float X()
 	{
-		return src.getWidth() / 2;
+		return Width() / 2;
 	}
 	
 	@Override
 	public float Y()
 	{
-		return src.getHeight() / 2;
+		return Height() / 2;
 	}
 }
