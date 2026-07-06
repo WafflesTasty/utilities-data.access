@@ -117,6 +117,22 @@ public class Image implements HyperCuboid2D, ByteSet
 	}
 		
 	/**
+	 * Returns a pixel in the {@code Image}.
+	 * 
+	 * @param x  a pixel x-coordinate
+	 * @param y  a pixel y-coordinate
+	 * @return   a pixel color
+	 * 
+	 * 
+	 * @see Color
+	 */
+	public Color get(int x, int y)
+	{
+		java.awt.Color c = new java.awt.Color(src.getRGB(x, y), true);
+		return new Color(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
+	}
+	
+	/**
 	 * Fills the {@code Image} in a color.
 	 * 
 	 * @param c  a pixel color
