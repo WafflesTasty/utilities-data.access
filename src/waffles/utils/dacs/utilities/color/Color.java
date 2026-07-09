@@ -1,6 +1,8 @@
 package waffles.utils.dacs.utilities.color;
 
+import waffles.utils.alg.utilities.affine.Affine;
 import waffles.utils.dacs.utilities.color.format.ColorFormat;
+import waffles.utils.geom.shapes.points.Point;
 import waffles.utils.lang.tokens.Token;
 import waffles.utils.lang.tokens.format.Format;
 import waffles.utils.sets.indexed.array.set.FloatSet;
@@ -17,10 +19,11 @@ import waffles.utils.tools.primitives.Longs;
  * @version 1.0
  * 
  * 
+ * @see Affine
  * @see FloatSet
  * @see Token
  */
-public class Color implements FloatSet, Token
+public class Color implements Affine, FloatSet, Token
 {	
 	/**
 	 * Defines a default hexadecimal format for a {@code Color}.
@@ -230,6 +233,12 @@ public class Color implements FloatSet, Token
 		return Floats.max(rgba[0], rgba[1], rgba[2]);
 	}
 	
+	
+	@Override
+	public Affine.Factory Factory()
+	{
+		return new Point(rgba).Factory();
+	}
 	
 	@Override
 	public Format<?> Formatter()
