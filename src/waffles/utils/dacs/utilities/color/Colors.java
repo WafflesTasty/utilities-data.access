@@ -74,6 +74,25 @@ public final class Colors
 
 	
 	/**
+	 * Inverts the values of a color.
+	 * 
+	 * @param c  a base color
+	 * @return   an inverted color
+	 * 
+	 * 
+	 * @see Color
+	 */
+	public static Color invert(Color c)
+	{
+		float r = 1f - c.R();
+		float g = 1f - c.G();
+		float b = 1f - c.B();
+		float a = 0f + c.A();	
+
+		return new Color(r, g, b, a);
+	}
+	
+	/**
 	 * Adds the values of two colors together.
 	 * 
 	 * @param c1  a first color
