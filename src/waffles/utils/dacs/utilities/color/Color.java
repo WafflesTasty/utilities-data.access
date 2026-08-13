@@ -234,6 +234,20 @@ public class Color implements Affine, FloatSet, Token
 	}
 	
 	
+	/**
+	 * Returns a {@code Token} formatter.
+	 * 
+	 * @param s  a format string
+	 * @return   a formatter
+	 * 
+	 * 
+	 * @see Format
+	 */
+	public Format<?> Formatter(String s)
+	{
+		return new ColorFormat(s);
+	}
+	
 	@Override
 	public Affine.Factory Factory()
 	{
@@ -243,7 +257,7 @@ public class Color implements Affine, FloatSet, Token
 	@Override
 	public Format<?> Formatter()
 	{
-		return new ColorFormat(DEF_FORMAT);
+		return Formatter(DEF_FORMAT);
 	}
 	
 	@Override
