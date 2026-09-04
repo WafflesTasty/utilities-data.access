@@ -149,39 +149,34 @@ public final class Colors
 	
 	/**
 	 * Creates a color from an HSB color value.
-	 * </br> Parameters are given in [0.0, 1.0].
+	 * Parameters are given in the range of [0.0, 1.0].
 	 * 
-	 * @param h  a hue value
-	 * @param s  a saturation value
-	 * @param b  a brightness value
-	 * @param a  an alpha value
+	 * @param hsba  hue-saturation-brightness-alpha
 	 * @return   a color
 	 * 
 	 * 
 	 * @see Color
 	 */
-	public static Color fromHSBA(float h, float s, float b, float a)
+	public static Color fromHSBA(float... hsba)
 	{
-		long hex = java.awt.Color.HSBtoRGB(h, s, b) & 0xffffff;
-		long alpha = Longs.clamp(Longs.round(255 * a), 0, 255);
+		long hex = java.awt.Color.HSBtoRGB(hsba[0], hsba[1], hsba[2]) & 0xffffff;
+		long alpha = Longs.clamp(Longs.round(255 * hsba[3]), 0, 255);
 		return new Color((hex << 8) + alpha);
 	}
 		
 	/**
 	 * Creates a color from an HSB color value.
-	 * </br> Parameters are given in [0.0, 1.0].
+	 * Parameters are given in the range of [0.0, 1.0].
 	 * 
-	 * @param h  a hue value
-	 * @param s  a saturation value
-	 * @param b  a brightness value
+	 * @param hsb  hue-saturation-brightness
 	 * @return   a color
 	 * 
 	 * 
 	 * @see Color
 	 */
-	public static Color fromHSB(float h, float s, float b)
+	public static Color fromHSB(float... hsb)
 	{
-		return fromHSBA(h, s, b, 1f);
+		return fromHSBA(hsb[0], hsb[1], hsb[2], 1f);
 	}
 
 	/**
