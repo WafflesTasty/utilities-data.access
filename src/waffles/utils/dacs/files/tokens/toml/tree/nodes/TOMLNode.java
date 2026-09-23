@@ -113,18 +113,21 @@ public class TOMLNode extends Node implements Token
 			{
 				if(Character.isWhitespace(s))
 				{
-					depth++;
 					return true;
 				}
 				
-				depth = 1 + depth / 2;
+				depth++;
 				state = State.DELIMIT;
 			}
 			case DELIMIT:
 			{
-				state = State.TOKEN;
 				if(s == DELIMITER)
+				{
+					depth++;
 					return true;
+				}
+				
+				state = State.TOKEN;
 			}
 			case TOKEN:
 			{
