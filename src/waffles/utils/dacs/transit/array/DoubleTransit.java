@@ -40,30 +40,30 @@ public interface DoubleTransit extends ArrayTransit<DoubleArray>
 		
 		
 		@Override
-		public void pull(DoubleArray dat, int ofs, int cnt, int idx)
+		public void pull(DoubleArray dat, int ofs, int cnt, long idx)
 		{
-			Delegate().get(idx, dat.Array(), ofs, cnt);
+			Delegate().get((int) idx, dat.Array(), ofs, cnt);
 		}
 		
 		@Override
-		public void push(DoubleArray dat, int ofs, int cnt, int idx)
+		public void push(DoubleArray dat, int ofs, int cnt, long idx)
 		{
-			Delegate().put(idx, dat.Array(), ofs, cnt);
+			Delegate().put((int) idx, dat.Array(), ofs, cnt);
 			setIndex(idx + cnt);
 		}
 		
 		
 		@Override
-		public void push(double dat, int idx)
+		public void push(double dat, long idx)
 		{
-			Delegate().put(idx, dat);
+			Delegate().put((int) idx, dat);
 			setIndex(idx + 1);
 		}
 		
 		@Override
-		public double pull(int idx)
+		public double pull(long idx)
 		{
-			return Delegate().get(idx);
+			return Delegate().get((int) idx);
 		}
 	}
 	
@@ -74,7 +74,7 @@ public interface DoubleTransit extends ArrayTransit<DoubleArray>
 	 * @param idx  a data index
 	 * @return     a data double
 	 */
-	public default double pull(int idx)
+	public default double pull(long idx)
 	{
 		return pull(1, idx)[0];
 	}
@@ -86,7 +86,7 @@ public interface DoubleTransit extends ArrayTransit<DoubleArray>
 	 * @param idx  a data index
 	 * @return     a data array
 	 */
-	public default double[] pull(int cnt, int idx)
+	public default double[] pull(int cnt, long idx)
 	{
 		double[] dat = new double[cnt];
 		pull(DoubleSet.of(dat), idx);
@@ -99,7 +99,7 @@ public interface DoubleTransit extends ArrayTransit<DoubleArray>
 	 * @param dat  a data array
 	 * @param idx  a data index
 	 */
-	public default void push(double[] dat, int idx)
+	public default void push(double[] dat, long idx)
 	{
 		push(DoubleSet.of(dat), idx);
 	}
@@ -110,7 +110,7 @@ public interface DoubleTransit extends ArrayTransit<DoubleArray>
 	 * @param dat  a data double
 	 * @param idx  a data index
 	 */
-	public default void push(double dat, int idx)
+	public default void push(double dat, long idx)
 	{
 		push(new double[]{dat}, idx);
 	}

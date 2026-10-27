@@ -85,6 +85,16 @@ public abstract class Database<A extends DBAccess<?>> implements DataLink<DBLogi
 		}
 	}
 	
+	/**
+	 * Checks if the {@code Database} is connected.
+	 * 
+	 * @return  {@code true} if connected
+	 */
+	public boolean isConnected()
+	{
+		return cnc != null;
+	}
+	
 	
 	/**
 	 * Deletes a {@code DBAccessible} from the {@code Database}.

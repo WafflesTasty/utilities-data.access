@@ -40,30 +40,30 @@ public interface ByteTransit extends ArrayTransit<ByteArray>
 		
 		
 		@Override
-		public void pull(ByteArray dat, int ofs, int cnt, int idx)
+		public void pull(ByteArray dat, int ofs, int cnt, long idx)
 		{
-			Delegate().get(idx, dat.Array(), ofs, cnt);
+			Delegate().get((int) idx, dat.Array(), ofs, cnt);
 		}
 		
 		@Override
-		public void push(ByteArray dat, int ofs, int cnt, int idx)
+		public void push(ByteArray dat, int ofs, int cnt, long idx)
 		{
-			Delegate().put(idx, dat.Array(), ofs, cnt);
+			Delegate().put((int) idx, dat.Array(), ofs, cnt);
 			setIndex(idx + cnt);
 		}
 		
 		
 		@Override
-		public void push(byte dat, int idx)
+		public void push(byte dat, long idx)
 		{
-			Delegate().put(idx, dat);
+			Delegate().put((int) idx, dat);
 			setIndex(idx + 1);
 		}
 		
 		@Override
-		public byte pull(int idx)
+		public byte pull(long idx)
 		{
-			return Delegate().get(idx);
+			return Delegate().get((int) idx);
 		}
 	}
 	
@@ -74,7 +74,7 @@ public interface ByteTransit extends ArrayTransit<ByteArray>
 	 * @param idx  a data index
 	 * @return     a data byte
 	 */
-	public default byte pull(int idx)
+	public default byte pull(long idx)
 	{
 		return pull(1, idx)[0];
 	}
@@ -86,7 +86,7 @@ public interface ByteTransit extends ArrayTransit<ByteArray>
 	 * @param idx  a data index
 	 * @return     a data array
 	 */
-	public default byte[] pull(int cnt, int idx)
+	public default byte[] pull(int cnt, long idx)
 	{
 		byte[] dat = new byte[cnt];
 		pull(ByteSet.of(dat), idx);
@@ -99,7 +99,7 @@ public interface ByteTransit extends ArrayTransit<ByteArray>
 	 * @param dat  a data array
 	 * @param idx  a data index
 	 */
-	public default void push(byte[] dat, int idx)
+	public default void push(byte[] dat, long idx)
 	{
 		push(ByteSet.of(dat), idx);
 	}
@@ -110,7 +110,7 @@ public interface ByteTransit extends ArrayTransit<ByteArray>
 	 * @param dat  a data byte
 	 * @param idx  a data index
 	 */
-	public default void push(byte dat, int idx)
+	public default void push(byte dat, long idx)
 	{
 		push(new byte[]{dat}, idx);
 	}

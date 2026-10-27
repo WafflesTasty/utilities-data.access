@@ -10,10 +10,11 @@ package waffles.utils.dacs.utilities;
  *
  * @param <O>  an object type
  */
+@FunctionalInterface
 public interface Transport<O>
 {
 	/**
-	 * A {@code Dual.Transport} can transport objects in two directions.
+	 * A {@code Transport.Dual} can transport objects in another direction.
 	 *
 	 * @author Waffles
 	 * @since Jun 22, 2026
@@ -21,9 +22,8 @@ public interface Transport<O>
 	 *
 	 *
 	 * @param <O>  an object type
-	 * @see Transport
 	 */
-	public static interface Dual<O> extends Transport<O>
+	public static interface Dual<O>
 	{
 		/**
 		 * Pulls data from the {@code Transport}.
@@ -31,7 +31,7 @@ public interface Transport<O>
 		 * @param dat  a data object
 		 * @param idx  a data index
 		 */
-		public abstract void pull(O dat, int idx);
+		public abstract void pull(O dat, long idx);
 	}
 
 
@@ -41,5 +41,5 @@ public interface Transport<O>
 	 * @param dat  a data object
 	 * @param idx  a data index
 	 */
-	public abstract void push(O dat, int idx);
+	public abstract void push(O dat, long idx);
 }

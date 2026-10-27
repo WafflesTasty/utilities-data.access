@@ -40,30 +40,30 @@ public interface FloatTransit extends ArrayTransit<FloatArray>
 		
 		
 		@Override
-		public void pull(FloatArray dat, int ofs, int cnt, int idx)
+		public void pull(FloatArray dat, int ofs, int cnt, long idx)
 		{
-			Delegate().get(idx, dat.Array(), ofs, cnt);
+			Delegate().get((int) idx, dat.Array(), ofs, cnt);
 		}
 		
 		@Override
-		public void push(FloatArray dat, int ofs, int cnt, int idx)
+		public void push(FloatArray dat, int ofs, int cnt, long idx)
 		{
-			Delegate().put(idx, dat.Array(), ofs, cnt);
+			Delegate().put((int) idx, dat.Array(), ofs, cnt);
 			setIndex(idx + cnt);
 		}
 		
 		
 		@Override
-		public void push(float dat, int idx)
+		public void push(float dat, long idx)
 		{
-			Delegate().put(idx, dat);
+			Delegate().put((int) idx, dat);
 			setIndex(idx + 1);
 		}
 		
 		@Override
-		public float pull(int idx)
+		public float pull(long idx)
 		{
-			return Delegate().get(idx);
+			return Delegate().get((int) idx);
 		}
 	}
 	
@@ -74,7 +74,7 @@ public interface FloatTransit extends ArrayTransit<FloatArray>
 	 * @param idx  a data index
 	 * @return     a data float
 	 */
-	public default float pull(int idx)
+	public default float pull(long idx)
 	{
 		return pull(1, idx)[0];
 	}
@@ -86,7 +86,7 @@ public interface FloatTransit extends ArrayTransit<FloatArray>
 	 * @param idx  a data index
 	 * @return     a data array
 	 */
-	public default float[] pull(int cnt, int idx)
+	public default float[] pull(int cnt, long idx)
 	{
 		float[] dat = new float[cnt];
 		pull(FloatSet.of(dat), idx);
@@ -99,7 +99,7 @@ public interface FloatTransit extends ArrayTransit<FloatArray>
 	 * @param dat  a data array
 	 * @param idx  a data index
 	 */
-	public default void push(float[] dat, int idx)
+	public default void push(float[] dat, long idx)
 	{
 		push(FloatSet.of(dat), idx);
 	}
@@ -110,7 +110,7 @@ public interface FloatTransit extends ArrayTransit<FloatArray>
 	 * @param dat  a data float
 	 * @param idx  a data index
 	 */
-	public default void push(float dat, int idx)
+	public default void push(float dat, long idx)
 	{
 		push(new float[]{dat}, idx);
 	}

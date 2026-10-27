@@ -40,29 +40,29 @@ public interface IntegerTransit extends ArrayTransit<IntegerArray>
 		
 		
 		@Override
-		public void pull(IntegerArray dat, int ofs, int cnt, int idx)
+		public void pull(IntegerArray dat, int ofs, int cnt, long idx)
 		{
-			Delegate().get(idx, dat.Array(), ofs, cnt);
+			Delegate().get((int) idx, dat.Array(), ofs, cnt);
 		}
 		
 		@Override
-		public void push(IntegerArray dat, int ofs, int cnt, int idx)
+		public void push(IntegerArray dat, int ofs, int cnt, long idx)
 		{
-			Delegate().put(idx, dat.Array(), ofs, cnt);
+			Delegate().put((int) idx, dat.Array(), ofs, cnt);
 			setIndex(idx + cnt);
 		}
 		
 		
 		@Override
-		public void push(int dat, int idx)
+		public void push(int dat, long idx)
 		{
-			Delegate().put(idx, dat);
+			Delegate().put((int) idx, dat);
 		}
 		
 		@Override
-		public int pull(int idx)
+		public int pull(long idx)
 		{
-			return Delegate().get(idx);
+			return Delegate().get((int) idx);
 		}
 	}
 	
@@ -73,7 +73,7 @@ public interface IntegerTransit extends ArrayTransit<IntegerArray>
 	 * @param idx  a data index
 	 * @return     a data integer
 	 */
-	public default int pull(int idx)
+	public default int pull(long idx)
 	{
 		return pull(1, idx)[0];
 	}
@@ -85,7 +85,7 @@ public interface IntegerTransit extends ArrayTransit<IntegerArray>
 	 * @param idx  a data index
 	 * @return     a data array
 	 */
-	public default int[] pull(int cnt, int idx)
+	public default int[] pull(int cnt, long idx)
 	{
 		int[] dat = new int[cnt];
 		pull(IntegerSet.of(dat), idx);
@@ -98,7 +98,7 @@ public interface IntegerTransit extends ArrayTransit<IntegerArray>
 	 * @param dat  a data array
 	 * @param idx  a data index
 	 */
-	public default void push(int[] dat, int idx)
+	public default void push(int[] dat, long idx)
 	{
 		push(IntegerSet.of(dat), idx);
 	}
@@ -109,7 +109,7 @@ public interface IntegerTransit extends ArrayTransit<IntegerArray>
 	 * @param dat  a data integer
 	 * @param idx  a data index
 	 */
-	public default void push(int dat, int idx)
+	public default void push(int dat, long idx)
 	{
 		push(new int[]{dat}, idx);
 	}

@@ -27,7 +27,7 @@ public interface DomainTransit<D> extends Transit.Index<D>
 
 
 	@Override
-	public default void push(D dat, int idx)
+	public default void push(D dat, long idx)
 	{
 		int s = Domain().DataSize();
 		Domain().push(dat, idx);
@@ -37,6 +37,6 @@ public interface DomainTransit<D> extends Transit.Index<D>
 	@Override
 	public default int Count()
 	{
-		return Index() / Domain().DataSize();
+		return (int) (Index() / Domain().DataSize());
 	}
 }

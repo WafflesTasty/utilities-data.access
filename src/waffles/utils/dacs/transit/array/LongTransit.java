@@ -40,29 +40,29 @@ public interface LongTransit extends ArrayTransit<LongArray>
 		
 		
 		@Override
-		public void pull(LongArray dat, int ofs, int cnt, int idx)
+		public void pull(LongArray dat, int ofs, int cnt, long idx)
 		{
-			Delegate().get(idx, dat.Array(), ofs, cnt);
+			Delegate().get((int) idx, dat.Array(), ofs, cnt);
 		}
 		
 		@Override
-		public void push(LongArray dat, int ofs, int cnt, int idx)
+		public void push(LongArray dat, int ofs, int cnt, long idx)
 		{
-			Delegate().put(idx, dat.Array(), ofs, cnt);
+			Delegate().put((int) idx, dat.Array(), ofs, cnt);
 			setIndex(idx + cnt);
 		}
 		
 		
 		@Override
-		public void push(long dat, int idx)
+		public void push(long dat, long idx)
 		{
-			Delegate().put(idx, dat);
+			Delegate().put((int) idx, dat);
 		}
 		
 		@Override
-		public long pull(int idx)
+		public long pull(long idx)
 		{
-			return Delegate().get(idx);
+			return Delegate().get((int) idx);
 		}
 	}
 	
@@ -73,9 +73,9 @@ public interface LongTransit extends ArrayTransit<LongArray>
 	 * @param idx  a data index
 	 * @return     a data integer
 	 */
-	public default long pull(int idx)
+	public default long pull(long idx)
 	{
-		return pull(1, idx)[0];
+		return pull(1, (int) idx)[0];
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public interface LongTransit extends ArrayTransit<LongArray>
 	 * @param idx  a data index
 	 * @return     a data array
 	 */
-	public default long[] pull(int cnt, int idx)
+	public default long[] pull(int cnt, long idx)
 	{
 		long[] dat = new long[cnt];
 		pull(LongSet.of(dat), idx);
@@ -98,7 +98,7 @@ public interface LongTransit extends ArrayTransit<LongArray>
 	 * @param dat  a data array
 	 * @param idx  a data index
 	 */
-	public default void push(long[] dat, int idx)
+	public default void push(long[] dat, long idx)
 	{
 		push(() -> dat, idx);
 	}
@@ -109,7 +109,7 @@ public interface LongTransit extends ArrayTransit<LongArray>
 	 * @param dat  a data long
 	 * @param idx  a data index
 	 */
-	public default void push(long dat, int idx)
+	public default void push(long dat, long idx)
 	{
 		push(new long[]{dat}, idx);
 	}

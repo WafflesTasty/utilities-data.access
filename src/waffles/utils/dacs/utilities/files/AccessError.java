@@ -44,4 +44,12 @@ public class AccessError extends RuntimeException
 	{
 		super("I couldn't access this path: " + p.toString() + ".");
 	}
+	
+	/**
+	 * Creates a new {@code AccessError}.
+	 */
+	public AccessError()
+	{
+		super("I couldn't access a channel.");
+	}
 }

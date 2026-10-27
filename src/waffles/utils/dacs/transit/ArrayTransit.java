@@ -11,10 +11,10 @@ import waffles.utils.sets.indexed.array.ArrayLike;
  *
  * 
  * @param <A>  an array type
- * @see DualTransit
  * @see ArrayLike
+ * @see Transit
  */
-public interface ArrayTransit<A extends ArrayLike<?,?>> extends DualTransit.Index<A>
+public interface ArrayTransit<A extends ArrayLike<?,?>> extends Transit.Index<A>, Transit.Dual.Index<A>
 {
 	/**
 	 * An {@code ArrayTransit.Base} implements a basic {@code ArrayTransit}.
@@ -30,10 +30,10 @@ public interface ArrayTransit<A extends ArrayLike<?,?>> extends DualTransit.Inde
 	 */
 	public abstract class Base<A extends ArrayLike<?,?>> implements ArrayTransit<A>
 	{
-		private int index, count;
+		private long index, count;
 
 		@Override
-		public void setIndex(Integer idx)
+		public void setIndex(Long idx)
 		{
 			index = idx;
 			if(count < index)
@@ -43,7 +43,7 @@ public interface ArrayTransit<A extends ArrayLike<?,?>> extends DualTransit.Inde
 		}
 
 		@Override
-		public Integer Index()
+		public Long Index()
 		{
 			return index;
 		}
@@ -58,7 +58,7 @@ public interface ArrayTransit<A extends ArrayLike<?,?>> extends DualTransit.Inde
 		@Override
 		public int Count()
 		{
-			return count;
+			return (int) count;
 		}
 	}
 	
@@ -71,7 +71,7 @@ public interface ArrayTransit<A extends ArrayLike<?,?>> extends DualTransit.Inde
 	 * @param cnt  a data count
 	 * @param idx  a data index
 	 */
-	public abstract void pull(A dat, int ofs, int cnt, int idx);
+	public abstract void pull(A dat, int ofs, int cnt, long idx);
 	
 	/**
 	 * Pushes an {@code ArrayLike} into the {@code Transit}.
@@ -81,17 +81,17 @@ public interface ArrayTransit<A extends ArrayLike<?,?>> extends DualTransit.Inde
 	 * @param cnt  a data count
 	 * @param idx  a data index
 	 */
-	public abstract void push(A dat, int ofs, int cnt, int idx);
+	public abstract void push(A dat, int ofs, int cnt, long idx);
 	
 	
 	@Override
-	public default void pull(A dat, int idx)
+	public default void pull(A dat, long idx)
 	{
 		pull(dat, 0, dat.Count(), idx);
 	}
 
 	@Override
-	public default void push(A dat, int idx)
+	public default void push(A dat, long idx)
 	{
 		push(dat, 0, dat.Count(), idx);
 	}
